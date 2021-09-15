@@ -1,0 +1,165 @@
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
+/// <summary>
+/// Swaps palettes using shader magic
+/// </summary>
+[RequireComponent(typeof(Camera))]
+public class PaletteSwap : MonoBehaviour
+{
+    [SerializeField, Tooltip("The source colors to be changed")]
+    ColorPalette inputPalette;
+
+    [SerializeField, Tooltip("The palette pool we'll pick our palettes from")]
+    List<ColorPalette> palettes = new List<ColorPalette>();
+    [SerializeField, Range(0, 3), Tooltip("The current palette index, used for debugging purposes")]
+    int paletteIndex = 0;
+
+    private Material paletteSwapMaterial;
+
+    [HideInInspector]
+    public bool reset = false;
+
+    /// <summary>
+    /// Static reference for singleton implementation
+    /// </summary>
+    static PaletteSwap _instance;
+    public static PaletteSwap Instance
+    {
+        get
+        {
+            if (!FindObjectOfType<PaletteSwap>())
+            {
+                GameObject cameraObject = FindObjectOfType<Camera>().gameObject;
+                if (cameraObject)
+                {
+                    _instance = cameraObject.AddComponent<PaletteSwap>();
+                }
+            }
+            return _instance;
+        }
+    }
+
+    /// <summary>
+    /// Initializes stuff
+    /// Remove SetPalettes() or the palette list will be overridden.
+    /// </summary>
+    void Init()
+    {
+        paletteSwapMaterial = new Material(Shader.Find("Thing/PaletteSwap"));
+        SetPalettes();
+    }
+
+    /// <summary>
+    /// Delete object if another PaletteSwap exists, to enforce singleton thingies
+    /// Also initializes, changes background color to match palette and sets the colors
+    /// </summary>
+    void Awake()
+    {
+        if (Instance)
+        {
+            Destroy(gameObject);
+        }
+        _instance = this;
+        Init();
+        MakeBackgroundColor1();
+        SetColors();
+    }
+
+    /// <summary>
+    /// Overrides color palette, just for debugging purposes
+    /// </summary>
+    void SetPalettes()
+    {
+        palettes.Clear();
+        palettes.Add(new ColorPalette() { color1 = new Color(0, 0, 0, 1), color2 = new Color(0.33f, 0.33f, 0.33f, 1), color3 = new Color(0.66f, 0.66f, 0.66f, 1), color4 = new Color(1, 1, 1, 1) });
+        palettes.Add(new ColorPalette() { color1 = new Color32(0x62, 0x2e, 0x4c, 0xff), color2 = new Color32(0x75, 0x50, 0xe8, 0xff), color3 = new Color32(0x60, 0x8f, 0xcf, 0xff), color4 = new Color32(0x8b, 0xe5, 0xff, 0xff) });
+        palettes.Add(new ColorPalette() { color1 = new Color32(0x74, 0x56, 0x9b, 0xff), color2 = new Color32(0x96, 0xfb, 0xc7, 0xff), color3 = new Color32(0xf7, 0xff, 0xae, 0xff), color4 = new Color32(0xff, 0xb3, 0xcb, 0xff) });
+        palettes.Add(new ColorPalette() { color1 = new Color32(0x23, 0x49, 0x5d, 0xff), color2 = new Color32(0x39, 0x70, 0x7a, 0xff), color3 = new Color32(0x95, 0xe0, 0xcc, 0xff), color4 = new Color32(0xda, 0xf2, 0xe9, 0xff) });
+
+        //622e4c, 7550e8, 608fcf, 8be5ff
+        //74569b, 96fbc7, f7ffae, ffb3cb
+        //23495d, 39707a, 95e0cc, daf2e9
+    }
+
+    /// <summary>
+    /// Makes background color the first color in input palette.
+    /// This can also be removed if we want the camera's background color something else other than the first color on the palette.
+    /// </summary>
+    [ContextMenu("Make Background Color1")]
+    public void MakeBackgroundColor1()
+    {
+        GetComponent<Camera>().backgroundColor = inputPalette.color1;
+    }
+
+    /// <summary>
+    /// Sets the color variables to the shader.
+    /// Should change in the future to avoid using paletteIndex maybe.
+    /// </summary>
+    [ContextMenu("Update Colors")]
+    public void SetColors()
+    {
+        if (paletteSwapMaterial == null)
+        {
+            Init();
+        }
+
+        paletteSwapMaterial.SetColor("_InColorA", inputPalette.color1);
+        paletteSwapMaterial.SetColor("_InColorB", inputPalette.color2);
+        paletteSwapMaterial.SetColor("_InColorC", inputPalette.color3);
+        paletteSwapMaterial.SetColor("_InColorD", inputPalette.color4);
+
+        paletteSwapMaterial.SetColor("_OutColorA", palettes[paletteIndex].color1);
+        paletteSwapMaterial.SetColor("_OutColorB", palettes[paletteIndex].color2);
+        paletteSwapMaterial.SetColor("_OutColorC", palettes[paletteIndex].color3);
+        paletteSwapMaterial.SetColor("_OutColorD", palettes[paletteIndex].color4);
+    }
+
+    /// <summary>
+    /// Does rendering magic using the material with the shader over everything else
+    /// </summary>
+    /// <param name="source"></param>
+    /// <param name="destination"></param>
+    void OnRenderImage(RenderTexture source, RenderTexture destination)
+    {
+        Graphics.Blit(source, destination, paletteSwapMaterial);
+    }
+
+}
+
+/// <summary>
+/// Just a struct to store 4 colors in.
+/// Could be expanded upon and maybe even made into a class if needed.
+/// </summary>
+[System.Serializable]
+public struct ColorPalette
+{
+    public Color color1;
+    public Color color2;
+    public Color color3;
+    public Color color4;
+}
+
+
+/// <summary>
+/// Custom editor to add a button to update the current palette color.
+/// </summary>
+[CustomEditor(typeof(PaletteSwap))]
+class PaletteSwapEditor : Editor
+{
+    PaletteSwap palSwap { get { return target as PaletteSwap; } }
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+        EditorExtensionMethods.DrawSeparator(Color.gray);
+        if (GUILayout.Button("Swap palette"))
+        {
+            palSwap.SetColors();
+        }
+    }
+}
