@@ -3,7 +3,10 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Ground
+  - Spikes
+  - Secret
   layers:
   - Default
   - TransparentFX
@@ -11,10 +14,10 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
+  - Player
+  - Ground
+  - Spikes
+  - Secret
   - 
   - 
   - 
@@ -40,4 +43,22 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Background
+    uniqueID: 3771939593
+    locked: 0
+  - name: Map
+    uniqueID: 1521059623
+    locked: 0
+  - name: Spikes
+    uniqueID: 2923236621
+    locked: 0
+  - name: Player
+    uniqueID: 2764356495
+    locked: 0
+  - name: Secret
+    uniqueID: 1489493333
+    locked: 0
+  - name: UI
+    uniqueID: 2465043789
     locked: 0
