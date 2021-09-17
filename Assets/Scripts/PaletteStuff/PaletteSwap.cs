@@ -197,6 +197,23 @@ class PaletteSwapEditor : Editor
                 palSwap.SetColors();
                 //palSwap.SetColorTolerance();
             }
+            EditorExtensionMethods.DrawSeparator(Color.gray);
+            if (GUILayout.Button("Background Color1"))
+            {
+                palSwap.MakeBackgroundColor1();
+            }
+            if (GUILayout.Button("Background Color2"))
+            {
+                palSwap.MakeBackgroundColor2();
+            }
+            if (GUILayout.Button("Background Color3"))
+            {
+                palSwap.MakeBackgroundColor3();
+            }
+            if (GUILayout.Button("Background Color4"))
+            {
+                palSwap.MakeBackgroundColor4();
+            }
         }
     }
 }

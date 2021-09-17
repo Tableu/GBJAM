@@ -1,19 +1,22 @@
 fileFormatVersion: 2
-guid: 6625de590470a344b9d69908781f1362
+guid: 24c52d8fa15d9bd44b71fe6c91e61a74
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4982501008215554265
-    second: crabIdleSheet_0
+      213: -6649455331308645687
+    second: crabWalkCycleSheet_0
   - first:
-      213: 1071088398969213268
-    second: crabIdleSheet_1
+      213: 4602874615163811022
+    second: crabWalkCycleSheet_1
   - first:
-      213: -5785190000088037027
-    second: crabIdleSheet_2
+      213: -5378078462489339618
+    second: crabWalkCycleSheet_2
   - first:
-      213: 4847764015990162067
-    second: crabIdleSheet_3
+      213: 2922436475991757909
+    second: crabWalkCycleSheet_3
+  - first:
+      213: -7204713062322473360
+    second: crabWalkCycleSheet_4
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -115,7 +118,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: crabIdleSheet_0
+      name: crabWalkCycleSheet_0
       rect:
         serializedVersion: 2
         x: 0
@@ -123,20 +126,20 @@ TextureImporter:
         width: 20
         height: 20
       alignment: 9
-      pivot: {x: 0.5, y: 0.15}
+      pivot: {x: 0.5, y: 0.2}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 72749404bb99adab0800000000000000
-      internalID: -4982501008215554265
+      spriteID: 9c255834b9368b3a0800000000000000
+      internalID: -6649455331308645687
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: crabIdleSheet_1
+      name: crabWalkCycleSheet_1
       rect:
         serializedVersion: 2
         x: 20
@@ -144,20 +147,20 @@ TextureImporter:
         width: 20
         height: 20
       alignment: 9
-      pivot: {x: 0.5, y: 0.15}
+      pivot: {x: 0.5, y: 0.2}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4511a9759354dde00800000000000000
-      internalID: 1071088398969213268
+      spriteID: ec4708e4312b0ef30800000000000000
+      internalID: 4602874615163811022
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: crabIdleSheet_2
+      name: crabWalkCycleSheet_2
       rect:
         serializedVersion: 2
         x: 40
@@ -165,20 +168,20 @@ TextureImporter:
         width: 20
         height: 20
       alignment: 9
-      pivot: {x: 0.5, y: 0.15}
+      pivot: {x: 0.5, y: 0.2}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d594c9e9850e6bfa0800000000000000
-      internalID: -5785190000088037027
+      spriteID: e19d425f12a3d55b0800000000000000
+      internalID: -5378078462489339618
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: crabIdleSheet_3
+      name: crabWalkCycleSheet_3
       rect:
         serializedVersion: 2
         x: 60
@@ -186,14 +189,35 @@ TextureImporter:
         width: 20
         height: 20
       alignment: 9
-      pivot: {x: 0.5, y: 0.15}
+      pivot: {x: 0.5, y: 0.2}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 392c30020b7b64340800000000000000
-      internalID: 4847764015990162067
+      spriteID: 554122ebd749e8820800000000000000
+      internalID: 2922436475991757909
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: crabWalkCycleSheet_4
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 0
+        width: 20
+        height: 20
+      alignment: 9
+      pivot: {x: 0.5, y: 0.2}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 076f6ab54a7b30c90800000000000000
+      internalID: -7204713062322473360
       vertices: []
       indices: 
       edges: []
