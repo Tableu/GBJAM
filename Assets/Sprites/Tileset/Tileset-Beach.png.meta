@@ -4,58 +4,58 @@ TextureImporter:
   internalIDToNameTable:
   - first:
       213: -2701681302518373167
-    second: Tileset-Beach_0
+    second: Tile-Beach-C7
   - first:
       213: -1992252541195833507
-    second: Tileset-Beach_1
+    second: Tile-Beach-C8
   - first:
       213: 270898417398378113
-    second: Tileset-Beach_2
+    second: Tile-Beach-C9
   - first:
       213: -4462764651772178198
-    second: Tileset-Beach_3
+    second: Tile-Beach-Single
   - first:
       213: -8159562503692629778
-    second: Tileset-Beach_4
+    second: Tile-Beach-V1
   - first:
       213: 6101017526974771734
-    second: Tileset-Beach_5
+    second: Tile-Beach-C4
   - first:
       213: -7376399014987585578
-    second: Tileset-Beach_6
+    second: Tile-Beach-C5
   - first:
       213: -1209188536214682175
-    second: Tileset-Beach_7
+    second: Tile-Beach-C6
   - first:
       213: -8131113858231087421
-    second: Tileset-Beach_8
+    second: Tile-Beach-H1
   - first:
       213: 6037549143998437031
-    second: Tileset-Beach_9
+    second: Tile-Beach-H2
   - first:
       213: 4724145577042051847
-    second: Tileset-Beach_10
+    second: Tile-Beach-H3
   - first:
       213: -785188003688569694
-    second: Tileset-Beach_11
+    second: Tile-Beach-V2
   - first:
       213: -6946427827213210331
-    second: Tileset-Beach_12
+    second: Tile-Beach-C1
   - first:
       213: -738581346621531395
-    second: Tileset-Beach_13
+    second: Tile-Beach-C2
   - first:
       213: 5903186767559967064
-    second: Tileset-Beach_14
+    second: Tile-Beach-C3
   - first:
       213: 3916271356212615065
-    second: Tileset-Beach_15
+    second: Tile-Beach-SpikeShort
   - first:
       213: 2031438319082477385
-    second: Tileset-Beach_16
+    second: Tile-Beach-SpikeLong
   - first:
       213: 383132474680037872
-    second: Tileset-Beach_17
+    second: Tile-Beach-V3
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -157,7 +157,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Tileset-Beach_0
+      name: Tile-Beach-C7
       rect:
         serializedVersion: 2
         x: 0
@@ -178,7 +178,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset-Beach_1
+      name: Tile-Beach-C8
       rect:
         serializedVersion: 2
         x: 8
@@ -199,7 +199,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset-Beach_2
+      name: Tile-Beach-C9
       rect:
         serializedVersion: 2
         x: 16
@@ -220,7 +220,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset-Beach_3
+      name: Tile-Beach-Single
       rect:
         serializedVersion: 2
         x: 24
@@ -241,7 +241,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset-Beach_4
+      name: Tile-Beach-V1
       rect:
         serializedVersion: 2
         x: 48
@@ -262,7 +262,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset-Beach_5
+      name: Tile-Beach-C4
       rect:
         serializedVersion: 2
         x: 0
@@ -283,7 +283,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset-Beach_6
+      name: Tile-Beach-C5
       rect:
         serializedVersion: 2
         x: 8
@@ -304,7 +304,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset-Beach_7
+      name: Tile-Beach-C6
       rect:
         serializedVersion: 2
         x: 16
@@ -325,7 +325,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset-Beach_8
+      name: Tile-Beach-H1
       rect:
         serializedVersion: 2
         x: 24
@@ -346,7 +346,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset-Beach_9
+      name: Tile-Beach-H2
       rect:
         serializedVersion: 2
         x: 32
@@ -367,7 +367,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset-Beach_10
+      name: Tile-Beach-H3
       rect:
         serializedVersion: 2
         x: 40
@@ -388,7 +388,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset-Beach_11
+      name: Tile-Beach-V2
       rect:
         serializedVersion: 2
         x: 48
@@ -409,7 +409,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset-Beach_12
+      name: Tile-Beach-C1
       rect:
         serializedVersion: 2
         x: 0
@@ -430,7 +430,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset-Beach_13
+      name: Tile-Beach-C2
       rect:
         serializedVersion: 2
         x: 8
@@ -451,7 +451,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset-Beach_14
+      name: Tile-Beach-C3
       rect:
         serializedVersion: 2
         x: 16
@@ -472,7 +472,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset-Beach_15
+      name: Tile-Beach-SpikeShort
       rect:
         serializedVersion: 2
         x: 32
@@ -501,7 +501,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset-Beach_16
+      name: Tile-Beach-SpikeLong
       rect:
         serializedVersion: 2
         x: 40
@@ -530,7 +530,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Tileset-Beach_17
+      name: Tile-Beach-V3
       rect:
         serializedVersion: 2
         x: 48
