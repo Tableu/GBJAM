@@ -40,7 +40,7 @@ Shader "Thing/PaletteSwap"
 
                 fixed4 frag(v2f i) : COLOR
                 {
-                    float4 start = tex2D(_MainTex, i.uv);
+                    /*float4 start = tex2D(_MainTex, i.uv);
 
                     float4 final = start;
 
@@ -56,7 +56,42 @@ Shader "Thing/PaletteSwap"
                     float testD = saturate(abs(start.x - _InColorD.x) + abs(start.y - _InColorD.y) + abs(start.z - _InColorD.z));
                     final = lerp(final, _OutColorD, 1 - testD);
 
-                    return final;
+                    return final;*/
+
+                    //Forgive me lord for I'm about to sin
+
+                    float4 start = tex2D(_MainTex, i.uv);
+                    float _offset = 0.004;
+
+                    if ((start.r >= _InColorA.r - _offset && start.r <= _InColorA.r + _offset) &&
+                        (start.g >= _InColorA.g - _offset && start.g <= _InColorA.g + _offset) &&
+                        (start.b >= _InColorA.b - _offset && start.b <= _InColorA.b + _offset))
+                    {
+                        start.rgb = _OutColorA.rgb;
+                    }
+
+                    if ((start.r >= _InColorB.r - _offset && start.r <= _InColorB.r + _offset) &&
+                        (start.g >= _InColorB.g - _offset && start.g <= _InColorB.g + _offset) &&
+                        (start.b >= _InColorB.b - _offset && start.b <= _InColorB.b + _offset))
+                    {
+                        start.rgb = _OutColorB.rgb;
+                    }
+
+                    if ((start.r >= _InColorC.r - _offset && start.r <= _InColorC.r + _offset) &&
+                        (start.g >= _InColorC.g - _offset && start.g <= _InColorC.g + _offset) &&
+                        (start.b >= _InColorC.b - _offset && start.b <= _InColorC.b + _offset))
+                    {
+                        start.rgb = _OutColorC.rgb;
+                    }
+
+                    if ((start.r >= _InColorD.r - _offset && start.r <= _InColorD.r + _offset) &&
+                        (start.g >= _InColorD.g - _offset && start.g <= _InColorD.g + _offset) &&
+                        (start.b >= _InColorD.b - _offset && start.b <= _InColorD.b + _offset))
+                    {
+                        start.rgb = _OutColorD.rgb;
+                    }
+
+                    return start;
                 }
                 ENDCG
             }
