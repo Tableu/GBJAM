@@ -22,6 +22,9 @@ public class PaletteSwap : MonoBehaviour
 
     private Material paletteSwapMaterial;
 
+    //[SerializeField, Range(0, 20f)]
+    //float colorTolerance = 0.004f;
+
     [HideInInspector]
     public bool reset = false;
 
@@ -69,6 +72,7 @@ public class PaletteSwap : MonoBehaviour
         Init();
         MakeBackgroundColor2();
         SetColors();
+        //SetColorTolerance();
     }
 
     /// <summary>
@@ -139,6 +143,16 @@ public class PaletteSwap : MonoBehaviour
         paletteSwapMaterial.SetColor("_OutColorD", palettes[paletteIndex].color4);
     }
 
+    //public void SetColorTolerance()
+    //{
+    //    if (paletteSwapMaterial == null)
+    //    {
+    //        Init();
+    //    }
+
+    //    paletteSwapMaterial.SetFloat("_offset", colorTolerance);
+    //}
+
     /// <summary>
     /// Does rendering magic using the material with the shader over everything else
     /// </summary>
@@ -181,6 +195,7 @@ class PaletteSwapEditor : Editor
             if (GUILayout.Button("Swap palette"))
             {
                 palSwap.SetColors();
+                //palSwap.SetColorTolerance();
             }
         }
     }

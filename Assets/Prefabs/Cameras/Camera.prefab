@@ -54,6 +54,7 @@ MonoBehaviour:
     color4: {r: 0.60784316, g: 0.7372549, b: 0.058823533, a: 1}
   palettes: []
   paletteIndex: 0
+  colorTolerance: 0.004
   reset: 0
 --- !u!20 &6493138287961469406
 Camera:
@@ -125,7 +126,7 @@ MonoBehaviour:
   m_PixelSnapping: 1
   m_CropFrameX: 1
   m_CropFrameY: 1
-  m_StretchFill: 1
+  m_StretchFill: 0
 --- !u!114 &6493138287961469404
 MonoBehaviour:
   m_ObjectHideFlags: 0

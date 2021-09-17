@@ -4,6 +4,8 @@ Shader "Thing/PaletteSwap"
 {
     Properties{
         _MainTex("", 2D) = "" {}
+        _offset("Color Tolerance", Float) = 0.004
+    //_ExampleName("Float with range", Range(0.0, 1.0)) = 0.5
     }
         SubShader{
 
@@ -27,6 +29,7 @@ Shader "Thing/PaletteSwap"
                 }
 
                 sampler2D _MainTex;
+                float _offset;
 
                 uniform float4 _InColorA;
                 uniform float4 _InColorB;
@@ -61,7 +64,6 @@ Shader "Thing/PaletteSwap"
                     //Forgive me lord for I'm about to sin
 
                     float4 start = tex2D(_MainTex, i.uv);
-                    float _offset = 0.004;
 
                     if ((start.r >= _InColorA.r - _offset && start.r <= _InColorA.r + _offset) &&
                         (start.g >= _InColorA.g - _offset && start.g <= _InColorA.g + _offset) &&
