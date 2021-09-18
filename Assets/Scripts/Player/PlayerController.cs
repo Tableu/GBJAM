@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine.InputSystem;
 using UnityEngine;
 public class PlayerController : MonoBehaviour
@@ -36,7 +37,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Vector2 speed;
     [SerializeField] private Vector2 maxSpeed;
     [SerializeField] private string powerUp;
-    
+
+    [SerializeField] private bool touchingCol;
+    [SerializeField] private bool grounded;
+
     // Start is called before the first frame update
     private void Awake()
     {
@@ -81,6 +85,10 @@ public class PlayerController : MonoBehaviour
     {
         var horizontal = playerInputActions.Player.Move.ReadValue<float>();
         var horizontalVelocity = horizontal * speed.x;
+        if (!grounded && touchingCol)
+        {
+            return;
+        }
         if (horizontalVelocity != 0)
         {
             if (Mathf.Abs(rigidBody.velocity.x) < maxSpeed.x)
@@ -93,7 +101,7 @@ public class PlayerController : MonoBehaviour
         {
             Idle(new InputAction.CallbackContext());
         }
-
+        
     }
 
     private void Rotate(InputAction.CallbackContext context)
@@ -117,7 +125,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Jump(InputAction.CallbackContext context)
     {
-        if (Grounded())
+        if (grounded)
         {
             playerAnimatorController.TriggerJump();
             rigidBody.AddRelativeForce(new Vector2(0, speed.y), ForceMode2D.Impulse);
@@ -171,6 +179,14 @@ public class PlayerController : MonoBehaviour
     public void TakeDamage(AttackCommands.AttackStats attackStats)
     {
         //Health or armor - enemydamage depending on direction
+        StartCoroutine(Invulnerable());
+    }
+
+    private IEnumerator Invulnerable()
+    {
+        gameObject.layer = LayerMask.NameToLayer("Invulnerable");
+        yield return new WaitForSeconds(1);
+        gameObject.layer = LayerMask.NameToLayer("Player");
     }
     private bool Grounded()
     {
@@ -178,14 +194,19 @@ public class PlayerController : MonoBehaviour
         if (col.Raycast(Vector2.down, hit, 1, LayerMask.GetMask("Ground")) > 0)
         {
             playerAnimatorController.SetIsGrounded(true);
+            playerInputActions.Player.Hide.Enable();
+            grounded = true;
             return true;
         }
         playerAnimatorController.SetIsGrounded(false);
+        playerInputActions.Player.Hide.Disable();
+        grounded = false;
         return false;
     }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
+        touchingCol = true;
         switch (LayerMask.LayerToName(other.collider.gameObject.layer))
         {
             case "Ground":
@@ -197,11 +218,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //private void OnCollisionExit(Collision other)
-    //{
-    //    if (other.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
-    //    {
-    //        Grounded();
-    //    }
-    //}
+    private void OnCollisionExit(Collision other)
+    {
+        touchingCol = false;
+        //    if (other.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        //    {
+        //        Grounded();
+        //    }
+    }
 }
