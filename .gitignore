@@ -59,3 +59,7 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+.idea/.idea.GBJAM-Game/.idea/indexLayout.xml
+.idea/.idea.GBJAM-Game/.idea/projectSettingsUpdater.xml
+.idea/.idea.GBJAM-Game/.idea/workspace.xml
+*.meta

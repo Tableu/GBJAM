@@ -4,27 +4,31 @@ public class PlayerController : MonoBehaviour
 {
     public readonly struct PlayerStats
     {
-        public PlayerStats(Vector2 speed, Vector2 maxSpeed, int health, int armor)
+        public PlayerStats(Vector2 speed, Vector2 maxSpeed, int health, int armor, string powerup)
         {
             Speed = speed;
             MaxSpeed = maxSpeed;
             Health = health;
             Armor = armor;
+            Powerup = powerup;
         }
-        private Vector2 Speed { get; }
-        private Vector2 MaxSpeed { get; }
-        private int Health { get; }
-        private int Armor { get; }
+        public Vector2 Speed { get; }
+        public Vector2 MaxSpeed { get; }
+        public int Health { get; }
+        public int Armor { get; }
+        public string Powerup { get; }
     }
     private PlayerInputActions playerInputActions;
     [SerializeField] private Rigidbody2D rigidBody;
     [SerializeField] private Collider2D col;
     [SerializeField] private PlayerAnimatorController playerAnimatorController;
+    [SerializeField] private SpriteRenderer playerShellSpriteRenderer;
 
-    public int health;
-    public int armor;
-    public Vector2 speed;
-    public Vector2 maxSpeed;
+    [SerializeField] private int health;
+    [SerializeField] private int armor;
+    [SerializeField] private Vector2 speed;
+    [SerializeField] private Vector2 maxSpeed;
+    [SerializeField] private string powerup;
     
     // Start is called before the first frame update
     private void Awake() {
@@ -43,6 +47,7 @@ public class PlayerController : MonoBehaviour
         playerInputActions.Player.Jump.started += Jump;
         playerInputActions.Player.Move.started += Rotate;
         playerInputActions.Player.Move.canceled += Idle;
+        playerInputActions.Player.PickUpShell.started += SwitchShells;
     }
 
     // Update is called once per frame
@@ -51,6 +56,14 @@ public class PlayerController : MonoBehaviour
         Move();
     }
 
+    public void SetStats(PlayerStats playerStats)
+    {
+        health = playerStats.Health;
+        armor = playerStats.Armor;
+        speed = playerStats.Speed;
+        maxSpeed = playerStats.MaxSpeed;
+        powerup = playerStats.Powerup;
+    }
     private void Move(){
         var horizontal = playerInputActions.Player.Move.ReadValue<float>();
         var horizontalVelocity = horizontal * speed.x;
@@ -65,21 +78,19 @@ public class PlayerController : MonoBehaviour
     private void Rotate(InputAction.CallbackContext context)
     {
         var direction = context.ReadValue<float>();
+        var scale = transform.localScale;
         if (direction > 0 )
         {
-            transform.localScale = new Vector3(-1, transform.localScale.y,
-                transform.localScale.z);
+            transform.localScale = new Vector3(-1, scale.y, scale.z);
         }else if (direction < 0)
         {
-            transform.localScale = new Vector3(1, transform.localScale.y,
-                transform.localScale.z);
+            transform.localScale = new Vector3(1, scale.y, scale.z);
         }
     }
     private void Idle(InputAction.CallbackContext context)
     {
         rigidBody.velocity = new Vector2(0,rigidBody.velocity.y);
         playerAnimatorController.SetIsMoving(false);
-        //Play Idle animation
         Debug.Log("Idle");
     }
     private void Jump(InputAction.CallbackContext context)
@@ -90,11 +101,32 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Jump");
         }
     }
-    private void Attack()
+    private void Attack(PlayerStats playerStats)
     {
-        
+        switch (playerStats.Powerup)
+        {
+            case AttackCommands.SIMPLE_PROJECTILE_ATTACK:
+                break;
+            case AttackCommands.MELEE_ATTACK:
+                break;
+            case AttackCommands.DASH:
+                break;
+        }
     }
 
+    private void SwitchShells(InputAction.CallbackContext context)
+    {
+        ContactFilter2D contactFilter2D = new ContactFilter2D
+        {
+            layerMask = LayerMask.GetMask("Shells"),
+            useLayerMask = true
+        };
+        Collider2D[] collider2D = new Collider2D[1];
+        if ( Physics2D.OverlapCollider(col,contactFilter2D, collider2D) == 1)
+        {
+            collider2D[0].gameObject.GetComponent<ShellScript>().AttachedToPlayer(gameObject);
+        }
+    }
     private bool Grounded()
     {
         RaycastHit2D[] hit = new RaycastHit2D[1];
@@ -106,7 +138,7 @@ public class PlayerController : MonoBehaviour
         playerAnimatorController.SetIsGrounded(false);
         return false;
     }
-
+    
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
