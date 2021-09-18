@@ -5,6 +5,7 @@ public interface Attacks
     void MeleeAttack(GameObject character);
     void SimpleProjectileAttack(GameObject character, GameObject projectile);
     void Dash(Rigidbody2D character, float speed);
+    void Collision(GameObject character);
 }
 
 public class AttackCommands : Attacks
@@ -33,6 +34,7 @@ public class AttackCommands : Attacks
     public const System.String DASH = "Dash";
     public const System.String MELEE_ATTACK = "Melee Attack";
     public const System.String SIMPLE_PROJECTILE_ATTACK = "Simple Projectile Attack";
+    public const System.String COLLISION = "Collision";
     public void MeleeAttack(GameObject character)
     {
         
@@ -46,5 +48,10 @@ public class AttackCommands : Attacks
     public void Dash(Rigidbody2D characterRigid, float speed)
     {
         characterRigid.AddForce(new Vector2(speed,0));
+    }
+
+    public void Collision(GameObject character)
+    {
+        
     }
 }
