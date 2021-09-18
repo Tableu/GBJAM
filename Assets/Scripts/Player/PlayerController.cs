@@ -48,6 +48,8 @@ public class PlayerController : MonoBehaviour
         playerInputActions.Player.Move.started += Rotate;
         playerInputActions.Player.Move.canceled += Idle;
         playerInputActions.Player.PickUpShell.started += SwitchShells;
+        playerInputActions.Player.Hide.started += Hide;
+        playerInputActions.Player.Hide.canceled += Hide;
     }
 
     // Update is called once per frame
@@ -101,9 +103,9 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Jump");
         }
     }
-    private void Attack(PlayerStats playerStats)
+    private void Attack()
     {
-        switch (playerStats.Powerup)
+        switch (powerup)
         {
             case AttackCommands.SIMPLE_PROJECTILE_ATTACK:
                 break;
@@ -122,9 +124,23 @@ public class PlayerController : MonoBehaviour
             useLayerMask = true
         };
         Collider2D[] collider2D = new Collider2D[1];
-        if ( Physics2D.OverlapCollider(col,contactFilter2D, collider2D) == 1)
+        if ( Physics2D.OverlapCollider(col,contactFilter2D, collider2D) == 1 && Grounded())
         {
             collider2D[0].gameObject.GetComponent<ShellScript>().AttachedToPlayer(gameObject);
+        }
+    }
+
+    private void Hide(InputAction.CallbackContext context)
+    {
+        //Call playerAnimatorController
+        if (context.started)
+        {
+            playerInputActions.Player.Move.Disable();
+            playerInputActions.Player.Jump.Disable();
+        }else if (context.canceled)
+        {
+            playerInputActions.Player.Move.Enable();
+            playerInputActions.Player.Jump.Enable();
         }
     }
     private bool Grounded()
@@ -145,5 +161,6 @@ public class PlayerController : MonoBehaviour
         {
             Grounded();
         }
+        //if other.collider is in the Enemy layer lose armor or health based on damage script
     }
 }
