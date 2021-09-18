@@ -190,16 +190,29 @@ public class PlayerController : MonoBehaviour
         var direction = Math.Sign(transform.position.x - otherPos.position.x);
         if (direction == Math.Sign(transform.localScale.x))
         {
-            //Subtract from health
+            health -= attackStats.Damage;
+            if(health <= 0){Death();}
             Debug.Log("Lose Health");
         }
         else
         {
-            //Subtract from armor
+            armor -= attackStats.Damage;
+            if (armor <= 0) {BreakShell();}
             Debug.Log("Lose Armor");
         }
         rigidBody.AddRelativeForce(new Vector2(attackStats.Knockback.x*direction, attackStats.Knockback.y), ForceMode2D.Impulse);
         StartCoroutine(Invulnerable());
+    }
+
+    private void Death()
+    {
+        //Perform other death tasks
+        Destroy(gameObject);
+    }
+
+    private void BreakShell()
+    {
+        //remove shell sprite
     }
 
     private IEnumerator Invulnerable()
