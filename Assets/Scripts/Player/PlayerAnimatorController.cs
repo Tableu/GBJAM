@@ -23,6 +23,14 @@ public class PlayerAnimatorController : MonoBehaviour
     {
         animCont.SetBool("IsMoving", moving);
     }
+    public void SetIsHiding(bool hiding)
+    {
+        animCont.SetBool("IsHiding", hiding);
+    }
+    public void TriggerJump()
+    {
+        animCont.SetTrigger("JumpTrigger");
+    }
     //Jump?? Depends on if we get multiple states of airborne (going up and going down or something like that)
 }
 

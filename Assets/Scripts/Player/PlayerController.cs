@@ -29,17 +29,20 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Vector2 speed;
     [SerializeField] private Vector2 maxSpeed;
     [SerializeField] private string powerup;
-    
+
     // Start is called before the first frame update
-    private void Awake() {
+    private void Awake()
+    {
         playerInputActions = new PlayerInputActions();
     }
 
-    private void OnEnable() {
+    private void OnEnable()
+    {
         playerInputActions.Enable();
     }
 
-    private void OnDisable() {
+    private void OnDisable()
+    {
         playerInputActions.Disable();
     }
     void Start()
@@ -55,6 +58,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Grounded();
         Move();
     }
 
@@ -66,32 +70,41 @@ public class PlayerController : MonoBehaviour
         maxSpeed = playerStats.MaxSpeed;
         powerup = playerStats.Powerup;
     }
-    private void Move(){
+    private void Move()
+    {
         var horizontal = playerInputActions.Player.Move.ReadValue<float>();
         var horizontalVelocity = horizontal * speed.x;
-        if (Mathf.Abs(rigidBody.velocity.x) < maxSpeed.x)
+        if (horizontalVelocity != 0)
         {
-            rigidBody.AddForce(new Vector2(horizontalVelocity, 0), ForceMode2D.Impulse);
-            playerAnimatorController.SetIsMoving(true);
+            if (Mathf.Abs(rigidBody.velocity.x) < maxSpeed.x)
+            {
+                rigidBody.AddForce(new Vector2(horizontalVelocity, 0), ForceMode2D.Impulse);
+                playerAnimatorController.SetIsMoving(true);
+            }
         }
-        
+        else
+        {
+            Idle(new InputAction.CallbackContext());
+        }
+
     }
 
     private void Rotate(InputAction.CallbackContext context)
     {
         var direction = context.ReadValue<float>();
         var scale = transform.localScale;
-        if (direction > 0 )
+        if (direction > 0)
         {
             transform.localScale = new Vector3(-1, scale.y, scale.z);
-        }else if (direction < 0)
+        }
+        else if (direction < 0)
         {
             transform.localScale = new Vector3(1, scale.y, scale.z);
         }
     }
     private void Idle(InputAction.CallbackContext context)
     {
-        rigidBody.velocity = new Vector2(0,rigidBody.velocity.y);
+        rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
         playerAnimatorController.SetIsMoving(false);
         Debug.Log("Idle");
     }
@@ -99,7 +112,8 @@ public class PlayerController : MonoBehaviour
     {
         if (Grounded())
         {
-            rigidBody.AddRelativeForce(new Vector2(0,speed.y), ForceMode2D.Impulse);
+            playerAnimatorController.TriggerJump();
+            rigidBody.AddRelativeForce(new Vector2(0, speed.y), ForceMode2D.Impulse);
             Debug.Log("Jump");
         }
     }
@@ -124,7 +138,7 @@ public class PlayerController : MonoBehaviour
             useLayerMask = true
         };
         Collider2D[] collider2D = new Collider2D[1];
-        if ( Physics2D.OverlapCollider(col,contactFilter2D, collider2D) == 1 && Grounded())
+        if (Physics2D.OverlapCollider(col, contactFilter2D, collider2D) == 1 && Grounded())
         {
             collider2D[0].gameObject.GetComponent<ShellScript>().AttachedToPlayer(gameObject);
         }
@@ -137,16 +151,19 @@ public class PlayerController : MonoBehaviour
         {
             playerInputActions.Player.Move.Disable();
             playerInputActions.Player.Jump.Disable();
-        }else if (context.canceled)
+            playerAnimatorController.SetIsHiding(true);
+        }
+        else if (context.canceled)
         {
             playerInputActions.Player.Move.Enable();
             playerInputActions.Player.Jump.Enable();
+            playerAnimatorController.SetIsHiding(false);
         }
     }
     private bool Grounded()
     {
         RaycastHit2D[] hit = new RaycastHit2D[1];
-        if (col.Raycast(Vector2.down,hit, 1, LayerMask.GetMask("Ground")) > 0)
+        if (col.Raycast(Vector2.down, hit, 1, LayerMask.GetMask("Ground")) > 0)
         {
             playerAnimatorController.SetIsGrounded(true);
             return true;
@@ -154,7 +171,7 @@ public class PlayerController : MonoBehaviour
         playerAnimatorController.SetIsGrounded(false);
         return false;
     }
-    
+
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
@@ -163,4 +180,12 @@ public class PlayerController : MonoBehaviour
         }
         //if other.collider is in the Enemy layer lose armor or health based on damage script
     }
+
+    //private void OnCollisionExit(Collision other)
+    //{
+    //    if (other.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
+    //    {
+    //        Grounded();
+    //    }
+    //}
 }
