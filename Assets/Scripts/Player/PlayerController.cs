@@ -1,17 +1,31 @@
 using UnityEngine.InputSystem;
 using UnityEngine;
-
 public class PlayerController : MonoBehaviour
 {
+    public readonly struct PlayerStats
+    {
+        public PlayerStats(Vector2 speed, Vector2 maxSpeed, int health, int armor)
+        {
+            Speed = speed;
+            MaxSpeed = maxSpeed;
+            Health = health;
+            Armor = armor;
+        }
+        private Vector2 Speed { get; }
+        private Vector2 MaxSpeed { get; }
+        private int Health { get; }
+        private int Armor { get; }
+    }
     private PlayerInputActions playerInputActions;
     [SerializeField] private Rigidbody2D rigidBody;
     [SerializeField] private Collider2D col;
     [SerializeField] private PlayerAnimatorController playerAnimatorController;
 
-    public float speed;
-    public float maxSpeed;
-
-    public float jumpSpeed;
+    public int health;
+    public int armor;
+    public Vector2 speed;
+    public Vector2 maxSpeed;
+    
     // Start is called before the first frame update
     private void Awake() {
         playerInputActions = new PlayerInputActions();
@@ -39,8 +53,8 @@ public class PlayerController : MonoBehaviour
 
     private void Move(){
         var horizontal = playerInputActions.Player.Move.ReadValue<float>();
-        var horizontalVelocity = horizontal * speed;
-        if (Mathf.Abs(rigidBody.velocity.x) < maxSpeed)
+        var horizontalVelocity = horizontal * speed.x;
+        if (Mathf.Abs(rigidBody.velocity.x) < maxSpeed.x)
         {
             rigidBody.AddForce(new Vector2(horizontalVelocity, 0), ForceMode2D.Impulse);
             playerAnimatorController.SetIsMoving(true);
@@ -72,7 +86,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Grounded())
         {
-            rigidBody.AddRelativeForce(new Vector2(0,jumpSpeed), ForceMode2D.Impulse);
+            rigidBody.AddRelativeForce(new Vector2(0,speed.y), ForceMode2D.Impulse);
             Debug.Log("Jump");
         }
     }
