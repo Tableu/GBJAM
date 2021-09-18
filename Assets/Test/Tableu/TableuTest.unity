@@ -302,7 +302,7 @@ MonoBehaviour:
     _powerUp: Collision
     _speed: 0
     _damage: 1
-    _knockback: {x: 1, y: 1}
+    _knockback: {x: 18, y: 10}
 --- !u!61 &643942494
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -411,7 +411,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &946634110
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -495,7 +495,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &975700847
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -833,7 +833,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1853304229
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4616,22 +4616,6 @@ PrefabInstance:
     - target: {fileID: 2528370877360044563, guid: ef6c169d996483c4ab59851a33b232f7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2663926567196102169, guid: ef6c169d996483c4ab59851a33b232f7, type: 3}
-      propertyPath: m_Size.x
-      value: 0.16
-      objectReference: {fileID: 0}
-    - target: {fileID: 2663926567196102169, guid: ef6c169d996483c4ab59851a33b232f7, type: 3}
-      propertyPath: m_Size.y
-      value: 0.16
-      objectReference: {fileID: 0}
-    - target: {fileID: 2663926567196102169, guid: ef6c169d996483c4ab59851a33b232f7, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: ed4383fa72307e84997a258ca30b9f8c, type: 3}
-    - target: {fileID: 2663926567196102169, guid: ef6c169d996483c4ab59851a33b232f7, type: 3}
-      propertyPath: m_WasSpriteAssigned
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5309410706653045697, guid: ef6c169d996483c4ab59851a33b232f7, type: 3}
       propertyPath: m_Name

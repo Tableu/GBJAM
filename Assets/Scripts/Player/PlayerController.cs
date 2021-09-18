@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine.InputSystem;
 using UnityEngine;
@@ -19,14 +20,15 @@ public class PlayerController : MonoBehaviour
         [SerializeField] private Vector2 _maxSpeed;
         [SerializeField] private int _health;
         [SerializeField] private int _armor;
-        [SerializeField] private System.String _powerUp;
+        [SerializeField] private String _powerUp;
         public Vector2 Speed => _speed;
         public Vector2 MaxSpeed => _maxSpeed;
         public int Health => _health;
         public int Armor => _armor;
         public string PowerUp => _powerUp;
     }
-    private PlayerInputActions playerInputActions;
+    private PlayerInputActions _playerInputActions;
+    private ContactFilter2D _groundFilter2D; 
     [SerializeField] private Rigidbody2D rigidBody;
     [SerializeField] private Collider2D col;
     [SerializeField] private PlayerAnimatorController playerAnimatorController;
@@ -37,33 +39,39 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Vector2 speed;
     [SerializeField] private Vector2 maxSpeed;
     [SerializeField] private string powerUp;
-
-    [SerializeField] private bool touchingCol;
+    
     [SerializeField] private bool grounded;
+    [SerializeField] private bool hiding;
 
     // Start is called before the first frame update
     private void Awake()
     {
-        playerInputActions = new PlayerInputActions();
+        _playerInputActions = new PlayerInputActions();
     }
 
     private void OnEnable()
     {
-        playerInputActions.Enable();
+        _playerInputActions.Enable();
     }
 
     private void OnDisable()
     {
-        playerInputActions.Disable();
+        _playerInputActions.Disable();
     }
     void Start()
     {
-        playerInputActions.Player.Jump.started += Jump;
-        playerInputActions.Player.Move.started += Rotate;
-        playerInputActions.Player.Move.canceled += Idle;
-        playerInputActions.Player.PickUpShell.started += SwitchShells;
-        playerInputActions.Player.Hide.started += Hide;
-        playerInputActions.Player.Hide.canceled += Hide;
+        _playerInputActions.Player.Jump.started += Jump;
+        _playerInputActions.Player.Move.started += Rotate;
+        _playerInputActions.Player.Move.canceled += Idle;
+        _playerInputActions.Player.PickUpShell.started += SwitchShells;
+        _playerInputActions.Player.Hide.started += Hide;
+        _playerInputActions.Player.Hide.canceled += Hide;
+        
+        _groundFilter2D = new ContactFilter2D
+        {
+            layerMask = LayerMask.GetMask("Ground"),
+            useLayerMask = true
+        };
     }
 
     // Update is called once per frame
@@ -83,11 +91,15 @@ public class PlayerController : MonoBehaviour
     }
     private void Move()
     {
-        var horizontal = playerInputActions.Player.Move.ReadValue<float>();
+        var horizontal = _playerInputActions.Player.Move.ReadValue<float>();
         var horizontalVelocity = horizontal * speed.x;
-        if (!grounded && touchingCol)
+        
+        if (!grounded)
         {
-            return;
+            if (col.IsTouching(_groundFilter2D))
+            {
+                return;
+            }
         }
         if (horizontalVelocity != 0)
         {
@@ -97,11 +109,6 @@ public class PlayerController : MonoBehaviour
                 playerAnimatorController.SetIsMoving(true);
             }
         }
-        else
-        {
-            Idle(new InputAction.CallbackContext());
-        }
-        
     }
 
     private void Rotate(InputAction.CallbackContext context)
@@ -153,7 +160,7 @@ public class PlayerController : MonoBehaviour
             useLayerMask = true
         };
         Collider2D[] collider2D = new Collider2D[1];
-        if (Physics2D.OverlapCollider(col, contactFilter2D, collider2D) == 1 && Grounded())
+        if (Physics2D.OverlapCollider(col, contactFilter2D, collider2D) == 1 && grounded)
         {
             collider2D[0].gameObject.GetComponent<ShellScript>().AttachedToPlayer(gameObject);
         }
@@ -164,21 +171,34 @@ public class PlayerController : MonoBehaviour
         //Call playerAnimatorController
         if (context.started)
         {
-            playerInputActions.Player.Move.Disable();
-            playerInputActions.Player.Jump.Disable();
+            _playerInputActions.Player.Move.Disable();
+            _playerInputActions.Player.Jump.Disable();
+            hiding = true;
             playerAnimatorController.SetIsHiding(true);
         }
         else if (context.canceled)
         {
-            playerInputActions.Player.Move.Enable();
-            playerInputActions.Player.Jump.Enable();
+            _playerInputActions.Player.Move.Enable();
+            _playerInputActions.Player.Jump.Enable();
+            hiding = false;
             playerAnimatorController.SetIsHiding(false);
         }
     }
 
-    public void TakeDamage(AttackCommands.AttackStats attackStats)
+    public void TakeDamage(AttackCommands.AttackStats attackStats, Transform otherPos)
     {
-        //Health or armor - enemydamage depending on direction
+        var direction = Math.Sign(transform.position.x - otherPos.position.x);
+        if (direction == Math.Sign(transform.localScale.x))
+        {
+            //Subtract from health
+            Debug.Log("Lose Health");
+        }
+        else
+        {
+            //Subtract from armor
+            Debug.Log("Lose Armor");
+        }
+        rigidBody.AddRelativeForce(new Vector2(attackStats.Knockback.x*direction, attackStats.Knockback.y), ForceMode2D.Impulse);
         StartCoroutine(Invulnerable());
     }
 
@@ -194,36 +214,31 @@ public class PlayerController : MonoBehaviour
         if (col.Raycast(Vector2.down, hit, 1, LayerMask.GetMask("Ground")) > 0)
         {
             playerAnimatorController.SetIsGrounded(true);
-            playerInputActions.Player.Hide.Enable();
+            _playerInputActions.Player.Hide.Enable();
             grounded = true;
             return true;
         }
         playerAnimatorController.SetIsGrounded(false);
-        playerInputActions.Player.Hide.Disable();
+        _playerInputActions.Player.Hide.Disable();
         grounded = false;
         return false;
     }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        touchingCol = true;
         switch (LayerMask.LayerToName(other.collider.gameObject.layer))
         {
-            case "Ground":
-                Grounded();
-                break;
             case "Enemy":
                 other.gameObject.GetComponent<AttackController>().Hit(gameObject);
                 break;
         }
     }
 
-    private void OnCollisionExit(Collision other)
-    {
-        touchingCol = false;
-        //    if (other.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
-        //    {
-        //        Grounded();
-        //    }
-    }
+    //private void OnCollisionExit(Collision other)
+    //{
+    //    if (other.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
+    //    {
+    //        Grounded();
+    //    }
+    //}
 }

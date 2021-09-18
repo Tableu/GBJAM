@@ -13,7 +13,7 @@ public class AttackController : MonoBehaviour
         switch (LayerMask.LayerToName(other.layer))
         {
             case "Player":
-                other.GetComponent<PlayerController>().TakeDamage(attackStats);
+                other.GetComponent<PlayerController>().TakeDamage(attackStats, transform);
                 Destroy(gameObject);
                 break;
             case "Enemy":
