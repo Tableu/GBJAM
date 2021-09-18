@@ -2,21 +2,28 @@ using UnityEngine.InputSystem;
 using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
-    public readonly struct PlayerStats
+    [System.Serializable]
+    public struct PlayerStats
     {
-        public PlayerStats(Vector2 speed, Vector2 maxSpeed, int health, int armor, string powerup)
+        public PlayerStats(Vector2 speed, Vector2 maxSpeed, int health, int armor, string powerUp)
         {
-            Speed = speed;
-            MaxSpeed = maxSpeed;
-            Health = health;
-            Armor = armor;
-            Powerup = powerup;
+            _speed = speed;
+            _maxSpeed = maxSpeed;
+            _health = health;
+            _armor = armor;
+            _powerUp = powerUp;
         }
-        public Vector2 Speed { get; }
-        public Vector2 MaxSpeed { get; }
-        public int Health { get; }
-        public int Armor { get; }
-        public string Powerup { get; }
+
+        [SerializeField] private Vector2 _speed;
+        [SerializeField] private Vector2 _maxSpeed;
+        [SerializeField] private int _health;
+        [SerializeField] private int _armor;
+        [SerializeField] private System.String _powerUp;
+        public Vector2 Speed => _speed;
+        public Vector2 MaxSpeed => _maxSpeed;
+        public int Health => _health;
+        public int Armor => _armor;
+        public string PowerUp => _powerUp;
     }
     private PlayerInputActions playerInputActions;
     [SerializeField] private Rigidbody2D rigidBody;
@@ -28,8 +35,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private int armor;
     [SerializeField] private Vector2 speed;
     [SerializeField] private Vector2 maxSpeed;
-    [SerializeField] private string powerup;
-
+    [SerializeField] private string powerUp;
+    
     // Start is called before the first frame update
     private void Awake()
     {
@@ -68,7 +75,7 @@ public class PlayerController : MonoBehaviour
         armor = playerStats.Armor;
         speed = playerStats.Speed;
         maxSpeed = playerStats.MaxSpeed;
-        powerup = playerStats.Powerup;
+        powerUp = playerStats.PowerUp;
     }
     private void Move()
     {
@@ -119,7 +126,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Attack()
     {
-        switch (powerup)
+        switch (powerUp)
         {
             case AttackCommands.SIMPLE_PROJECTILE_ATTACK:
                 break;
@@ -160,6 +167,11 @@ public class PlayerController : MonoBehaviour
             playerAnimatorController.SetIsHiding(false);
         }
     }
+
+    public void TakeDamage(AttackCommands.AttackStats attackStats)
+    {
+        //Health or armor - enemydamage depending on direction
+    }
     private bool Grounded()
     {
         RaycastHit2D[] hit = new RaycastHit2D[1];
@@ -174,11 +186,15 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        switch (LayerMask.LayerToName(other.collider.gameObject.layer))
         {
-            Grounded();
+            case "Ground":
+                Grounded();
+                break;
+            case "Enemy":
+                other.gameObject.GetComponent<AttackController>().Hit(gameObject);
+                break;
         }
-        //if other.collider is in the Enemy layer lose armor or health based on damage script
     }
 
     //private void OnCollisionExit(Collision other)

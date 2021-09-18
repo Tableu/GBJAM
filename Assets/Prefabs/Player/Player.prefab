@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 6666176715580743}
   - component: {fileID: 5916625166058093823}
   - component: {fileID: 1150869440}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -47,10 +47,10 @@ Rigidbody2D:
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
-  m_Mass: 1
+  m_Mass: 2
   m_LinearDrag: 0
   m_AngularDrag: 0
-  m_GravityScale: 1
+  m_GravityScale: 3
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
@@ -71,9 +71,12 @@ MonoBehaviour:
   rigidBody: {fileID: 6985282805989476353}
   col: {fileID: 1150869440}
   playerAnimatorController: {fileID: 3549133949129490232}
-  speed: 1
-  maxSpeed: 5
-  jumpSpeed: 2
+  playerShellSpriteRenderer: {fileID: 0}
+  health: 0
+  armor: 0
+  speed: {x: 2, y: 25}
+  maxSpeed: {x: 8, y: 50}
+  powerUp: 
 --- !u!114 &5916625166058093823
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131,6 +134,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerVisuals
       objectReference: {fileID: 0}
+    - target: {fileID: 4599848500613271777, guid: 01f1f05f357a4ac47b893246c68b1ff9, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 4599848500613271779, guid: 01f1f05f357a4ac47b893246c68b1ff9, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -173,6 +180,26 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4599848500613271779, guid: 01f1f05f357a4ac47b893246c68b1ff9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4599848501623303936, guid: 01f1f05f357a4ac47b893246c68b1ff9, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4599848501623303937, guid: 01f1f05f357a4ac47b893246c68b1ff9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4599848501623303937, guid: 01f1f05f357a4ac47b893246c68b1ff9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4599848501623303938, guid: 01f1f05f357a4ac47b893246c68b1ff9, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4599848501623303938, guid: 01f1f05f357a4ac47b893246c68b1ff9, type: 3}
+      propertyPath: m_WasSpriteAssigned
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
