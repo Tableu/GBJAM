@@ -5,8 +5,6 @@ using UnityEngine;
 public class SnailEnemy : EnemyBase
 {
     [SerializeField] public float lookAheadDist = 0.5f;
-    protected float timeSinceSawPlayer = 0;
-
 
     protected new void Awake()
     {
@@ -37,15 +35,6 @@ public class SnailEnemy : EnemyBase
 
         public void Tick()
         {
-            // todo: move this logic to the base class
-            if (_enemy.PlayerVisible())
-            {
-                _enemy.timeSinceSawPlayer = 0;
-            }
-            else
-            {
-                _enemy.timeSinceSawPlayer += Time.deltaTime;
-            }
         }
 
         public void OnEnter()

@@ -10,17 +10,17 @@ public class AttackController : MonoBehaviour
     public void Hit(GameObject other)
     {
         
-        switch (LayerMask.LayerToName(other.layer))
-        {
-            case "Player":
-                other.GetComponent<PlayerController>().TakeDamage(attackStats, transform);
-                Destroy(gameObject);
-                break;
-            case "Enemy":
-                //call TakeDamage() equivalent in EnemyController
-                Destroy(gameObject);
-                break;
-        }
+        // switch (LayerMask.LayerToName(other.layer))
+        // {
+        //     case "Player":
+        //         other.GetComponent<PlayerController>().TakeDamage(attackStats, transform);
+        //         Destroy(gameObject);
+        //         break;
+        //     case "Enemy":
+        //         //call TakeDamage() equivalent in EnemyController
+        //         Destroy(gameObject);
+        //         break;
+        // }
     }
 
     private void OnCollisionEnter2D(Collision2D other)

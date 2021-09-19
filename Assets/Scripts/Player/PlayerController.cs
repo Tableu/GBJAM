@@ -4,7 +4,7 @@ using System.Text;
 using UnityEngine.InputSystem;
 using UnityEngine;
 using Cinemachine;
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDamageable
 {
     [System.Serializable]
     public struct PlayerStats
@@ -233,22 +233,22 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void TakeDamage(AttackCommands.AttackStats attackStats, Transform otherPos)
+    public void TakeDamage(Damage dmg)
     {
-        var direction = Math.Sign(transform.position.x - otherPos.position.x);
+        var direction = Math.Sign(dmg.Direction.x);
         if (direction == Math.Sign(transform.localScale.x))
         {
-            health -= attackStats.Damage;
+            health -= dmg.RawDamage;
             if(health <= 0){Death();}
             Debug.Log("Lose Health");
         }
         else
         {
-            armor -= attackStats.Damage;
+            armor -= dmg.RawDamage;
             if (armor <= 0) {BreakShell();}
             Debug.Log("Lose Armor");
         }
-        rigidBody.AddRelativeForce(new Vector2(attackStats.Knockback.x*direction, attackStats.Knockback.y), ForceMode2D.Impulse);
+        rigidBody.AddRelativeForce(dmg.Direction*dmg.Knockback, ForceMode2D.Impulse);
         StartCoroutine(Invulnerable());
     }
 
@@ -305,7 +305,10 @@ public class PlayerController : MonoBehaviour
         switch (LayerMask.LayerToName(other.collider.gameObject.layer))
         {
             case "Enemy":
-                other.gameObject.GetComponent<AttackController>().Hit(gameObject);
+                Vector2 direction = other.transform.position - transform.position;
+                // todo: add variable for these properties
+                var dmg = new Damage(direction, 20, 1);
+                other.gameObject.GetComponent<IDamageable>().TakeDamage(dmg);
                 break;
         }
 
