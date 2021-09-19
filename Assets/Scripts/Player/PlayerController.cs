@@ -168,6 +168,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             playerAnimatorController.TriggerJump();
             rigidBody.AddRelativeForce(new Vector2(0, speed.y), ForceMode2D.Impulse);
+            pSoundManager.PlaySound(pSoundManager.Sound.pJump);
             Debug.Log("Jump");
         }
     }
@@ -193,6 +194,7 @@ public class PlayerController : MonoBehaviour, IDamageable
                     break;
             }
         }
+        pSoundManager.PlaySound(pSoundManager.Sound.pAttack);
     }
 
     private void ChargeAttack(InputAction.CallbackContext context)
@@ -212,6 +214,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             collider2D[0].gameObject.GetComponent<ShellScript>().AttachedToPlayer(gameObject);
         }
+        pSoundManager.PlaySound(pSoundManager.Sound.pPickup);
     }
 
     private void Hide(InputAction.CallbackContext context)
@@ -235,7 +238,8 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public void TakeDamage(Damage dmg)
     {
-        var direction = Math.Sign(dmg.Direction.x);
+        var dir = ((Vector2)transform.position-dmg.Source).normalized;
+        var direction = Math.Sign(dir.x);
         if (direction == Math.Sign(transform.localScale.x))
         {
             health -= dmg.RawDamage;
@@ -248,12 +252,20 @@ public class PlayerController : MonoBehaviour, IDamageable
             if (armor <= 0) {BreakShell();}
             Debug.Log("Lose Armor");
         }
+<<<<<<< HEAD
         rigidBody.AddRelativeForce(dmg.Direction*dmg.Knockback, ForceMode2D.Impulse);
+        pSoundManager.PlaySound(pSoundManager.Sound.pHit);
+=======
+        var knockbackForce = dir * dmg.Knockback;
+        rigidBody.velocity = Vector2.zero;
+        rigidBody.AddForce(knockbackForce, ForceMode2D.Impulse);
+>>>>>>> 712cdfb16d123e9650926ecd3bfe68c7438edd70
         StartCoroutine(Invulnerable());
     }
 
     private void Death()
     {
+        pSoundManager.PlaySound(pSoundManager.Sound.pDie);
         //Perform other death tasks
         Destroy(gameObject);
     }
@@ -305,9 +317,8 @@ public class PlayerController : MonoBehaviour, IDamageable
         switch (LayerMask.LayerToName(other.collider.gameObject.layer))
         {
             case "Enemy":
-                Vector2 direction = other.transform.position - transform.position;
                 // todo: add variable for these properties
-                var dmg = new Damage(direction, 20, 1);
+                var dmg = new Damage(transform.position, 20, 1);
                 other.gameObject.GetComponent<IDamageable>().TakeDamage(dmg);
                 break;
         }
