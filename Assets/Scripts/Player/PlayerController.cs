@@ -243,6 +243,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             _playerInputActions.Player.Jump.Disable();
             hiding = true;
             playerAnimatorController.SetIsHiding(true);
+            pSoundManager.PlaySound(pSoundManager.Sound.pHide);
         }
         else if (context.canceled)
         {
