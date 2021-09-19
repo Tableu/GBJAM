@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Text;
 using UnityEngine.InputSystem;
 using UnityEngine;
 using Cinemachine;
@@ -10,7 +11,7 @@ using UnityEditor;
 
 public class PlayerController : MonoBehaviour, IDamageable
 {
-    [Serializable]
+    [System.Serializable]
     public struct PlayerStats
     {
         public PlayerStats(Vector2 speed, Vector2 maxSpeed, int health, int armor, string powerUp)
@@ -56,10 +57,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] private bool hiding;
 
     [SerializeField] private bool dash;
-
-    [SerializeField, Range(0, 1f)] private float knockBackDuration = 0.25f;
-    private bool isInKnockback = false;
-
+    // Start is called before the first frame update
     private void Awake()
     {
         _playerInputActions = new PlayerInputActions();
@@ -140,15 +138,6 @@ public class PlayerController : MonoBehaviour, IDamageable
                 playerAnimatorController.SetIsMoving(true);
             }
         }
-        else
-        {
-            if (!isInKnockback && grounded)
-            {
-                //rigidBody.velocity = new Vector2(Mathf.Lerp(rigidBody.velocity.x, 0, Something???), rigidBody.velocity.y);
-                //To avoid the player from sliding after knockback
-                rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
-            }
-        }
     }
 
     private void Rotate(InputAction.CallbackContext context)
@@ -168,7 +157,6 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
         playerAnimatorController.SetIsMoving(false);
-        Debug.Log("Idle");
     }
     private void Jump(InputAction.CallbackContext context)
     {
@@ -254,7 +242,6 @@ public class PlayerController : MonoBehaviour, IDamageable
         var knockbackForce = dir * dmg.Knockback;
         rigidBody.velocity = Vector2.zero;
         rigidBody.AddForce(knockbackForce, ForceMode2D.Impulse);
-        StartCoroutine(KnockbackCoroutine());
         StartCoroutine(Invulnerable());
     }
 
@@ -270,12 +257,6 @@ public class PlayerController : MonoBehaviour, IDamageable
         //remove shell sprite
     }
 
-    private IEnumerator KnockbackCoroutine()
-    {
-        isInKnockback = true;
-        yield return new WaitForSeconds(knockBackDuration);
-        isInKnockback = false;
-    }
     private IEnumerator Invulnerable()
     {
         gameObject.layer = LayerMask.NameToLayer("Invulnerable");
