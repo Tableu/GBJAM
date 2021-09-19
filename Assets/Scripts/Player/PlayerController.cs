@@ -4,6 +4,11 @@ using System.Text;
 using UnityEngine.InputSystem;
 using UnityEngine;
 using Cinemachine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
+
 public class PlayerController : MonoBehaviour, IDamageable
 {
     [System.Serializable]
@@ -46,13 +51,16 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] private Vector2 speed;
     [SerializeField] private Vector2 maxSpeed;
     [SerializeField] private string powerUp;
-    
+
     [SerializeField] private bool grounded;
     [SerializeField] private bool frontClear;
     [SerializeField] private bool hiding;
 
     [SerializeField] private bool dash;
-    // Start is called before the first frame update
+
+    [SerializeField, Range(0, 1f)] private float knockBackDuration = 0.25f;
+    private bool isInKnockback = false;
+
     private void Awake()
     {
         _playerInputActions = new PlayerInputActions();
@@ -74,10 +82,10 @@ public class PlayerController : MonoBehaviour, IDamageable
         _playerInputActions.Player.Move.started += Rotate;
         _playerInputActions.Player.Move.canceled += Idle;
         _playerInputActions.Player.PickUpShell.started += SwitchShells;
-        
+
         _playerInputActions.Player.Hide.started += Hide;
         _playerInputActions.Player.Hide.canceled += Hide;
-        
+
         //_playerInputActions.Player.ChargeAttack.started += ChargeAttack;
         //_playerInputActions.Player.ChargeAttack.performed += ChargeAttack;
         _playerInputActions.Player.ChargeAttack.canceled += ChargeAttack;
@@ -125,7 +133,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         var horizontal = _playerInputActions.Player.Move.ReadValue<float>();
         var horizontalVelocity = horizontal * speed.x;
-        
+
         if (!grounded)
         {
             if (col.IsTouching(_groundFilter2D))
@@ -139,6 +147,15 @@ public class PlayerController : MonoBehaviour, IDamageable
             {
                 rigidBody.AddForce(new Vector2(horizontalVelocity, 0), ForceMode2D.Impulse);
                 playerAnimatorController.SetIsMoving(true);
+            }
+        }
+        else
+        {
+            if (!isInKnockback && grounded)
+            {
+                //rigidBody.velocity = new Vector2(Mathf.Lerp(rigidBody.velocity.x, 0, Something???), rigidBody.velocity.y);
+                //To avoid the player from sliding after knockback
+                rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
             }
         }
     }
@@ -168,6 +185,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             playerAnimatorController.TriggerJump();
             rigidBody.AddRelativeForce(new Vector2(0, speed.y), ForceMode2D.Impulse);
+            pSoundManager.PlaySound(pSoundManager.Sound.pJump);
             Debug.Log("Jump");
         }
     }
@@ -179,7 +197,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             switch (powerUp)
             {
                 case AttackCommands.SIMPLE_PROJECTILE_ATTACK:
-                    _attackCommands.SimpleProjectileAttack(gameObject, projectile,_attackStats);
+                    _attackCommands.SimpleProjectileAttack(gameObject, projectile, _attackStats);
                     break;
                 case AttackCommands.MELEE_ATTACK:
                     break;
@@ -193,11 +211,12 @@ public class PlayerController : MonoBehaviour, IDamageable
                     break;
             }
         }
+        pSoundManager.PlaySound(pSoundManager.Sound.pAttack);
     }
 
     private void ChargeAttack(InputAction.CallbackContext context)
     {
-        
+
     }
 
     private void SwitchShells(InputAction.CallbackContext context)
@@ -212,6 +231,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             collider2D[0].gameObject.GetComponent<ShellScript>().AttachedToPlayer(gameObject);
         }
+        pSoundManager.PlaySound(pSoundManager.Sound.pPickup);
     }
 
     private void Hide(InputAction.CallbackContext context)
@@ -235,28 +255,31 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public void TakeDamage(Damage dmg)
     {
-        var dir = ((Vector2)transform.position-dmg.Source).normalized;
+        var dir = ((Vector2)transform.position - dmg.Source).normalized;
         var direction = Math.Sign(dir.x);
         if (direction == Math.Sign(transform.localScale.x))
         {
             health -= dmg.RawDamage;
-            if(health <= 0){Death();}
+            if (health <= 0) { Death(); }
             Debug.Log("Lose Health");
         }
         else
         {
             armor -= dmg.RawDamage;
-            if (armor <= 0) {BreakShell();}
+            if (armor <= 0) { BreakShell(); }
             Debug.Log("Lose Armor");
         }
+        pSoundManager.PlaySound(pSoundManager.Sound.pHit);
         var knockbackForce = dir * dmg.Knockback;
         rigidBody.velocity = Vector2.zero;
         rigidBody.AddForce(knockbackForce, ForceMode2D.Impulse);
+        StartCoroutine(KnockbackCoroutine());
         StartCoroutine(Invulnerable());
     }
 
     private void Death()
     {
+        pSoundManager.PlaySound(pSoundManager.Sound.pDie);
         //Perform other death tasks
         Destroy(gameObject);
     }
@@ -266,6 +289,12 @@ public class PlayerController : MonoBehaviour, IDamageable
         //remove shell sprite
     }
 
+    private IEnumerator KnockbackCoroutine()
+    {
+        isInKnockback = true;
+        yield return new WaitForSeconds(knockBackDuration);
+        isInKnockback = false;
+    }
     private IEnumerator Invulnerable()
     {
         gameObject.layer = LayerMask.NameToLayer("Invulnerable");
@@ -297,7 +326,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     private bool FrontClear()
     {
         RaycastHit2D[] hit = new RaycastHit2D[1];
-        if (col.Raycast(new Vector2(transform.localScale.x*(-1), 0), hit, 1, LayerMask.GetMask("Ground")) > 0)
+        if (col.Raycast(new Vector2(transform.localScale.x * (-1), 0), hit, 1, LayerMask.GetMask("Ground")) > 0)
         {
             return false;
         }
@@ -329,3 +358,32 @@ public class PlayerController : MonoBehaviour, IDamageable
     //    }
     //}
 }
+
+
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(PlayerController))]
+class PlayerControllerEditor : Editor
+{
+    PlayerController player { get { return target as PlayerController; } }
+
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+        if (Application.isPlaying)
+        {
+            EditorExtensionMethods.DrawSeparator(Color.gray);
+            if (GUILayout.Button("Damage left"))
+            {
+                Damage auxDamage = new Damage((Vector2)player.transform.position + new Vector2(0.5f, -0.5f), 20f, 0);
+                player.TakeDamage(auxDamage);
+            }
+            if (GUILayout.Button("Damage right"))
+            {
+                Damage auxDamage = new Damage((Vector2)player.transform.position + new Vector2(-0.5f, -0.5f), 20f, 0);
+                player.TakeDamage(auxDamage);
+            }
+        }
+    }
+}
+#endif
