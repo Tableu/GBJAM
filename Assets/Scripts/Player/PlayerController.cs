@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Text;
 using UnityEngine.InputSystem;
 using UnityEngine;
 using Cinemachine;
@@ -11,7 +10,7 @@ using UnityEditor;
 
 public class PlayerController : MonoBehaviour, IDamageable
 {
-    [System.Serializable]
+    [Serializable]
     public struct PlayerStats
     {
         public PlayerStats(Vector2 speed, Vector2 maxSpeed, int health, int armor, string powerUp)
@@ -110,7 +109,11 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         grounded = Grounded();
         frontClear = FrontClear();
-        Move();
+        if (!hiding)
+        {
+            Move();
+        }
+
         if (dash)
         {
             if (!_attackCommands.Dash(gameObject, _attackStats, dashStart) || !frontClear)
@@ -239,14 +242,14 @@ public class PlayerController : MonoBehaviour, IDamageable
         //Call playerAnimatorController
         if (context.started)
         {
-            _playerInputActions.Player.Move.Disable();
             _playerInputActions.Player.Jump.Disable();
+            rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
             hiding = true;
             playerAnimatorController.SetIsHiding(true);
+            pSoundManager.PlaySound(pSoundManager.Sound.pHide);
         }
         else if (context.canceled)
         {
-            _playerInputActions.Player.Move.Enable();
             _playerInputActions.Player.Jump.Enable();
             hiding = false;
             playerAnimatorController.SetIsHiding(false);

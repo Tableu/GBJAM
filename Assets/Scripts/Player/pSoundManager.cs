@@ -13,6 +13,7 @@ public static class pSoundManager
         pDie,
         pCoin,
         pPickup,
+        pHide,
     
     }
 
