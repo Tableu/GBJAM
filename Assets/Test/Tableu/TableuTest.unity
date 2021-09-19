@@ -218,8 +218,16 @@ PrefabInstance:
       value: CM vcam1
       objectReference: {fileID: 0}
     - target: {fileID: 1352839504141607288, guid: ccc0e77bdd9af0d47a831489164327b9, type: 3}
+      propertyPath: m_Follow
+      value: 
+      objectReference: {fileID: 528790609}
+    - target: {fileID: 1352839504141607288, guid: ccc0e77bdd9af0d47a831489164327b9, type: 3}
       propertyPath: m_Lens.m_SensorSize.x
-      value: 1.7771429
+      value: 1.778626
+      objectReference: {fileID: 0}
+    - target: {fileID: 1352839504141607288, guid: ccc0e77bdd9af0d47a831489164327b9, type: 3}
+      propertyPath: m_Lens.OrthographicSize
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1352839504141607289, guid: ccc0e77bdd9af0d47a831489164327b9, type: 3}
       propertyPath: m_RootOrder
@@ -235,7 +243,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1352839504141607289, guid: ccc0e77bdd9af0d47a831489164327b9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -20
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 1352839504141607289, guid: ccc0e77bdd9af0d47a831489164327b9, type: 3}
       propertyPath: m_LocalRotation.w
@@ -267,6 +275,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ccc0e77bdd9af0d47a831489164327b9, type: 3}
+--- !u!4 &528790609 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2528370877360044563, guid: ef6c169d996483c4ab59851a33b232f7, type: 3}
+  m_PrefabInstance: {fileID: 1958461991602955303}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &643942492
 GameObject:
   m_ObjectHideFlags: 0
@@ -301,7 +314,7 @@ MonoBehaviour:
   attackStats:
     _powerUp: Collision
     _speed: 0
-    _damage: 1
+    _damage: 0
     _knockback: {x: 18, y: 10}
 --- !u!61 &643942494
 BoxCollider2D:
@@ -785,7 +798,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6493138287961469405, guid: e6409fdc5168f7b489be58e18cfd5aa9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -20
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: 6493138287961469405, guid: e6409fdc5168f7b489be58e18cfd5aa9, type: 3}
       propertyPath: m_LocalRotation.w
@@ -814,6 +827,10 @@ PrefabInstance:
     - target: {fileID: 6493138287961469405, guid: e6409fdc5168f7b489be58e18cfd5aa9, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6493138287961469406, guid: e6409fdc5168f7b489be58e18cfd5aa9, type: 3}
+      propertyPath: orthographic size
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e6409fdc5168f7b489be58e18cfd5aa9, type: 3}
@@ -4580,6 +4597,10 @@ PrefabInstance:
     - target: {fileID: 6666176715580743, guid: ef6c169d996483c4ab59851a33b232f7, type: 3}
       propertyPath: health
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6666176715580743, guid: ef6c169d996483c4ab59851a33b232f7, type: 3}
+      propertyPath: powerUp
+      value: Dash
       objectReference: {fileID: 0}
     - target: {fileID: 2528370877360044563, guid: ef6c169d996483c4ab59851a33b232f7, type: 3}
       propertyPath: m_RootOrder

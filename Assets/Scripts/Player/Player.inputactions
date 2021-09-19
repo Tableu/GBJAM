@@ -19,7 +19,7 @@
                     "id": "b1ae4298-e456-4a24-9b32-c5443ce5c824",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": ""
+                    "interactions": "Press(behavior=2)"
                 },
                 {
                     "name": "Jump",
@@ -44,6 +44,14 @@
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": ""
+                },
+                {
+                    "name": "Charge Attack",
+                    "type": "Button",
+                    "id": "7bb758f4-53f0-40b7-b3f1-0b899ecb6bc1",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold"
                 }
             ],
             "bindings": [
@@ -121,6 +129,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Hide",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "61b4549d-47e3-4caf-8374-37996c8e276b",
+                    "path": "<Keyboard>/z",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Charge Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

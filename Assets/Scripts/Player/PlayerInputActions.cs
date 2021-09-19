@@ -32,7 +32,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""id"": ""b1ae4298-e456-4a24-9b32-c5443ce5c824"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
-                    ""interactions"": """"
+                    ""interactions"": ""Press(behavior=2)""
                 },
                 {
                     ""name"": ""Jump"",
@@ -57,6 +57,14 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Charge Attack"",
+                    ""type"": ""Button"",
+                    ""id"": ""7bb758f4-53f0-40b7-b3f1-0b899ecb6bc1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold""
                 }
             ],
             ""bindings"": [
@@ -134,6 +142,17 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Hide"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""61b4549d-47e3-4caf-8374-37996c8e276b"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Charge Attack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -528,6 +547,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_PickUpShell = m_Player.FindAction("Pick Up Shell", throwIfNotFound: true);
         m_Player_Hide = m_Player.FindAction("Hide", throwIfNotFound: true);
+        m_Player_ChargeAttack = m_Player.FindAction("Charge Attack", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -587,6 +607,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_PickUpShell;
     private readonly InputAction m_Player_Hide;
+    private readonly InputAction m_Player_ChargeAttack;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -596,6 +617,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @PickUpShell => m_Wrapper.m_Player_PickUpShell;
         public InputAction @Hide => m_Wrapper.m_Player_Hide;
+        public InputAction @ChargeAttack => m_Wrapper.m_Player_ChargeAttack;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -620,6 +642,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Hide.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHide;
                 @Hide.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHide;
                 @Hide.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHide;
+                @ChargeAttack.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnChargeAttack;
+                @ChargeAttack.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnChargeAttack;
+                @ChargeAttack.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnChargeAttack;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -639,6 +664,9 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
                 @Hide.started += instance.OnHide;
                 @Hide.performed += instance.OnHide;
                 @Hide.canceled += instance.OnHide;
+                @ChargeAttack.started += instance.OnChargeAttack;
+                @ChargeAttack.performed += instance.OnChargeAttack;
+                @ChargeAttack.canceled += instance.OnChargeAttack;
             }
         }
     }
@@ -744,6 +772,7 @@ public class @PlayerInputActions : IInputActionCollection, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnPickUpShell(InputAction.CallbackContext context);
         void OnHide(InputAction.CallbackContext context);
+        void OnChargeAttack(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

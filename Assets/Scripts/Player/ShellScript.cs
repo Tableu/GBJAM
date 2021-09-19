@@ -5,13 +5,14 @@ using UnityEngine;
 public class ShellScript : MonoBehaviour
 {
     [SerializeField] private PlayerController.PlayerStats playerStats;
+    [SerializeField] private AttackCommands.AttackStats attackStats;
     public void Detached() 
     {
         //When the shell is detached (either when the player discards it or its enemy dies) enable relevant components (e.g. collider)
     }
     public void AttachedToPlayer(GameObject Player)
     {
-        Player.GetComponent<PlayerController>().SetStats(playerStats);
+        Player.GetComponent<PlayerController>().SetStats(playerStats, attackStats);
         //Call PlayerAnimatorController to set sprite
     }
 }

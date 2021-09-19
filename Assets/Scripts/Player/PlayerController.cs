@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Text;
 using UnityEngine.InputSystem;
 using UnityEngine;
 using Cinemachine;
@@ -29,7 +30,10 @@ public class PlayerController : MonoBehaviour
         public string PowerUp => _powerUp;
     }
     private PlayerInputActions _playerInputActions;
-    private ContactFilter2D _groundFilter2D; 
+    private ContactFilter2D _groundFilter2D;
+    private AttackCommands _attackCommands;
+    [SerializeField] private AttackCommands.AttackStats _attackStats;
+    private float dashStart;
     [SerializeField] private Rigidbody2D rigidBody;
     [SerializeField] private Collider2D col;
     [SerializeField] private PlayerAnimatorController playerAnimatorController;
@@ -42,12 +46,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private string powerUp;
     
     [SerializeField] private bool grounded;
+    [SerializeField] private bool frontClear;
     [SerializeField] private bool hiding;
 
+    [SerializeField] private bool dash;
     // Start is called before the first frame update
     private void Awake()
     {
         _playerInputActions = new PlayerInputActions();
+        _attackCommands = new AttackCommands();
     }
 
     private void OnEnable()
@@ -65,14 +72,21 @@ public class PlayerController : MonoBehaviour
         _playerInputActions.Player.Move.started += Rotate;
         _playerInputActions.Player.Move.canceled += Idle;
         _playerInputActions.Player.PickUpShell.started += SwitchShells;
+        
         _playerInputActions.Player.Hide.started += Hide;
         _playerInputActions.Player.Hide.canceled += Hide;
         
+        //_playerInputActions.Player.ChargeAttack.started += ChargeAttack;
+        //_playerInputActions.Player.ChargeAttack.performed += ChargeAttack;
+        _playerInputActions.Player.ChargeAttack.canceled += ChargeAttack;
+
+        _playerInputActions.Player.Attack.canceled += Attack;
         _groundFilter2D = new ContactFilter2D
         {
             layerMask = LayerMask.GetMask("Ground"),
             useLayerMask = true
         };
+        dash = false;
 
         CinemachineVirtualCamera virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
         if (virtualCamera)
@@ -84,11 +98,20 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Grounded();
+        grounded = Grounded();
+        frontClear = FrontClear();
         Move();
+        if (dash)
+        {
+            if (!_attackCommands.Dash(gameObject, _attackStats, dashStart) || !frontClear)
+            {
+                dash = false;
+                _playerInputActions.Player.Move.Enable();
+            }
+        }
     }
 
-    public void SetStats(PlayerStats playerStats)
+    public void SetStats(PlayerStats playerStats, AttackCommands.AttackStats attackStats)
     {
         health = playerStats.Health;
         armor = playerStats.Armor;
@@ -146,17 +169,32 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Jump");
         }
     }
-    private void Attack()
+    private void Attack(InputAction.CallbackContext context)
     {
-        switch (powerUp)
+        if (context.duration < 1)
         {
-            case AttackCommands.SIMPLE_PROJECTILE_ATTACK:
-                break;
-            case AttackCommands.MELEE_ATTACK:
-                break;
-            case AttackCommands.DASH:
-                break;
+            Debug.Log("Attack");
+            switch (powerUp)
+            {
+                case AttackCommands.SIMPLE_PROJECTILE_ATTACK:
+                    break;
+                case AttackCommands.MELEE_ATTACK:
+                    break;
+                case AttackCommands.DASH:
+                    dashStart = transform.position.x;
+                    if (_attackCommands.Dash(gameObject, _attackStats, dashStart))
+                    {
+                        dash = true;
+                        _playerInputActions.Player.Move.Disable();
+                    }
+                    break;
+            }
         }
+    }
+
+    private void ChargeAttack(InputAction.CallbackContext context)
+    {
+        
     }
 
     private void SwitchShells(InputAction.CallbackContext context)
@@ -235,15 +273,22 @@ public class PlayerController : MonoBehaviour
         {
             playerAnimatorController.SetIsGrounded(true);
             _playerInputActions.Player.Hide.Enable();
-            grounded = true;
             return true;
         }
         playerAnimatorController.SetIsGrounded(false);
         _playerInputActions.Player.Hide.Disable();
-        grounded = false;
         return false;
     }
 
+    private bool FrontClear()
+    {
+        RaycastHit2D[] hit = new RaycastHit2D[1];
+        if (col.Raycast(new Vector2(transform.localScale.x*(-1), 0), hit, 1, LayerMask.GetMask("Ground")) > 0)
+        {
+            return false;
+        }
+        return true;
+    }
     private void OnCollisionEnter2D(Collision2D other)
     {
         switch (LayerMask.LayerToName(other.collider.gameObject.layer))
@@ -251,6 +296,12 @@ public class PlayerController : MonoBehaviour
             case "Enemy":
                 other.gameObject.GetComponent<AttackController>().Hit(gameObject);
                 break;
+        }
+
+        if (dash)
+        {
+            dash = false;
+            _playerInputActions.Player.Move.Enable();
         }
     }
 
