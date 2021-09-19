@@ -34,6 +34,9 @@ public class SnailEnemy : EnemyBase
 
         public void Tick()
         {
+            var targetPos = _enemy.PlayerTransform.position;
+            var dir = Mathf.Sign( (_enemy.transform.position - targetPos).x);
+            _enemy.CurrentVelocity = Vector2.right*dir*_enemy.walkingSpeed;
         }
 
         public void OnEnter()

@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class AttackController : MonoBehaviour
 {
-    public AttackCommands.AttackStats attackStats;
-
     public void Hit(GameObject other)
     {
         

@@ -1,67 +1,37 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public interface Attacks
+public interface AttackCommand
 {
-    void MeleeAttack(GameObject character);
-    void SimpleProjectileAttack(GameObject character, GameObject projectile, AttackCommands.AttackStats attackStats);
-    bool Dash(GameObject gameObject, AttackCommands.AttackStats attackStats, float start);
+    public IEnumerator DoAttack(IDamageable target);
 }
 
-public class AttackCommands : Attacks
+public class DashAttack: AttackCommand
 {
-    [System.Serializable]
-    public struct AttackStats
+    private float _distance;
+    private float _speed;
+    private int _damage;
+    private GameObject _go;
+
+    public DashAttack(GameObject go, float distance, float speed, int damage)
     {
-        public AttackStats(string powerUp, float speed, int damage, Vector2 knockback, float distance)
-        {
-            _powerUp = powerUp;
-            _speed = speed;
-            _damage = damage;
-            _knockback = knockback;
-            _distance = distance;
+        _distance = distance;
+        _speed = speed;
+        _damage = damage;
+        _go = go;
+    }
+
+    public IEnumerator DoAttack(IDamageable target)
+    {
+        var transform = _go.GetComponent<Transform>();
+        var rigidBody = _go.GetComponent<Rigidbody2D>();
+        var start = transform.position.x;
+          
+        while(Mathf.Abs(transform.position.x - start) <= _distance){
+            rigidBody.AddRelativeForce(new Vector2((-1)*_speed*transform.localScale.x,0));
+            yield return null;
         }
-
-        [SerializeField] private string _powerUp;
-        [SerializeField] private float _speed;
-        [SerializeField] private int _damage;
-        [SerializeField] private Vector2 _knockback;
-        [SerializeField] private float _distance;
-        public string PowerUp => _powerUp;
-        public float Speed => _speed;
-        public int Damage => _damage;
-        public Vector2 Knockback => _knockback;
-        public float Distance => _distance;
-    }
-    
-    public const System.String DASH = "Dash";
-    public const System.String MELEE_ATTACK = "Melee Attack";
-    public const System.String SIMPLE_PROJECTILE_ATTACK = "Simple Projectile Attack";
-    public const System.String COLLISION = "Collision";
-    public void MeleeAttack(GameObject character)
-    {
-        
-    }
-
-    public void SimpleProjectileAttack(GameObject character, GameObject projectilePrefab, AttackStats attackStats)
-    {
-        var pos = character.transform.position + new Vector3(character.transform.localScale.x*(-1),0,0);
-        var projectile = Object.Instantiate(projectilePrefab, pos, Quaternion.identity);
-        projectile.transform.localScale = character.transform.localScale;
-        projectile.GetComponent<Rigidbody2D>().velocity = new Vector2(attackStats.Speed*(-1)*character.transform.localScale.x,0);
-    }
-
-    public bool Dash(GameObject character, AttackStats attackStats, float start)
-    {
-        var transform = character.GetComponent<Transform>();
-        var rigidBody = character.GetComponent<Rigidbody2D>();
-
-        if ( Mathf.Abs(transform.position.x - start) > attackStats.Distance)
-        {
-            rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
-            return false;
-        }
-        rigidBody.AddRelativeForce(new Vector2((-1)*attackStats.Speed*character.transform.localScale.x,0));
-        return true;
+        rigidBody.velocity = Vector2.zero;
     }
 }

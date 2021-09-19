@@ -35,10 +35,10 @@ public class PlayerController : MonoBehaviour, IDamageable
     }
     private PlayerInputActions _playerInputActions;
     private ContactFilter2D _groundFilter2D;
-    private AttackCommands _attackCommands;
+    private AttackCommand _attackCommand;
+    private Coroutine _attackRoutine;
 
     [SerializeField] private GameObject projectile;
-    [SerializeField] private AttackCommands.AttackStats _attackStats;
     private float dashStart;
     [SerializeField] private Rigidbody2D rigidBody;
     [SerializeField] private Collider2D col;
@@ -63,7 +63,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     private void Awake()
     {
         _playerInputActions = new PlayerInputActions();
-        _attackCommands = new AttackCommands();
+        _attackCommand = new DashAttack(gameObject, 5, 5, 1);
     }
 
     private void OnEnable()
@@ -109,22 +109,10 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         grounded = Grounded();
         frontClear = FrontClear();
-        if (!hiding)
-        {
-            Move();
-        }
-
-        if (dash)
-        {
-            if (!_attackCommands.Dash(gameObject, _attackStats, dashStart) || !frontClear)
-            {
-                dash = false;
-                _playerInputActions.Player.Move.Enable();
-            }
-        }
+        Move();
     }
 
-    public void SetStats(PlayerStats playerStats, AttackCommands.AttackStats attackStats)
+    public void SetStats(PlayerStats playerStats, AttackCommand attackCommand)
     {
         health = playerStats.Health;
         armor = playerStats.Armor;
@@ -197,21 +185,9 @@ public class PlayerController : MonoBehaviour, IDamageable
         if (context.duration < 1)
         {
             Debug.Log("Attack");
-            switch (powerUp)
+            if (_attackRoutine == null)
             {
-                case AttackCommands.SIMPLE_PROJECTILE_ATTACK:
-                    _attackCommands.SimpleProjectileAttack(gameObject, projectile, _attackStats);
-                    break;
-                case AttackCommands.MELEE_ATTACK:
-                    break;
-                case AttackCommands.DASH:
-                    dashStart = transform.position.x;
-                    if (_attackCommands.Dash(gameObject, _attackStats, dashStart))
-                    {
-                        dash = true;
-                        _playerInputActions.Player.Move.Disable();
-                    }
-                    break;
+                StartCoroutine(_attackCommand.DoAttack(null));
             }
         }
         pSoundManager.PlaySound(pSoundManager.Sound.pAttack);
