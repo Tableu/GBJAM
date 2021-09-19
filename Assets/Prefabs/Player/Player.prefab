@@ -51,7 +51,7 @@ Rigidbody2D:
   m_LinearDrag: 0
   m_AngularDrag: 0
   m_GravityScale: 3
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 903eeab4432599b458722eb0534da8d9, type: 2}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
@@ -81,7 +81,7 @@ MonoBehaviour:
   playerShellSpriteRenderer: {fileID: 0}
   health: 1
   armor: 0
-  speed: {x: 2, y: 25}
+  speed: {x: 2, y: 30}
   maxSpeed: {x: 8, y: 50}
   powerUp: Simple Projectile Attack
   grounded: 0
@@ -131,7 +131,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.012311339, y: 0.7202097}
+  m_Offset: {x: 0, y: 0.5}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -142,7 +142,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.837167, y: 1.7263651}
+  m_Size: {x: 1.75, y: 1}
   m_EdgeRadius: 0
 --- !u!1001 &1958461991788847387
 PrefabInstance:
