@@ -4,9 +4,8 @@ using UnityEngine.InputSystem;
 public interface Attacks
 {
     void MeleeAttack(GameObject character);
-    void SimpleProjectileAttack(GameObject character, GameObject projectile);
+    void SimpleProjectileAttack(GameObject character, GameObject projectile, AttackCommands.AttackStats attackStats);
     bool Dash(GameObject gameObject, AttackCommands.AttackStats attackStats, float start);
-    void Collision(GameObject character);
 }
 
 public class AttackCommands : Attacks
@@ -44,27 +43,25 @@ public class AttackCommands : Attacks
         
     }
 
-    public void SimpleProjectileAttack(GameObject character, GameObject projectile)
+    public void SimpleProjectileAttack(GameObject character, GameObject projectilePrefab, AttackStats attackStats)
     {
-        
+        var pos = character.transform.position + new Vector3(character.transform.localScale.x*(-1),0,0);
+        var projectile = Object.Instantiate(projectilePrefab, pos, Quaternion.identity);
+        projectile.transform.localScale = character.transform.localScale;
+        projectile.GetComponent<Rigidbody2D>().velocity = new Vector2(attackStats.Speed*(-1)*character.transform.localScale.x,0);
     }
 
-    public bool Dash(GameObject gameObject, AttackStats attackStats, float start)
+    public bool Dash(GameObject character, AttackStats attackStats, float start)
     {
-        var transform = gameObject.GetComponent<Transform>();
-        var rigidBody = gameObject.GetComponent<Rigidbody2D>();
+        var transform = character.GetComponent<Transform>();
+        var rigidBody = character.GetComponent<Rigidbody2D>();
 
         if ( Mathf.Abs(transform.position.x - start) > attackStats.Distance)
         {
             rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
             return false;
         }
-        rigidBody.AddRelativeForce(new Vector2((-1)*attackStats.Speed*gameObject.transform.localScale.x,0));
+        rigidBody.AddRelativeForce(new Vector2((-1)*attackStats.Speed*character.transform.localScale.x,0));
         return true;
-    }
-
-    public void Collision(GameObject character)
-    {
-        
     }
 }
