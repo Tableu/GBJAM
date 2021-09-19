@@ -17,12 +17,26 @@ namespace Enemies
 
         [SerializeField] private float knockbackFactor;
 
+        [Range(10, 360)]
+        [SerializeField] private float fieldOfView;
+
+        [SerializeField] private float visionRange;
+        [SerializeField] private float detectionRange;
+        [SerializeField] protected float attackTime = 5;
+
+        [SerializeField] private LayerMask sightBlockingLayers;
+
         protected MovementManager MovementManager;
         
         protected Vector2 CurrentVelocity = Vector2.zero;
+        
+        protected Vector2 Forward => Vector2.right*transform.localScale.x;
 
         protected FSM StateMachine;
 
+        protected Transform PlayerTransform;
+        protected PlayerController Player;
+        
         private int _currentHealth;
 
         protected void Awake()
@@ -30,6 +44,9 @@ namespace Enemies
             MovementManager = new MovementManager(gameObject, collisionLayers);
             StateMachine = new FSM();
             _currentHealth = maxHealth;
+            var playerGO = GameObject.FindWithTag("Player");
+            PlayerTransform = playerGO.transform;
+            Player = playerGO.GetComponent<PlayerController>();
         }
 
         protected void Update()
@@ -42,6 +59,24 @@ namespace Enemies
                 CurrentVelocity.y = 0;
             }
             StateMachine.Tick();
+        }
+        
+        protected bool PlayerVisible()
+        {
+            // Check if player is in fov
+            Vector2 playerPos = PlayerTransform.position - transform.position;
+            var angle = Vector2.Angle(Forward, playerPos);
+            var distance = playerPos.magnitude;
+            if (angle <= fieldOfView/2 && distance <= visionRange || distance < detectionRange)
+            {
+                // Check for line of sight
+                var hit = Physics2D.Raycast(transform.position, playerPos, distance + 1, sightBlockingLayers);
+                if (hit.transform == PlayerTransform)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         protected class FallState: IState
