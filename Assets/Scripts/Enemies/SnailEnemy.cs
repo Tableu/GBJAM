@@ -9,7 +9,6 @@ public class SnailEnemy : EnemyBase
     protected new void Awake()
     {
         base.Awake();
-        MovementManager = new MovementManager(gameObject, collisionLayers);
         StateMachine = new FSM();
         var falling = new FallState(this);
         var patrol = new PatrolPlatform(this);
@@ -40,12 +39,10 @@ public class SnailEnemy : EnemyBase
         public void OnEnter()
         {
             _enemy.CurrentVelocity = Vector2.zero;
-            Debug.Log("Attack Mode");
         }
 
         public void OnExit()
         {
-            Debug.Log("Leaving Attack Mode");
         }
     }
 }

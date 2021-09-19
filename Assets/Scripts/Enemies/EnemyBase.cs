@@ -7,8 +7,6 @@ namespace Enemies
     public abstract class EnemyBase : MonoBehaviour, IDamageable
     {
         // todo: add getters and setters for public fields
-        [SerializeField] protected float gravity;
-
         [SerializeField] public float walkingSpeed;
 
         [SerializeField] public LayerMask collisionLayers;
@@ -43,7 +41,11 @@ namespace Enemies
 
         protected void Awake()
         {
-            MovementManager = new MovementManager(gameObject, collisionLayers);
+            MovementManager = new MovementManager(gameObject, new ContactFilter2D
+            {
+                layerMask = LayerMask.GetMask("Ground"),
+                useLayerMask = true
+            });
             StateMachine = new FSM();
             _currentHealth = maxHealth;
             _playerLayer = LayerMask.GetMask("Player");
@@ -54,8 +56,7 @@ namespace Enemies
 
         protected void Update()
         {
-            CurrentVelocity.y -= gravity;
-            MovementManager.Move(CurrentVelocity*Time.deltaTime);
+            MovementManager.MoveVelocity(CurrentVelocity);
             
             if (MovementManager.MovementFlags.HasFlag(MovementManager.Flags.Grounded))
             {
@@ -96,7 +97,7 @@ namespace Enemies
 
             public void OnEnter(){}
 
-            public void OnExit() => _enemy.CurrentVelocity.y = 0;
+            public void OnExit() {}
         }
 
         private void LookForPlayer()
@@ -111,33 +112,16 @@ namespace Enemies
             }
         }
 
-        public void TakeDamage(AttackCommands.AttackStats attackStats, Transform otherPos)
-        {
-            _currentHealth -= attackStats.Damage;
-            // kill if zero health
-            if (_currentHealth <= 0)
-            {
-                Destroy(this);
-                return;
-            }
-            // apply knockback
-            var knockback = attackStats.Knockback * attackStats.Distance * knockbackFactor;
-            MovementManager.Move(knockback);
-        }
-        
         private void OnCollisionEnter2D(Collision2D other)
         {
-            if (other.gameObject != Player.gameObject) return;
-            Vector2 direction = PlayerTransform.position - transform.position;
+            if (other.gameObject.layer != _playerLayer) return;
             // todo: add variable for these properties
-            var dmg = new Damage(direction, 20, 1);
+            var dmg = new Damage(transform.position, 20, 1);
             Player.TakeDamage(dmg);
         }
 
         public void TakeDamage(Damage dmg)
         {
-            // todo: damage cooldown
-            Debug.Log(_currentHealth);
             _currentHealth -= dmg.RawDamage;
             // kill if zero health
             if (_currentHealth <= 0)
@@ -147,8 +131,7 @@ namespace Enemies
                 return;
             }
             // apply knockback
-            var knockback = dmg.Direction*dmg.Knockback*knockbackFactor;
-            MovementManager.Move(knockback);
+            MovementManager.Knockback(dmg.Source, dmg.Knockback*knockbackFactor);
         }
     }
 }
