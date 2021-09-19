@@ -268,12 +268,20 @@ public class PlayerController : MonoBehaviour
     }
     private bool Grounded()
     {
-        RaycastHit2D[] hit = new RaycastHit2D[1];
-        if (col.Raycast(Vector2.down, hit, 1, LayerMask.GetMask("Ground")) > 0)
+        RaycastHit2D hit;
+        Vector2[] posArray = {new Vector2(col.bounds.max.x-0.1f,col.bounds.min.y+0.4f),
+            new Vector2(col.bounds.center.x,col.bounds.min.y),
+            new Vector2(col.bounds.min.x+0.1f,col.bounds.min.y+0.4f)};
+        for (int x = 0; x < 3; x++)
         {
-            playerAnimatorController.SetIsGrounded(true);
-            _playerInputActions.Player.Hide.Enable();
-            return true;
+            hit = Physics2D.Raycast(posArray[x], Vector2.down, 0.3f, LayerMask.GetMask("Ground"));
+            Debug.DrawRay(posArray[x], new Vector2(0, -0.3f), Color.red);
+            if (hit.collider != null)
+            {
+                playerAnimatorController.SetIsGrounded(true);
+                _playerInputActions.Player.Hide.Enable();
+                return true;
+            }
         }
         playerAnimatorController.SetIsGrounded(false);
         _playerInputActions.Player.Hide.Disable();

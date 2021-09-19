@@ -316,6 +316,7 @@ MonoBehaviour:
     _speed: 0
     _damage: 0
     _knockback: {x: 18, y: 10}
+    _distance: 0
 --- !u!61 &643942494
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4601,6 +4602,18 @@ PrefabInstance:
     - target: {fileID: 6666176715580743, guid: ef6c169d996483c4ab59851a33b232f7, type: 3}
       propertyPath: powerUp
       value: Dash
+      objectReference: {fileID: 0}
+    - target: {fileID: 6666176715580743, guid: ef6c169d996483c4ab59851a33b232f7, type: 3}
+      propertyPath: _attackStats._speed
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 6666176715580743, guid: ef6c169d996483c4ab59851a33b232f7, type: 3}
+      propertyPath: _attackStats._powerUp
+      value: Dash
+      objectReference: {fileID: 0}
+    - target: {fileID: 6666176715580743, guid: ef6c169d996483c4ab59851a33b232f7, type: 3}
+      propertyPath: _attackStats._distance
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 2528370877360044563, guid: ef6c169d996483c4ab59851a33b232f7, type: 3}
       propertyPath: m_RootOrder
