@@ -34,8 +34,14 @@ namespace Enemies
 
         protected void Update()
         {
-            StateMachine.Tick();
+            CurrentVelocity.y -= gravity;
             MovementManager.Move(CurrentVelocity*Time.deltaTime);
+            
+            if (MovementManager.MovementFlags.HasFlag(MovementManager.Flags.Grounded))
+            {
+                CurrentVelocity.y = 0;
+            }
+            StateMachine.Tick();
         }
 
         protected class FallState: IState
@@ -47,17 +53,11 @@ namespace Enemies
                 _enemy = enemy;
             }
 
-            public void Tick()
-            {
-                _enemy.CurrentVelocity.y -= _enemy.gravity;
-            }
+            public void Tick() {}
 
             public void OnEnter(){}
 
-            public void OnExit()
-            {
-                _enemy.CurrentVelocity.y = 0;
-            }
+            public void OnExit() => _enemy.CurrentVelocity.y = 0;
         }
 
         public void TakeDamage(AttackCommands.AttackStats attackStats, Transform otherPos)

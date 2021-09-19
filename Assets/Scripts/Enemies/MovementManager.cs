@@ -5,8 +5,18 @@ public class MovementManager
 {
     private readonly Transform _transform;
     private BoxCollider2D _boxCollider;
-    private Bounds Bounds => _boxCollider.bounds;
+    public Bounds Bounds
+    {
+        get
+        {
+            var bounds = _boxCollider.bounds;
+            bounds.Expand(-2f*_skinWidth);
+            return bounds;
+        }
+    }
+
     private LayerMask _collisionLayers;
+    private readonly float _skinWidth = 0.2f;
     
     [Flags]
     public enum Flags
@@ -27,6 +37,7 @@ public class MovementManager
 
     public void Move(Vector2 displacement)
     {
+        MovementFlags = Flags.None;
         if (displacement.x > 0 && _transform.localScale.x < 0 ||
             displacement.x < 0 && _transform.localScale.x > 0)
         {
@@ -41,20 +52,17 @@ public class MovementManager
 
     private void MoveVertically(ref Vector2 displacement)
     {
-        // todo: handle jumping
+        // todo: handle jumping (upwards displacement)
         if (!(displacement.y < 0)) return;
         var rayOrigin = new Vector2(Bounds.center.x, Bounds.min.y);
-        var rayLen = displacement.magnitude;
+        rayOrigin.x += displacement.x;
+        var rayLen = Mathf.Abs(displacement.y) + _skinWidth;
         var hit = Physics2D.Raycast(rayOrigin, Vector2.down, rayLen, _collisionLayers);
-        
+        Debug.DrawRay(rayOrigin, Vector2.down);
         if (hit)
         {
-            displacement.y = hit.point.y - rayOrigin.y;
+            displacement.y = -(hit.distance - _skinWidth);
             MovementFlags |= Flags.Grounded;
-        }
-        else
-        {
-            MovementFlags &= ~Flags.Grounded;
         }
     }
 }

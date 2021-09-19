@@ -20,7 +20,7 @@ public class PlatformEnemy : EnemyBase
             () => !MovementManager.MovementFlags.HasFlag(MovementManager.Flags.Grounded));
         StateMachine.SetState(falling);
     }
-    
+
     private class Patrol: IState
     {
         private readonly PlatformEnemy _enemy;
@@ -33,10 +33,10 @@ public class PlatformEnemy : EnemyBase
         public void Tick()
         {
             var t = _enemy.transform;
-            var rayOrigin = t.position + t.right * _enemy.lookAheadDist * t.localScale.x;
+            var rayOrigin = new Vector2(t.position.x + _enemy.lookAheadDist * t.localScale.x, 
+                                        _enemy.MovementManager.Bounds.min.y);
+            var hit = Physics2D.Raycast(rayOrigin, Vector2.down, 0.5f, _enemy.collisionLayers);
             Debug.DrawRay(rayOrigin, Vector2.down);
-    
-            var hit = Physics2D.Raycast(rayOrigin, Vector2.down, 10, _enemy.collisionLayers);
             if (!hit)
             {
                 _enemy.CurrentVelocity.x = -_enemy.CurrentVelocity.x;
@@ -50,7 +50,6 @@ public class PlatformEnemy : EnemyBase
 
         public void OnExit()
         {
-            throw new System.NotImplementedException();
         }
     }
 }
