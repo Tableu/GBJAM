@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-
+using Cinemachine;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -54,7 +54,21 @@ public class PaletteSwap : MonoBehaviour
     /// </summary>
     void Init()
     {
-        paletteSwapMaterial = new Material(Shader.Find("Thing/PaletteSwap"));
+        Shader matShader = Shader.Find("Thing/PaletteSwap");
+        if (matShader == null)
+        {
+            Debug.LogError("Shader was null, trying to find it via Resources");
+            matShader = Resources.Load<Shader>("Shaders/PaletteSwap");
+            if (matShader == null)
+            {
+                Debug.LogError("Dang, that didn't fix it unu");
+            }
+            else
+            {
+                Debug.Log("Yessss we da bessss");
+            }
+        }
+        paletteSwapMaterial = new Material(matShader);
         SetPalettes();
     }
 
@@ -69,6 +83,7 @@ public class PaletteSwap : MonoBehaviour
             Destroy(gameObject);
         }
         _instance = this;
+
         Init();
         MakeBackgroundColor2();
         SetColors();
@@ -81,11 +96,11 @@ public class PaletteSwap : MonoBehaviour
     void SetPalettes()
     {
         palettes.Clear();
-        palettes.Add(new ColorPalette() { color1 = new Color(0, 0, 0, 1), color2 = new Color(0.33f, 0.33f, 0.33f, 1), color3 = new Color(0.66f, 0.66f, 0.66f, 1), color4 = new Color(1, 1, 1, 1) });
+        palettes.Add(new ColorPalette() { color1 = new Color32(0x23, 0x49, 0x5d, 0xff), color2 = new Color32(0x39, 0x70, 0x7a, 0xff), color3 = new Color32(0x95, 0xe0, 0xcc, 0xff), color4 = new Color32(0xda, 0xf2, 0xe9, 0xff) });
         palettes.Add(new ColorPalette() { color1 = new Color32(0x62, 0x2e, 0x4c, 0xff), color2 = new Color32(0x75, 0x50, 0xe8, 0xff), color3 = new Color32(0x60, 0x8f, 0xcf, 0xff), color4 = new Color32(0x8b, 0xe5, 0xff, 0xff) });
         palettes.Add(new ColorPalette() { color1 = new Color32(0x0f, 0x38, 0x0f, 0xff), color2 = new Color32(0x30, 0x62, 0x30, 0xff), color3 = new Color32(0x8b, 0xac, 0x0f, 0xff), color4 = new Color32(0x9b, 0xbc, 0x0f, 0xff) });
+        palettes.Add(new ColorPalette() { color1 = new Color(0, 0, 0, 1), color2 = new Color(0.33f, 0.33f, 0.33f, 1), color3 = new Color(0.66f, 0.66f, 0.66f, 1), color4 = new Color(1, 1, 1, 1) });
         //palettes.Add(new ColorPalette() { color1 = new Color32(0x74, 0x56, 0x9b, 0xff), color2 = new Color32(0x96, 0xfb, 0xc7, 0xff), color3 = new Color32(0xf7, 0xff, 0xae, 0xff), color4 = new Color32(0xff, 0xb3, 0xcb, 0xff) });
-        palettes.Add(new ColorPalette() { color1 = new Color32(0x23, 0x49, 0x5d, 0xff), color2 = new Color32(0x39, 0x70, 0x7a, 0xff), color3 = new Color32(0x95, 0xe0, 0xcc, 0xff), color4 = new Color32(0xda, 0xf2, 0xe9, 0xff) });
 
         //622e4c, 7550e8, 608fcf, 8be5ff
         //0f380f, 306230, 8bac0f, 9bbc0f
@@ -179,6 +194,7 @@ public struct ColorPalette
 }
 
 
+#if UNITY_EDITOR
 /// <summary>
 /// Custom editor to add a button to update the current palette color.
 /// </summary>
@@ -217,3 +233,4 @@ class PaletteSwapEditor : Editor
         }
     }
 }
+#endif

@@ -437,6 +437,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9227fc89b57354448b90a0d4da840fcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  imageUnits: {fileID: 0}
+  imageTens: {fileID: 0}
 --- !u!1 &1496108306344687649
 GameObject:
   m_ObjectHideFlags: 0
@@ -820,6 +822,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9227fc89b57354448b90a0d4da840fcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  imageUnits: {fileID: 0}
+  imageTens: {fileID: 0}
 --- !u!1 &4285725053735053293
 GameObject:
   m_ObjectHideFlags: 0
@@ -1092,7 +1096,7 @@ MonoBehaviour:
   m_AssetsPPU: 8
   m_RefResolutionX: 160
   m_RefResolutionY: 144
-  m_UpscaleRT: 0
+  m_UpscaleRT: 1
   m_PixelSnapping: 1
   m_CropFrameX: 1
   m_CropFrameY: 1
@@ -1113,7 +1117,7 @@ MonoBehaviour:
   m_ShowCameraFrustum: 1
   m_IgnoreTimeScale: 0
   m_WorldUpOverride: {fileID: 0}
-  m_UpdateMethod: 2
+  m_UpdateMethod: 0
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
     m_Style: 1
@@ -1332,6 +1336,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9227fc89b57354448b90a0d4da840fcd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  imageUnits: {fileID: 0}
+  imageTens: {fileID: 0}
 --- !u!1 &8812446542494165728
 GameObject:
   m_ObjectHideFlags: 0

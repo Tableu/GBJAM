@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine.InputSystem;
 using UnityEngine;
+using Cinemachine;
 public class PlayerController : MonoBehaviour
 {
     [System.Serializable]
@@ -72,6 +73,12 @@ public class PlayerController : MonoBehaviour
             layerMask = LayerMask.GetMask("Ground"),
             useLayerMask = true
         };
+
+        CinemachineVirtualCamera virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
+        if (virtualCamera)
+        {
+            virtualCamera.Follow = transform;
+        }
     }
 
     // Update is called once per frame
