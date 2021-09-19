@@ -235,7 +235,8 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public void TakeDamage(Damage dmg)
     {
-        var direction = Math.Sign(dmg.Direction.x);
+        var dir = ((Vector2)transform.position-dmg.Source).normalized;
+        var direction = Math.Sign(dir.x);
         if (direction == Math.Sign(transform.localScale.x))
         {
             health -= dmg.RawDamage;
@@ -248,7 +249,9 @@ public class PlayerController : MonoBehaviour, IDamageable
             if (armor <= 0) {BreakShell();}
             Debug.Log("Lose Armor");
         }
-        rigidBody.AddRelativeForce(dmg.Direction*dmg.Knockback, ForceMode2D.Impulse);
+        var knockbackForce = dir * dmg.Knockback;
+        rigidBody.velocity = Vector2.zero;
+        rigidBody.AddForce(knockbackForce, ForceMode2D.Impulse);
         StartCoroutine(Invulnerable());
     }
 
@@ -305,9 +308,8 @@ public class PlayerController : MonoBehaviour, IDamageable
         switch (LayerMask.LayerToName(other.collider.gameObject.layer))
         {
             case "Enemy":
-                Vector2 direction = other.transform.position - transform.position;
                 // todo: add variable for these properties
-                var dmg = new Damage(direction, 20, 1);
+                var dmg = new Damage(transform.position, 20, 1);
                 other.gameObject.GetComponent<IDamageable>().TakeDamage(dmg);
                 break;
         }

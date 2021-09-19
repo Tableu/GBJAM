@@ -5,6 +5,7 @@ public class MovementManager
 {
     private readonly Transform _transform;
     private BoxCollider2D _boxCollider;
+    private Rigidbody2D _rigidbody;
     public Bounds Bounds
     {
         get
@@ -15,7 +16,7 @@ public class MovementManager
         }
     }
 
-    private LayerMask _collisionLayers;
+    private ContactFilter2D _groundFilter;
     private readonly float _skinWidth = 0.2f;
     
     [Flags]
@@ -27,42 +28,42 @@ public class MovementManager
 
     public Flags MovementFlags { get; private set; }
 
-    public MovementManager(GameObject go, LayerMask collisionLayers)
+    public MovementManager(GameObject go, ContactFilter2D groundFilter)
     {
         _transform = go.transform;
         _boxCollider = go.GetComponent<BoxCollider2D>();
+        _rigidbody = go.GetComponent<Rigidbody2D>();
         MovementFlags = Flags.None;
-        _collisionLayers = collisionLayers;
+        _groundFilter = groundFilter;
     }
 
-    public void Move(Vector2 displacement)
+    public void MoveVelocity(Vector2 velocity)
     {
-        MovementFlags = Flags.None;
-        if (displacement.x > 0 && _transform.localScale.x < 0 ||
-            displacement.x < 0 && _transform.localScale.x > 0)
+        if (velocity.x > 0 && _transform.localScale.x < 0 ||
+            velocity.x < 0 && _transform.localScale.x > 0)
         {
             var localScale = _transform.localScale;
             localScale = new Vector3(-localScale.x, localScale.y);
             _transform.localScale = localScale;
         }
-        MoveVertically(ref displacement);
-        // todo: handle horizontal collisions
-        _transform.Translate(displacement);
-    }
 
-    private void MoveVertically(ref Vector2 displacement)
-    {
-        // todo: handle jumping (upwards displacement)
-        if (!(displacement.y < 0)) return;
-        var rayOrigin = new Vector2(Bounds.center.x, Bounds.min.y);
-        rayOrigin.x += displacement.x;
-        var rayLen = Mathf.Abs(displacement.y) + _skinWidth;
-        var hit = Physics2D.Raycast(rayOrigin, Vector2.down, rayLen, _collisionLayers);
-        Debug.DrawRay(rayOrigin, Vector2.down);
-        if (hit)
+        if (Mathf.Abs(_rigidbody.velocity.x) < Mathf.Abs(velocity.x) && MovementFlags.HasFlag(Flags.Grounded))
         {
-            displacement.y = -(hit.distance - _skinWidth);
+            _rigidbody.AddForce(velocity, ForceMode2D.Impulse);
+        }
+        
+        MovementFlags = Flags.None;
+        if (_boxCollider.IsTouching(_groundFilter))
+        {
             MovementFlags |= Flags.Grounded;
         }
+    }
+
+    public void Knockback(Vector2 source, float scale)
+    {
+        var dir = ((Vector2)_transform.position-source).normalized;
+        var knockbackForce = dir * scale;
+        _rigidbody.velocity = Vector2.zero;
+        _rigidbody.AddForce(knockbackForce, ForceMode2D.Impulse);
     }
 }

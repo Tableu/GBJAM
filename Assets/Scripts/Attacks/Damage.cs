@@ -3,14 +3,14 @@ using UnityEngine;
 
 public struct Damage
 {
-    public Damage(Vector2 direction, float knockback, int rawDamage)
+    public Damage(Vector2 source, float knockback, int rawDamage)
     {
-        Direction = direction.normalized;
+        Source = source;
         Knockback = knockback;
         RawDamage = rawDamage;
     }
 
-    public readonly Vector2 Direction;
+    public readonly Vector2 Source;
     public readonly float Knockback;
     public readonly int RawDamage;
 }
