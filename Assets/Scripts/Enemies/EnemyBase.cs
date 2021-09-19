@@ -6,12 +6,12 @@ namespace Enemies
 {
     public abstract class EnemyBase : MonoBehaviour, IDamageable
     {
-        
+        // todo: add getters and setters for public fields
         [SerializeField] protected float gravity;
 
-        [SerializeField] protected float walkingSpeed;
+        [SerializeField] public float walkingSpeed;
 
-        [SerializeField] protected LayerMask collisionLayers;
+        [SerializeField] public LayerMask collisionLayers;
 
         [SerializeField] private int maxHealth;
 
@@ -26,9 +26,9 @@ namespace Enemies
 
         [SerializeField] private LayerMask sightBlockingLayers;
 
-        protected MovementManager MovementManager;
+        [NonSerialized] public MovementManager MovementManager;
         
-        protected Vector2 CurrentVelocity = Vector2.zero;
+        [NonSerialized] public Vector2 CurrentVelocity = Vector2.zero;
         
         protected Vector2 Forward => Vector2.right*transform.localScale.x;
 
