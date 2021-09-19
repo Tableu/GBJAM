@@ -32,6 +32,8 @@ public class PlayerController : MonoBehaviour
     private PlayerInputActions _playerInputActions;
     private ContactFilter2D _groundFilter2D;
     private AttackCommands _attackCommands;
+
+    [SerializeField] private GameObject projectile;
     [SerializeField] private AttackCommands.AttackStats _attackStats;
     private float dashStart;
     [SerializeField] private Rigidbody2D rigidBody;
@@ -177,6 +179,7 @@ public class PlayerController : MonoBehaviour
             switch (powerUp)
             {
                 case AttackCommands.SIMPLE_PROJECTILE_ATTACK:
+                    _attackCommands.SimpleProjectileAttack(gameObject, projectile,_attackStats);
                     break;
                 case AttackCommands.MELEE_ATTACK:
                     break;
