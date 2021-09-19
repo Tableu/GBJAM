@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6985282805989476353}
   - component: {fileID: 6666176715580743}
   - component: {fileID: 5916625166058093823}
-  - component: {fileID: 1150869440}
+  - component: {fileID: 887794956}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -54,7 +54,7 @@ Rigidbody2D:
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!114 &6666176715580743
 MonoBehaviour:
@@ -68,17 +68,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 675939a7d60f82c4c8caa3d32ba41aee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _attackStats:
+    _powerUp: Dash
+    _speed: 80
+    _damage: 0
+    _knockback: {x: 0, y: 0}
+    _distance: 6
   rigidBody: {fileID: 6985282805989476353}
-  col: {fileID: 1150869440}
+  col: {fileID: 887794956}
   playerAnimatorController: {fileID: 3549133949129490232}
   playerShellSpriteRenderer: {fileID: 0}
-  health: 0
+  health: 1
   armor: 0
   speed: {x: 2, y: 25}
   maxSpeed: {x: 8, y: 50}
-  powerUp: 
+  powerUp: Dash
   grounded: 0
+  frontClear: 0
   hiding: 0
+  dash: 0
 --- !u!114 &5916625166058093823
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -109,8 +117,8 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!70 &1150869440
-CapsuleCollider2D:
+--- !u!61 &887794956
+BoxCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -122,9 +130,19 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.025791705, y: 0.73506653}
-  m_Size: {x: 1.5832556, y: 1.7479622}
-  m_Direction: 0
+  m_Offset: {x: -0.012311339, y: 0.7202097}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.837167, y: 1.7263651}
+  m_EdgeRadius: 0
 --- !u!1001 &1958461991788847387
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -207,10 +225,10 @@ PrefabInstance:
     - target: {fileID: 4599848501623303938, guid: 01f1f05f357a4ac47b893246c68b1ff9, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: ed4383fa72307e84997a258ca30b9f8c, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 4599848501623303938, guid: 01f1f05f357a4ac47b893246c68b1ff9, type: 3}
       propertyPath: m_WasSpriteAssigned
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01f1f05f357a4ac47b893246c68b1ff9, type: 3}

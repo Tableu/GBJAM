@@ -269,9 +269,9 @@ public class PlayerController : MonoBehaviour
     private bool Grounded()
     {
         RaycastHit2D hit;
-        Vector2[] posArray = {new Vector2(col.bounds.max.x-0.1f,col.bounds.min.y+0.4f),
+        Vector2[] posArray = {new Vector2(col.bounds.max.x,col.bounds.min.y),
             new Vector2(col.bounds.center.x,col.bounds.min.y),
-            new Vector2(col.bounds.min.x+0.1f,col.bounds.min.y+0.4f)};
+            new Vector2(col.bounds.min.x,col.bounds.min.y)};
         for (int x = 0; x < 3; x++)
         {
             hit = Physics2D.Raycast(posArray[x], Vector2.down, 0.3f, LayerMask.GetMask("Ground"));
