@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Serialization;
 #if UNITY_EDITOR
 using UnityEditor;
@@ -24,17 +25,23 @@ public class HUDManager : MonoBehaviour
 
     const int counterMaxDigits = 2;
 
+    Image imageRenderer;
+
     static HUDManager _instance;
     public static HUDManager Instance
     {
-        get 
+        get
         {
-            if (_instance == null && !FindObjectOfType<HUDManager>())
+            if (_instance == null)
             {
-                Debug.LogError("Uhoh, something very wrong is going on lmao\r\nSomeone tried to call HUDManager but none was present");
-                //Maybe instantiate one if there is none? Shouldn't happen but we'll see.
+                _instance = FindObjectOfType<HUDManager>(true);
+                if (!_instance)
+                {
+                    Debug.LogError("Uhoh, something very wrong is going on lmao\r\nSomeone tried to call HUDManager but none was present");
+                    //Maybe instantiate one if there is none? Shouldn't happen but we'll see.
+                }
             }
-            return _instance; 
+            return _instance;
         }
     }
 
@@ -47,6 +54,8 @@ public class HUDManager : MonoBehaviour
         //    Destroy(gameObject);
         //}
         _instance = this;
+
+        imageRenderer = GetComponent<Image>();
 
         healthCounter = transform.Find("Health").GetComponent<HUDCounter>();
         armorCounter = transform.Find("Armor").GetComponent<HUDCounter>();
@@ -64,6 +73,24 @@ public class HUDManager : MonoBehaviour
     public void UpdateCoins(int newCoins)
     {
         coinCounter.SetValue(IntToSprite(newCoins));
+    }
+
+    ///If you're gonna show the HUD, preferably do it when you're already inside a scene that uses it. Hiding it before is cool but do call show after (or manually update each value from inside the scene).
+    public void Show(bool show)
+    {
+        imageRenderer.enabled = show;
+        healthCounter.gameObject.SetActive(show);
+        armorCounter.gameObject.SetActive(show);
+        coinCounter.gameObject.SetActive(show);
+        if (show)
+        {
+            PlayerController playerCont = FindObjectOfType<PlayerController>();
+            if (playerCont)
+            {
+                Debug.Log($"There's a player here! Updating stuff!");
+                //TODO: Update UI values with player values
+            }
+        }
     }
 
     internal Sprite[] IntToSprite(int toConvert)

@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/MainScene.unity
+    guid: 465999cd72e3a02479cb0e67c5e1028d
+  - enabled: 1
+    path: Assets/Test/Tableu/TableuTest.unity
+    guid: 54b2e07e23795584997df689c9faaaa8
+  - enabled: 1
     path: Assets/Test/Iojioji/IojiojiTestScene.unity
     guid: 47df9f0f4f373d448ab10aebed77f001
   - enabled: 1
