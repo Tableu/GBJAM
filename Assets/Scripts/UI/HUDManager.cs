@@ -27,6 +27,8 @@ public class HUDManager : MonoBehaviour
 
     Image imageRenderer;
 
+    bool isShown = false;
+
     static HUDManager _instance;
     public static HUDManager Instance
     {
@@ -64,14 +66,26 @@ public class HUDManager : MonoBehaviour
 
     public void UpdateHealth(int newHealth)
     {
+        if (!isShown)
+        {
+            Show(true);
+        }
         healthCounter.SetValue(IntToSprite(newHealth));
     }
     public void UpdateArmor(int newArmor)
     {
+        if (!isShown)
+        {
+            Show(true);
+        }
         armorCounter.SetValue(IntToSprite(newArmor));
     }
     public void UpdateCoins(int newCoins)
     {
+        if (!isShown)
+        {
+            Show(true);
+        }
         coinCounter.SetValue(IntToSprite(newCoins));
     }
 
@@ -91,6 +105,7 @@ public class HUDManager : MonoBehaviour
                 //TODO: Update UI values with player values
             }
         }
+        isShown = show;
     }
 
     internal Sprite[] IntToSprite(int toConvert)

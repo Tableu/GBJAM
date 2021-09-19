@@ -263,12 +263,14 @@ public class PlayerController : MonoBehaviour, IDamageable
         if (direction == Math.Sign(transform.localScale.x))
         {
             health -= dmg.RawDamage;
+            HUDManager.Instance.UpdateHealth(health);
             if (health <= 0) { Death(); }
             Debug.Log("Lose Health");
         }
         else
         {
             armor -= dmg.RawDamage;
+            HUDManager.Instance.UpdateArmor(armor);
             if (armor <= 0) { BreakShell(); }
             Debug.Log("Lose Armor");
         }
