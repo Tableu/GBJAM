@@ -62,7 +62,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     private void Awake()
     {
         _playerInputActions = new PlayerInputActions();
-        _attackCommand = new DashAttack(gameObject, 5, 5, 1);
+        _attackCommand = new DashAttack(gameObject, 5, 60, 1);
     }
 
     private void OnEnable()
