@@ -24,10 +24,8 @@ namespace Enemies
 
         [SerializeField] private LayerMask sightBlockingLayers;
 
-        [NonSerialized] public MovementManager MovementManager;
-        
-        [NonSerialized] public Vector2 CurrentVelocity = Vector2.zero;
-        
+        [NonSerialized] protected MovementController _movementController;
+
         protected Vector2 Forward => Vector2.right*transform.localScale.x;
         protected float timeSinceSawPlayer = 0;
 
@@ -41,11 +39,7 @@ namespace Enemies
 
         protected void Awake()
         {
-            MovementManager = new MovementManager(gameObject, new ContactFilter2D
-            {
-                layerMask = LayerMask.GetMask("Ground"),
-                useLayerMask = true
-            });
+            _movementController = new MovementController(gameObject, walkingSpeed);
             StateMachine = new FSM();
             _currentHealth = maxHealth;
             _playerLayer = LayerMask.GetMask("Player");
@@ -56,12 +50,6 @@ namespace Enemies
 
         protected void Update()
         {
-            MovementManager.MoveVelocity(CurrentVelocity);
-            
-            if (MovementManager.MovementFlags.HasFlag(MovementManager.Flags.Grounded))
-            {
-                CurrentVelocity.y = 0;
-            }
             LookForPlayer();
             StateMachine.Tick();
         }
@@ -131,7 +119,8 @@ namespace Enemies
                 return;
             }
             // apply knockback
-            MovementManager.Knockback(dmg.Source, dmg.Knockback*knockbackFactor);
+            dmg.Knockback *= knockbackFactor;
+            _movementController.Knockback(dmg);
         }
     }
 }

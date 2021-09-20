@@ -4,28 +4,26 @@ using UnityEngine;
 public class PatrolPlatform: IState
 {
     private readonly SnailEnemy _enemy;
-
-    public PatrolPlatform(SnailEnemy enemy)
+    private readonly MovementController _movement;
+    private float _speed;
+    public PatrolPlatform(SnailEnemy enemy, MovementController movement)
     {
         _enemy = enemy;
+        _movement = movement;
     }
 
     public void Tick()
     {
-        var t = _enemy.transform;
-        var rayOrigin = new Vector2(t.position.x + _enemy.lookAheadDist * t.localScale.x, 
-            _enemy.MovementManager.Bounds.min.y);
-        var hit = Physics2D.Raycast(rayOrigin, Vector2.down, 0.5f, _enemy.collisionLayers);
-        Debug.DrawRay(rayOrigin, Vector2.down);
-        if (!hit)
+        if (_enemy.AtPlatformEdge())
         {
-            _enemy.CurrentVelocity.x = -_enemy.CurrentVelocity.x;
+            _speed *= -1;
         }
+        _movement.MoveHorizontally(_speed);
     }
 
     public void OnEnter()
     {
-        _enemy.CurrentVelocity.x = _enemy.walkingSpeed;
+        _speed = _movement.WalkingSpeed;
     }
 
     public void OnExit()

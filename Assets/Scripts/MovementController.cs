@@ -9,11 +9,14 @@ public class MovementController
     private float _maxWalkSpeed;
     private int _spriteForward;
 
-    ContactFilter2D _groundFilter2D = new ContactFilter2D
+    private ContactFilter2D _groundFilter2D = new ContactFilter2D
     {
         layerMask = LayerMask.GetMask("Ground"),
         useLayerMask = true
     };
+
+    public Vector2 Position => _transform.position;
+    public float WalkingSpeed => _maxWalkSpeed;
 
     /// <summary>
     /// Movement controller constructor
