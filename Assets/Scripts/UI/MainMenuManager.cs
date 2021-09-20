@@ -57,7 +57,7 @@ public class MainMenuManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Kinda debug? Loads IojiojiTestScene
+    /// Kinda debug? Loads IojiojiTestSceney
     /// </summary>
     public void GoToIojiTestScene()
     {
