@@ -36,9 +36,9 @@ public class PlayerController : MonoBehaviour, IDamageable
     private PlayerInputActions _playerInputActions;
     private ContactFilter2D _groundFilter2D;
     private AttackCommand _attackCommand;
+    private MovementController _movementController;
 
     [SerializeField] private GameObject projectile;
-    private float dashStart;
     [SerializeField] private Rigidbody2D rigidBody;
     [SerializeField] private Collider2D col;
     [SerializeField] private PlayerAnimatorController playerAnimatorController;
@@ -51,10 +51,8 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] private string powerUp;
 
     [SerializeField] private bool grounded;
-    [SerializeField] private bool frontClear;
+    [SerializeField] public bool frontClear;
     [SerializeField] private bool hiding;
-
-    [SerializeField] private bool dash;
 
     // [SerializeField, Range(0, 1f)] private float knockBackDuration = 0.25f;
     // private bool isInKnockback = false;
@@ -63,6 +61,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         _playerInputActions = new PlayerInputActions();
         _attackCommand = new DashAttack(gameObject, 5, 60, 1);
+        _movementController = new MovementController(gameObject);
     }
 
     private void OnEnable()
@@ -94,7 +93,6 @@ public class PlayerController : MonoBehaviour, IDamageable
             layerMask = LayerMask.GetMask("Ground"),
             useLayerMask = true
         };
-        dash = false;
 
         CinemachineVirtualCamera virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
         if (virtualCamera)
@@ -106,9 +104,27 @@ public class PlayerController : MonoBehaviour, IDamageable
     // Update is called once per frame
     void Update()
     {
-        grounded = Grounded();
-        frontClear = FrontClear();
+        grounded = _movementController.Grounded();
+        if (grounded)
+        {
+            playerAnimatorController.SetIsGrounded(true);
+            _playerInputActions.Player.Hide.Enable();
+        }
+        else
+        {
+            playerAnimatorController.SetIsGrounded(false);
+            _playerInputActions.Player.Hide.Disable();
+        }
+        frontClear = _movementController.FrontClear();
         Move();
+        if (_attackCommand.LockInput)
+        {
+            _playerInputActions.Player.Disable();
+        }
+        else
+        {
+            _playerInputActions.Player.Enable();
+        }
     }
 
     public void SetStats(PlayerStats playerStats, AttackCommand attackCommand)
@@ -126,7 +142,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
         if (!grounded)
         {
-            if (col.IsTouching(_groundFilter2D))
+            if (col.IsTouching(_groundFilter2D) && !frontClear)
             {
                 return;
             }
@@ -281,37 +297,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         yield return new WaitForSeconds(1);
         gameObject.layer = LayerMask.NameToLayer("Player");
     }
-    private bool Grounded()
-    {
-        RaycastHit2D hit;
-        Vector2[] posArray = {new Vector2(col.bounds.max.x,col.bounds.min.y),
-            new Vector2(col.bounds.center.x,col.bounds.min.y),
-            new Vector2(col.bounds.min.x,col.bounds.min.y)};
-        for (int x = 0; x < 3; x++)
-        {
-            hit = Physics2D.Raycast(posArray[x], Vector2.down, 0.3f, LayerMask.GetMask("Ground"));
-            Debug.DrawRay(posArray[x], new Vector2(0, -0.3f), Color.red);
-            if (hit.collider != null)
-            {
-                playerAnimatorController.SetIsGrounded(true);
-                _playerInputActions.Player.Hide.Enable();
-                return true;
-            }
-        }
-        playerAnimatorController.SetIsGrounded(false);
-        _playerInputActions.Player.Hide.Disable();
-        return false;
-    }
-
-    private bool FrontClear()
-    {
-        RaycastHit2D[] hit = new RaycastHit2D[1];
-        if (col.Raycast(new Vector2(transform.localScale.x * (-1), 0), hit, 1, LayerMask.GetMask("Ground")) > 0)
-        {
-            return false;
-        }
-        return true;
-    }
+    
     private void OnCollisionEnter2D(Collision2D other)
     {
         switch (LayerMask.LayerToName(other.collider.gameObject.layer))
@@ -321,12 +307,6 @@ public class PlayerController : MonoBehaviour, IDamageable
                 var dmg = new Damage(transform.position, 20, 1);
                 other.gameObject.GetComponent<IDamageable>().TakeDamage(dmg);
                 break;
-        }
-
-        if (dash)
-        {
-            dash = false;
-            _playerInputActions.Player.Move.Enable();
         }
     }
 
