@@ -53,6 +53,8 @@ public class MovementController
 
         if (currentDir != dir || Mathf.Abs(_rigidbody.velocity.x) < _maxWalkSpeed)
         {
+            var diff = _maxWalkSpeed-_rigidbody.velocity.x;
+            speed = Mathf.Min(diff, speed);
             _rigidbody.AddForce(new Vector2(speed, 0), ForceMode2D.Impulse);
         }
     }
