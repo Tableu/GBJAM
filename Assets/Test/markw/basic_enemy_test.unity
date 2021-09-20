@@ -1158,7 +1158,7 @@ MonoBehaviour:
   collisionLayers:
     serializedVersion: 2
     m_Bits: 128
-  maxHealth: 20
+  maxHealth: 5
   knockbackFactor: 1
   fieldOfView: 25
   visionRange: 50
@@ -1192,7 +1192,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.75, y: 1}
+  m_Size: {x: 1.75, y: 1.75}
   m_EdgeRadius: 0
 --- !u!50 &1016052077
 Rigidbody2D:

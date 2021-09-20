@@ -72,10 +72,15 @@ public class MovementController
 
     public IEnumerator Knockback(Damage dmg)
     {
+        // todo: try to improve knockback formula
+        // todo: fix knockback inconsistencies
         var dir = Mathf.Sign(((Vector2) _transform.position - dmg.Source).x);
         _rigidbody.velocity = Vector2.zero;
         _rigidbody.AddForce(new Vector2(dir * dmg.Knockback, dmg.Knockback), ForceMode2D.Impulse);
+        // Wait one frame for actor to leave the ground
         yield return null;
+
+        // Stop the actor once they land
         while (!Grounded())
         {
             yield return null;
@@ -87,6 +92,7 @@ public class MovementController
     public bool FrontClear()
     {
         // todo: look for enemies/player as well. Add a layer mask parameter to the constructor?
+        // (Needed for dash to work correctly)
         RaycastHit2D[] hit = new RaycastHit2D[1];
         if (_boxCollider.Raycast(new Vector2(_transform.localScale.x * (-1), 0), hit, 1, LayerMask.GetMask("Ground")) >
             0)
@@ -99,6 +105,7 @@ public class MovementController
 
     public bool Grounded()
     {
+        // todo: try to only update once per frame (use Time.frameCount)
         RaycastHit2D hit;
         var bounds = _boxCollider.bounds;
         Vector2[] posArray =
