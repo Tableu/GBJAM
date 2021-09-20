@@ -35,11 +35,10 @@ public class PlayerController : MonoBehaviour, IDamageable
     }
     private PlayerInputActions _playerInputActions;
     private ContactFilter2D _groundFilter2D;
-    private AttackCommands _attackCommands;
+    private AttackCommand _attackCommand;
+    private MovementController _movementController;
 
     [SerializeField] private GameObject projectile;
-    [SerializeField] private AttackCommands.AttackStats _attackStats;
-    private float dashStart;
     [SerializeField] private Rigidbody2D rigidBody;
     [SerializeField] private Collider2D col;
     [SerializeField] private PlayerAnimatorController playerAnimatorController;
@@ -52,18 +51,17 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] private string powerUp;
 
     [SerializeField] private bool grounded;
-    [SerializeField] private bool frontClear;
+    [SerializeField] public bool frontClear;
     [SerializeField] private bool hiding;
 
-    [SerializeField] private bool dash;
-
-    [SerializeField, Range(0, 1f)] private float knockBackDuration = 0.25f;
-    private bool isInKnockback = false;
+    // [SerializeField, Range(0, 1f)] private float knockBackDuration = 0.25f;
+    // private bool isInKnockback = false;
 
     private void Awake()
     {
         _playerInputActions = new PlayerInputActions();
-        _attackCommands = new AttackCommands();
+        _attackCommand = new DashAttack(gameObject, 5, 60, 1);
+        _movementController = new MovementController(gameObject, speed.x);
     }
 
     private void OnEnable()
@@ -77,8 +75,8 @@ public class PlayerController : MonoBehaviour, IDamageable
     }
     void Start()
     {
-        _playerInputActions.Player.Jump.started += Jump;
-        _playerInputActions.Player.Move.started += Rotate;
+        _playerInputActions.Player.Jump.started += (context => _movementController.Jump(speed.y));
+        // _playerInputActions.Player.Move.started += Rotate;
         _playerInputActions.Player.Move.canceled += Idle;
         _playerInputActions.Player.PickUpShell.started += SwitchShells;
 
@@ -95,7 +93,6 @@ public class PlayerController : MonoBehaviour, IDamageable
             layerMask = LayerMask.GetMask("Ground"),
             useLayerMask = true
         };
-        dash = false;
 
         CinemachineVirtualCamera virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
         if (virtualCamera)
@@ -107,24 +104,30 @@ public class PlayerController : MonoBehaviour, IDamageable
     // Update is called once per frame
     void Update()
     {
-        grounded = Grounded();
-        frontClear = FrontClear();
-        if (!hiding)
+        grounded = _movementController.Grounded();
+        if (grounded)
         {
-            Move();
+            playerAnimatorController.SetIsGrounded(true);
+            _playerInputActions.Player.Hide.Enable();
         }
-
-        if (dash)
+        else
         {
-            if (!_attackCommands.Dash(gameObject, _attackStats, dashStart) || !frontClear)
-            {
-                dash = false;
-                _playerInputActions.Player.Move.Enable();
-            }
+            playerAnimatorController.SetIsGrounded(false);
+            _playerInputActions.Player.Hide.Disable();
+        }
+        frontClear = _movementController.FrontClear();
+        Move();
+        if (_attackCommand.LockInput)
+        {
+            _playerInputActions.Player.Disable();
+        }
+        else
+        {
+            _playerInputActions.Player.Enable();
         }
     }
 
-    public void SetStats(PlayerStats playerStats, AttackCommands.AttackStats attackStats)
+    public void SetStats(PlayerStats playerStats, AttackCommand attackCommand)
     {
         health = playerStats.Health;
         armor = playerStats.Armor;
@@ -136,82 +139,37 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         var horizontal = _playerInputActions.Player.Move.ReadValue<float>();
         var horizontalVelocity = horizontal * speed.x;
-
-        if (!grounded)
-        {
-            if (col.IsTouching(_groundFilter2D))
-            {
-                return;
-            }
-        }
+        _movementController.MoveHorizontally(horizontalVelocity);
         if (horizontalVelocity != 0)
         {
-            if (Mathf.Abs(rigidBody.velocity.x) < maxSpeed.x)
-            {
-                rigidBody.AddForce(new Vector2(horizontalVelocity, 0), ForceMode2D.Impulse);
-                playerAnimatorController.SetIsMoving(true);
-            }
+            playerAnimatorController.SetIsMoving(true);
         }
-        else
-        {
-            if (!isInKnockback && grounded)
-            {
-                //rigidBody.velocity = new Vector2(Mathf.Lerp(rigidBody.velocity.x, 0, Something???), rigidBody.velocity.y);
-                //To avoid the player from sliding after knockback
-                rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
-            }
-        }
+        // else
+        // {
+        //     if (!isInKnockback && grounded)
+        //     {
+        //         //rigidBody.velocity = new Vector2(Mathf.Lerp(rigidBody.velocity.x, 0, Something???), rigidBody.velocity.y);
+        //         //To avoid the player from sliding after knockback
+        //         rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
+        //     }
+        // }
     }
 
-    private void Rotate(InputAction.CallbackContext context)
-    {
-        var direction = context.ReadValue<float>();
-        var scale = transform.localScale;
-        if (direction > 0)
-        {
-            transform.localScale = new Vector3(-1, scale.y, scale.z);
-        }
-        else if (direction < 0)
-        {
-            transform.localScale = new Vector3(1, scale.y, scale.z);
-        }
-    }
     private void Idle(InputAction.CallbackContext context)
     {
         rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
         playerAnimatorController.SetIsMoving(false);
-        Debug.Log("Idle");
+        // Debug.Log("Idle");
     }
-    private void Jump(InputAction.CallbackContext context)
-    {
-        if (grounded)
-        {
-            playerAnimatorController.TriggerJump();
-            rigidBody.AddRelativeForce(new Vector2(0, speed.y), ForceMode2D.Impulse);
-            pSoundManager.PlaySound(pSoundManager.Sound.pJump);
-            Debug.Log("Jump");
-        }
-    }
+
     private void Attack(InputAction.CallbackContext context)
     {
         if (context.duration < 1)
         {
             Debug.Log("Attack");
-            switch (powerUp)
+            if (!_attackCommand.IsRunning)
             {
-                case AttackCommands.SIMPLE_PROJECTILE_ATTACK:
-                    _attackCommands.SimpleProjectileAttack(gameObject, projectile, _attackStats);
-                    break;
-                case AttackCommands.MELEE_ATTACK:
-                    break;
-                case AttackCommands.DASH:
-                    dashStart = transform.position.x;
-                    if (_attackCommands.Dash(gameObject, _attackStats, dashStart))
-                    {
-                        dash = true;
-                        _playerInputActions.Player.Move.Disable();
-                    }
-                    break;
+                StartCoroutine(_attackCommand.DoAttack(null));
             }
         }
         pSoundManager.PlaySound(pSoundManager.Sound.pAttack);
@@ -258,8 +216,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public void TakeDamage(Damage dmg)
     {
-        var dir = ((Vector2)transform.position - dmg.Source).normalized;
-        var direction = Math.Sign(dir.x);
+        var direction = Math.Sign(transform.position.x - dmg.Source.x);
         if (direction == Math.Sign(transform.localScale.x))
         {
             health -= dmg.RawDamage;
@@ -275,10 +232,8 @@ public class PlayerController : MonoBehaviour, IDamageable
             Debug.Log("Lose Armor");
         }
         pSoundManager.PlaySound(pSoundManager.Sound.pHit);
-        var knockbackForce = dir * dmg.Knockback;
-        rigidBody.velocity = Vector2.zero;
-        rigidBody.AddForce(knockbackForce, ForceMode2D.Impulse);
-        StartCoroutine(KnockbackCoroutine());
+        StartCoroutine(_movementController.Knockback(dmg));
+        // StartCoroutine(KnockbackCoroutine());
         StartCoroutine(Invulnerable());
     }
 
@@ -294,49 +249,19 @@ public class PlayerController : MonoBehaviour, IDamageable
         //remove shell sprite
     }
 
-    private IEnumerator KnockbackCoroutine()
-    {
-        isInKnockback = true;
-        yield return new WaitForSeconds(knockBackDuration);
-        isInKnockback = false;
-    }
+    // private IEnumerator KnockbackCoroutine()
+    // {
+    //     isInKnockback = true;
+    //     yield return new WaitForSeconds(knockBackDuration);
+    //     isInKnockback = false;
+    // }
     private IEnumerator Invulnerable()
     {
         gameObject.layer = LayerMask.NameToLayer("Invulnerable");
         yield return new WaitForSeconds(1);
         gameObject.layer = LayerMask.NameToLayer("Player");
     }
-    private bool Grounded()
-    {
-        RaycastHit2D hit;
-        Vector2[] posArray = {new Vector2(col.bounds.max.x,col.bounds.min.y),
-            new Vector2(col.bounds.center.x,col.bounds.min.y),
-            new Vector2(col.bounds.min.x,col.bounds.min.y)};
-        for (int x = 0; x < 3; x++)
-        {
-            hit = Physics2D.Raycast(posArray[x], Vector2.down, 0.3f, LayerMask.GetMask("Ground"));
-            Debug.DrawRay(posArray[x], new Vector2(0, -0.3f), Color.red);
-            if (hit.collider != null)
-            {
-                playerAnimatorController.SetIsGrounded(true);
-                _playerInputActions.Player.Hide.Enable();
-                return true;
-            }
-        }
-        playerAnimatorController.SetIsGrounded(false);
-        _playerInputActions.Player.Hide.Disable();
-        return false;
-    }
-
-    private bool FrontClear()
-    {
-        RaycastHit2D[] hit = new RaycastHit2D[1];
-        if (col.Raycast(new Vector2(transform.localScale.x * (-1), 0), hit, 1, LayerMask.GetMask("Ground")) > 0)
-        {
-            return false;
-        }
-        return true;
-    }
+    
     private void OnCollisionEnter2D(Collision2D other)
     {
         switch (LayerMask.LayerToName(other.collider.gameObject.layer))
@@ -346,12 +271,6 @@ public class PlayerController : MonoBehaviour, IDamageable
                 var dmg = new Damage(transform.position, 20, 1);
                 other.gameObject.GetComponent<IDamageable>().TakeDamage(dmg);
                 break;
-        }
-
-        if (dash)
-        {
-            dash = false;
-            _playerInputActions.Player.Move.Enable();
         }
     }
 

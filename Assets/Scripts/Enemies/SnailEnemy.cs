@@ -5,44 +5,31 @@ using UnityEngine;
 public class SnailEnemy : EnemyBase
 {
     [SerializeField] public float lookAheadDist = 0.5f;
+    private BoxCollider2D _collider;
 
     protected new void Awake()
     {
         base.Awake();
+        _collider = GetComponent<BoxCollider2D>();
         StateMachine = new FSM();
         var falling = new FallState(this);
-        var patrol = new PatrolPlatform(this);
-        var attack = new Attack(this);
+        var patrol = new PatrolPlatform(this, _movementController);
+        var attack = new LandSnailAttack(this, _movementController, PlayerTransform);
 
         StateMachine.AddTransition(falling, patrol, 
-            () => MovementManager.MovementFlags.HasFlag(MovementManager.Flags.Grounded));
+            () => _movementController.Grounded());
         StateMachine.AddAnyTransition(falling, 
-            () => !MovementManager.MovementFlags.HasFlag(MovementManager.Flags.Grounded));
+            () => !_movementController.Grounded());
         StateMachine.AddTransition(patrol, attack, PlayerVisible);
         StateMachine.AddTransition(attack, patrol, () => timeSinceSawPlayer > attackTime);
         StateMachine.SetState(falling);
     }
 
-    private class Attack : IState
+    public bool AtPlatformEdge()
     {
-        private readonly SnailEnemy _enemy;
-
-        public Attack(SnailEnemy enemy)
-        {
-            _enemy = enemy;
-        }
-
-        public void Tick()
-        {
-        }
-
-        public void OnEnter()
-        {
-            _enemy.CurrentVelocity = Vector2.zero;
-        }
-
-        public void OnExit()
-        {
-        }
+        var bounds = _collider.bounds;
+        var rayOrigin = new Vector2(bounds.center.x - lookAheadDist*transform.localScale.x, bounds.min.y);
+        var hit = Physics2D.Raycast(rayOrigin, Vector2.down, 0.5f, collisionLayers);
+        return !hit;
     }
 }
