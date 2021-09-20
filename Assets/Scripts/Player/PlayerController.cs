@@ -36,7 +36,6 @@ public class PlayerController : MonoBehaviour, IDamageable
     private PlayerInputActions _playerInputActions;
     private ContactFilter2D _groundFilter2D;
     private AttackCommand _attackCommand;
-    private Coroutine _attackRoutine;
 
     [SerializeField] private GameObject projectile;
     private float dashStart;
@@ -185,7 +184,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         if (context.duration < 1)
         {
             Debug.Log("Attack");
-            if (_attackRoutine == null)
+            if (!_attackCommand.IsRunning)
             {
                 StartCoroutine(_attackCommand.DoAttack(null));
             }
