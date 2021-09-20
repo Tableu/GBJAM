@@ -60,7 +60,6 @@ public class PlayerController : MonoBehaviour, IDamageable
     private void Awake()
     {
         _playerInputActions = new PlayerInputActions();
-        _attackCommand = new DashAttack(gameObject, 5, 60, 1);
         _movementController = new MovementController(gameObject, speed.x);
     }
 
@@ -123,13 +122,16 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
         frontClear = _movementController.FrontClear();
         Move();
-        if (_attackCommand.LockInput)
+        if (_attackCommand != null)
         {
-            _playerInputActions.Player.Disable();
-        }
-        else
-        {
-            _playerInputActions.Player.Enable();
+            if (_attackCommand.LockInput)
+            {
+                _playerInputActions.Player.Disable();
+            }
+            else
+            {
+                _playerInputActions.Player.Enable();
+            }
         }
     }
 
@@ -170,7 +172,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     private void Attack(InputAction.CallbackContext context)
     {
-        if (context.duration < 1)
+        if (context.duration < 1 && _attackCommand != null)
         {
             Debug.Log("Attack");
             if (!_attackCommand.IsRunning)
@@ -196,9 +198,11 @@ public class PlayerController : MonoBehaviour, IDamageable
         Collider2D[] collider2D = new Collider2D[1];
         if (Physics2D.OverlapCollider(col, contactFilter2D, collider2D) == 1 && grounded)
         {
-            collider2D[0].gameObject.GetComponent<ShellScript>().AttachedToPlayer(gameObject);
+            SetStats(collider2D[0].gameObject.GetComponent<ShellScript>().playerStats);
+            playerShellSpriteRenderer.sprite = collider2D[0].GetComponent<SpriteRenderer>().sprite;
+            Destroy(collider2D[0].gameObject);
+            pSoundManager.PlaySound(pSoundManager.Sound.pPickup);
         }
-        pSoundManager.PlaySound(pSoundManager.Sound.pPickup);
     }
 
     private void Hide(InputAction.CallbackContext context)
