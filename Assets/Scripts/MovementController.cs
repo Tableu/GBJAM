@@ -77,9 +77,16 @@ public class MovementController
         var dir = Mathf.Sign(((Vector2) _transform.position - dmg.Source).x);
         _rigidbody.velocity = Vector2.zero;
         _rigidbody.AddForce(new Vector2(dir * dmg.Knockback, dmg.Knockback), ForceMode2D.Impulse);
-        // Wait one frame for actor to leave the ground
-        yield return null;
-
+        
+        // Wait for the actor to leave the ground, or 5 frames
+        for (int i = 0; i < 10; i++)
+        {
+            if (!Grounded())
+            {
+                break;
+            }
+            yield return null;
+        }
         // Stop the actor once they land
         while (!Grounded())
         {
