@@ -65,12 +65,13 @@ public class MovementController
         }
     }
 
-    public void Jump(float height)
+    public bool Jump(float height)
     {
-        if (!Grounded()) return;
+        if (!Grounded()) return false;
         var a = -Physics2D.gravity.y * _rigidbody.gravityScale;
         var speed = Mathf.Sqrt(2 * a * height);
         _rigidbody.AddForce(new Vector2(0, speed * _rigidbody.mass), ForceMode2D.Impulse);
+        return true;
     }
 
     public void Stop()

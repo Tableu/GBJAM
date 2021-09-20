@@ -77,8 +77,10 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         _playerInputActions.Player.Jump.started += (context =>
         {
-            _movementController.Jump(speed.y);
-            pSoundManager.PlaySound(pSoundManager.Sound.pJump);
+            if (_movementController.Jump(speed.y))
+            {
+                pSoundManager.PlaySound(pSoundManager.Sound.pJump);
+            }
         });
         // _playerInputActions.Player.Move.started += Rotate;
         _playerInputActions.Player.Move.canceled += Idle;
