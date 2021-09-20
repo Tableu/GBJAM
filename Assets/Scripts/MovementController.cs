@@ -87,6 +87,7 @@ public class MovementController
         var dir = Mathf.Sign(_transform.position.x - dmg.Source.x);
         _rigidbody.velocity = Vector2.zero;
         _rigidbody.AddForce(new Vector2(dir * dmg.Knockback, dmg.Knockback), ForceMode2D.Impulse);
+        float timoutTimer = 0;
 
         // Wait at least 0.5s
         yield return new WaitForSeconds(0.5f);
@@ -94,6 +95,12 @@ public class MovementController
         // Stop the actor once they land
         while (!_boxCollider.IsTouching(_groundFilter2D))
         {
+            // Stop the player from getting suck on enemies
+            timoutTimer += Time.deltaTime;
+            if (timoutTimer > 1.5f)
+            {
+                break;
+            }
             yield return null;
         }
 

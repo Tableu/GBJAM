@@ -14,7 +14,7 @@ public class SnailEnemy : EnemyBase
         StateMachine = new FSM();
         var falling = new FallState(this);
         var patrol = new PatrolPlatform(this, _movementController);
-        var attack = new LandSnailAttack(this, _movementController, PlayerTransform);
+        var attack = new MeleeAttack(this, _movementController, PlayerTransform);
 
         StateMachine.AddTransition(falling, patrol, 
             () => _movementController.Grounded());
