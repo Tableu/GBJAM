@@ -41,6 +41,10 @@ public class MovementController
             return;
         }
 
+        if (Mathf.Abs(_rigidbody.velocity.x) > 9)
+        {
+            Debug.Log("9");
+        }
         var dir = (int) Mathf.Sign(speed);
         var currentDir = (int) Mathf.Sign(_rigidbody.velocity.x);
 
@@ -53,9 +57,9 @@ public class MovementController
 
         if (currentDir != dir || Mathf.Abs(_rigidbody.velocity.x) < _maxWalkSpeed)
         {
-            var diff = _maxWalkSpeed-_rigidbody.velocity.x;
-            speed = Mathf.Min(diff, speed);
-            _rigidbody.AddForce(new Vector2(speed, 0), ForceMode2D.Impulse);
+            var diff = Mathf.Abs(_maxWalkSpeed)-Mathf.Abs(_rigidbody.velocity.x);
+            speed = Mathf.Min(diff, Mathf.Abs(speed));
+            _rigidbody.AddForce(new Vector2(speed*dir, 0), ForceMode2D.Impulse);
         }
     }
 

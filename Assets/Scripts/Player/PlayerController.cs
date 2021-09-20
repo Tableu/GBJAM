@@ -13,25 +13,25 @@ public class PlayerController : MonoBehaviour, IDamageable
     [Serializable]
     public struct PlayerStats
     {
-        public PlayerStats(Vector2 speed, Vector2 maxSpeed, int health, int armor, string powerUp)
+        public PlayerStats(Vector2 speed, Vector2 maxSpeed, int health, int armor, AttackCommand attack)
         {
             _speed = speed;
             _maxSpeed = maxSpeed;
             _health = health;
             _armor = armor;
-            _powerUp = powerUp;
+            _attack = attack;
         }
 
         [SerializeField] private Vector2 _speed;
         [SerializeField] private Vector2 _maxSpeed;
         [SerializeField] private int _health;
         [SerializeField] private int _armor;
-        [SerializeField] private String _powerUp;
+        [SerializeField] private AttackCommand _attack;
         public Vector2 Speed => _speed;
         public Vector2 MaxSpeed => _maxSpeed;
         public int Health => _health;
         public int Armor => _armor;
-        public string PowerUp => _powerUp;
+        public AttackCommand Attack => _attack;
     }
     private PlayerInputActions _playerInputActions;
     private ContactFilter2D _groundFilter2D;
@@ -75,7 +75,11 @@ public class PlayerController : MonoBehaviour, IDamageable
     }
     void Start()
     {
-        _playerInputActions.Player.Jump.started += (context => _movementController.Jump(speed.y));
+        _playerInputActions.Player.Jump.started += (context =>
+        {
+            _movementController.Jump(speed.y);
+            pSoundManager.PlaySound(pSoundManager.Sound.pJump);
+        });
         // _playerInputActions.Player.Move.started += Rotate;
         _playerInputActions.Player.Move.canceled += Idle;
         _playerInputActions.Player.PickUpShell.started += SwitchShells;
@@ -127,13 +131,13 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
     }
 
-    public void SetStats(PlayerStats playerStats, AttackCommand attackCommand)
+    public void SetStats(PlayerStats playerStats)
     {
         health = playerStats.Health;
         armor = playerStats.Armor;
         speed = playerStats.Speed;
         maxSpeed = playerStats.MaxSpeed;
-        powerUp = playerStats.PowerUp;
+        _attackCommand = playerStats.Attack;
     }
     private void Move()
     {
