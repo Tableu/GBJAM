@@ -2,6 +2,12 @@ using System;
 using System.IO;
 using UnityEngine;
 
+#if UNITY_EDITOR
+using Enemies;
+using UnityEditor;
+#endif
+
+
 namespace Enemies
 {
     public abstract class EnemyBase : MonoBehaviour, IDamageable
@@ -124,3 +130,30 @@ namespace Enemies
         }
     }
 }
+
+#if UNITY_EDITOR
+[CustomEditor(typeof(SnailEnemy))]
+class EnemyControllerEditor : Editor
+{
+    SnailEnemy enemy { get { return target as SnailEnemy; } }
+
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+        if (Application.isPlaying)
+        {
+            EditorExtensionMethods.DrawSeparator(Color.gray);
+            if (GUILayout.Button("Damage left"))
+            {
+                Damage auxDamage = new Damage((Vector2)enemy.transform.position + new Vector2(0.5f, -0.5f), 20f, 0);
+                enemy.TakeDamage(auxDamage);
+            }
+            if (GUILayout.Button("Damage right"))
+            {
+                Damage auxDamage = new Damage((Vector2)enemy.transform.position + new Vector2(-0.5f, -0.5f), 20f, 0);
+                enemy.TakeDamage(auxDamage);
+            }
+        }
+    }
+}
+#endif

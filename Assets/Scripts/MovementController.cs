@@ -10,6 +10,8 @@ public class MovementController
     private float _maxWalkSpeed;
     private int _spriteForward;
 
+    private bool _inKnockback;
+
     private ContactFilter2D _groundFilter2D = new ContactFilter2D
     {
         layerMask = LayerMask.GetMask("Ground"),
@@ -36,7 +38,7 @@ public class MovementController
 
     public void MoveHorizontally(float speed)
     {
-        if (speed == 0)
+        if (speed == 0 || _inKnockback)
         {
             return;
         }
@@ -80,26 +82,22 @@ public class MovementController
     {
         // todo: try to improve knockback formula
         // todo: fix knockback inconsistencies
-        var dir = Mathf.Sign(((Vector2) _transform.position - dmg.Source).x);
+        _inKnockback = true;
+        var dir = Mathf.Sign(_transform.position.x - dmg.Source.x);
         _rigidbody.velocity = Vector2.zero;
         _rigidbody.AddForce(new Vector2(dir * dmg.Knockback, dmg.Knockback), ForceMode2D.Impulse);
-        
-        // Wait for the actor to leave the ground, or 5 frames
-        for (int i = 0; i < 10; i++)
-        {
-            if (!Grounded())
-            {
-                break;
-            }
-            yield return null;
-        }
+
+        // Wait at least 0.5s
+        yield return new WaitForSeconds(0.5f);
+
         // Stop the actor once they land
-        while (!Grounded())
+        while (!_boxCollider.IsTouching(_groundFilter2D))
         {
             yield return null;
         }
 
         Stop();
+        _inKnockback = false;
     }
 
     public bool FrontClear()
