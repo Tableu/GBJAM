@@ -10,6 +10,8 @@ public class MovementController
     private float _maxWalkSpeed;
     private int _spriteForward;
 
+    private bool _inKnockback;
+
     private ContactFilter2D _groundFilter2D = new ContactFilter2D
     {
         layerMask = LayerMask.GetMask("Ground"),
@@ -36,11 +38,15 @@ public class MovementController
 
     public void MoveHorizontally(float speed)
     {
-        if (speed == 0)
+        if (speed == 0 || _inKnockback)
         {
             return;
         }
 
+        if (Mathf.Abs(_rigidbody.velocity.x) > 9)
+        {
+            Debug.Log("9");
+        }
         var dir = (int) Mathf.Sign(speed);
         var currentDir = (int) Mathf.Sign(_rigidbody.velocity.x);
 
@@ -53,16 +59,19 @@ public class MovementController
 
         if (currentDir != dir || Mathf.Abs(_rigidbody.velocity.x) < _maxWalkSpeed)
         {
-            _rigidbody.AddForce(new Vector2(speed, 0), ForceMode2D.Impulse);
+            var diff = Mathf.Abs(_maxWalkSpeed)-Mathf.Abs(_rigidbody.velocity.x);
+            speed = Mathf.Min(diff, Mathf.Abs(speed));
+            _rigidbody.AddForce(new Vector2(speed*dir, 0), ForceMode2D.Impulse);
         }
     }
 
-    public void Jump(float height)
+    public bool Jump(float height)
     {
-        if (!Grounded()) return;
+        if (!Grounded()) return false;
         var a = -Physics2D.gravity.y * _rigidbody.gravityScale;
         var speed = Mathf.Sqrt(2 * a * height);
         _rigidbody.AddForce(new Vector2(0, speed * _rigidbody.mass), ForceMode2D.Impulse);
+        return true;
     }
 
     public void Stop()
@@ -74,19 +83,29 @@ public class MovementController
     {
         // todo: try to improve knockback formula
         // todo: fix knockback inconsistencies
-        var dir = Mathf.Sign(((Vector2) _transform.position - dmg.Source).x);
+        _inKnockback = true;
+        var dir = Mathf.Sign(_transform.position.x - dmg.Source.x);
         _rigidbody.velocity = Vector2.zero;
         _rigidbody.AddForce(new Vector2(dir * dmg.Knockback, dmg.Knockback), ForceMode2D.Impulse);
-        // Wait one frame for actor to leave the ground
-        yield return null;
+        float timoutTimer = 0;
+
+        // Wait at least 0.5s
+        yield return new WaitForSeconds(0.5f);
 
         // Stop the actor once they land
-        while (!Grounded())
+        while (!_boxCollider.IsTouching(_groundFilter2D))
         {
+            // Stop the player from getting suck on enemies
+            timoutTimer += Time.deltaTime;
+            if (timoutTimer > 1.5f)
+            {
+                break;
+            }
             yield return null;
         }
 
         Stop();
+        _inKnockback = false;
     }
 
     public bool FrontClear()

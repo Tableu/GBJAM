@@ -311,12 +311,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a21e00e2650a97647bc872d412ae86b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackStats:
-    _powerUp: Collision
-    _speed: 0
-    _damage: 0
-    _knockback: {x: 18, y: 10}
-    _distance: 0
 --- !u!61 &643942494
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -4591,6 +4585,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6666176715580743, guid: ef6c169d996483c4ab59851a33b232f7, type: 3}
+      propertyPath: speed.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6666176715580743, guid: ef6c169d996483c4ab59851a33b232f7, type: 3}
+      propertyPath: maxSpeed.x
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6666176715580743, guid: ef6c169d996483c4ab59851a33b232f7, type: 3}
       propertyPath: _attackStats._speed
       value: 10
