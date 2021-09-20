@@ -3,25 +3,38 @@ using UnityEngine;
 
 public class LandSnailAttack: IState
 {
-    private PlayerController _player;
+    private readonly MovementController _movement;
+    private readonly Transform _target;
+    private readonly SnailEnemy _enemy;
 
-    public LandSnailAttack(PlayerController player)
+    public LandSnailAttack(SnailEnemy enemy, MovementController movement, Transform target)
     {
-        _player = player;
+        _enemy = enemy;
+        _movement = movement;
+        _target = target;
     }
 
     public void Tick()
     {
-        throw new System.NotImplementedException();
+        Vector2 targetPos = _target.position;
+        var dist = (targetPos - _movement.Position).x;
+        if (Mathf.Abs(dist) <= 1e-2)
+        {
+            return;
+        }
+        var dir = Mathf.Sign(dist);
+        if (!_enemy.AtPlatformEdge())
+        {
+            _movement.MoveHorizontally(dir*_movement.WalkingSpeed);
+        }
     }
 
     public void OnEnter()
     {
-        throw new System.NotImplementedException();
+        _movement.Stop();
     }
 
     public void OnExit()
     {
-        throw new System.NotImplementedException();
     }
 }

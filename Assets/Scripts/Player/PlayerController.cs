@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         _playerInputActions = new PlayerInputActions();
         _attackCommand = new DashAttack(gameObject, 5, 60, 1);
-        _movementController = new MovementController(gameObject);
+        _movementController = new MovementController(gameObject, speed.x);
     }
 
     private void OnEnable()
@@ -75,8 +75,8 @@ public class PlayerController : MonoBehaviour, IDamageable
     }
     void Start()
     {
-        _playerInputActions.Player.Jump.started += Jump;
-        _playerInputActions.Player.Move.started += Rotate;
+        _playerInputActions.Player.Jump.started += (context => _movementController.Jump(speed.y));
+        // _playerInputActions.Player.Move.started += Rotate;
         _playerInputActions.Player.Move.canceled += Idle;
         _playerInputActions.Player.PickUpShell.started += SwitchShells;
 
@@ -139,21 +139,10 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         var horizontal = _playerInputActions.Player.Move.ReadValue<float>();
         var horizontalVelocity = horizontal * speed.x;
-
-        if (!grounded)
-        {
-            if (col.IsTouching(_groundFilter2D) && !frontClear)
-            {
-                return;
-            }
-        }
+        _movementController.MoveHorizontally(horizontalVelocity);
         if (horizontalVelocity != 0)
         {
-            if (Mathf.Abs(rigidBody.velocity.x) < maxSpeed.x)
-            {
-                rigidBody.AddForce(new Vector2(horizontalVelocity, 0), ForceMode2D.Impulse);
-                playerAnimatorController.SetIsMoving(true);
-            }
+            playerAnimatorController.SetIsMoving(true);
         }
         // else
         // {
@@ -166,35 +155,13 @@ public class PlayerController : MonoBehaviour, IDamageable
         // }
     }
 
-    private void Rotate(InputAction.CallbackContext context)
-    {
-        var direction = context.ReadValue<float>();
-        var scale = transform.localScale;
-        if (direction > 0)
-        {
-            transform.localScale = new Vector3(-1, scale.y, scale.z);
-        }
-        else if (direction < 0)
-        {
-            transform.localScale = new Vector3(1, scale.y, scale.z);
-        }
-    }
     private void Idle(InputAction.CallbackContext context)
     {
         rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
         playerAnimatorController.SetIsMoving(false);
         // Debug.Log("Idle");
     }
-    private void Jump(InputAction.CallbackContext context)
-    {
-        if (grounded)
-        {
-            playerAnimatorController.TriggerJump();
-            rigidBody.AddRelativeForce(new Vector2(0, speed.y), ForceMode2D.Impulse);
-            pSoundManager.PlaySound(pSoundManager.Sound.pJump);
-            Debug.Log("Jump");
-        }
-    }
+
     private void Attack(InputAction.CallbackContext context)
     {
         if (context.duration < 1)
@@ -249,8 +216,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public void TakeDamage(Damage dmg)
     {
-        var dir = ((Vector2)transform.position - dmg.Source).normalized;
-        var direction = Math.Sign(dir.x);
+        var direction = Math.Sign(transform.position.x - dmg.Source.x);
         if (direction == Math.Sign(transform.localScale.x))
         {
             health -= dmg.RawDamage;
@@ -266,9 +232,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             Debug.Log("Lose Armor");
         }
         pSoundManager.PlaySound(pSoundManager.Sound.pHit);
-        var knockbackForce = dir * dmg.Knockback;
-        rigidBody.velocity = Vector2.zero;
-        rigidBody.AddForce(knockbackForce, ForceMode2D.Impulse);
+        StartCoroutine(_movementController.Knockback(dmg));
         // StartCoroutine(KnockbackCoroutine());
         StartCoroutine(Invulnerable());
     }

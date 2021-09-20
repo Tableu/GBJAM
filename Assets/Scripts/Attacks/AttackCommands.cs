@@ -9,7 +9,7 @@ public interface AttackCommand
     public bool LockInput { get; }
 }
 
-public class DashAttack: AttackCommand
+public class DashAttack : AttackCommand
 {
     private float _distance;
     private float _speed;
@@ -23,8 +23,10 @@ public class DashAttack: AttackCommand
         _damage = damage;
         _go = go;
     }
+
     public bool IsRunning { get; private set; }
     public bool LockInput { get; private set; }
+
     public IEnumerator DoAttack(IDamageable target)
     {
         IsRunning = true;
@@ -32,13 +34,18 @@ public class DashAttack: AttackCommand
         var transform = _go.GetComponent<Transform>();
         var rigidBody = _go.GetComponent<Rigidbody2D>();
         var collider = _go.GetComponent<Collider2D>();
+        // todo: use movement controller
         var controller = _go.GetComponent<PlayerController>();
         var start = transform.position.x;
-          
-        while(Mathf.Abs(transform.position.x - start) <= _distance && !collider.IsTouchingLayers(LayerMask.NameToLayer("Ground"))&& controller.frontClear){
-            rigidBody.AddRelativeForce(new Vector2((-1)*_speed*transform.localScale.x,0));
+
+        while (Mathf.Abs(transform.position.x - start) <= _distance &&
+               !collider.IsTouchingLayers(LayerMask.NameToLayer("Ground")) &&
+               controller.frontClear)
+        {
+            rigidBody.AddRelativeForce(new Vector2((-1) * _speed * transform.localScale.x, 0));
             yield return null;
         }
+
         rigidBody.velocity = Vector2.zero;
         IsRunning = false;
         LockInput = false;
