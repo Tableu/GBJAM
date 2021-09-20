@@ -120,7 +120,7 @@ namespace Enemies
             }
             // apply knockback
             dmg.Knockback *= knockbackFactor;
-            _movementController.Knockback(dmg);
+            StartCoroutine(_movementController.Knockback(dmg));
         }
     }
 }

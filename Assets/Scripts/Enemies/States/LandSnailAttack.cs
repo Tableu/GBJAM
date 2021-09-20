@@ -17,7 +17,12 @@ public class LandSnailAttack: IState
     public void Tick()
     {
         Vector2 targetPos = _target.position;
-        var dir = Mathf.Sign( (targetPos-_movement.Position).x);
+        var dist = (targetPos - _movement.Position).x;
+        if (Mathf.Abs(dist) <= 1e-2)
+        {
+            return;
+        }
+        var dir = Mathf.Sign(dist);
         if (!_enemy.AtPlatformEdge())
         {
             _movement.MoveHorizontally(dir*_movement.WalkingSpeed);

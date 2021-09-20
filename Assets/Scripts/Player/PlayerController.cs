@@ -232,7 +232,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             Debug.Log("Lose Armor");
         }
         pSoundManager.PlaySound(pSoundManager.Sound.pHit);
-        _movementController.Knockback(dmg);
+        StartCoroutine(_movementController.Knockback(dmg));
         // StartCoroutine(KnockbackCoroutine());
         StartCoroutine(Invulnerable());
     }

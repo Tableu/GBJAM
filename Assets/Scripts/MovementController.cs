@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public class MovementController
@@ -24,7 +25,7 @@ public class MovementController
     /// <param name="go">The gameobject to control</param>
     /// <param name="maxWalkSpeed">The maximum speed the character can walk at</param>
     /// <param name="spriteForwardDir">The direction the sprite faces (-1 for left, 1 for right)</param>
-    public MovementController(GameObject go, float maxWalkSpeed, int spriteForwardDir=-1)
+    public MovementController(GameObject go, float maxWalkSpeed, int spriteForwardDir = -1)
     {
         _rigidbody = go.GetComponent<Rigidbody2D>();
         _transform = go.transform;
@@ -43,7 +44,7 @@ public class MovementController
         var dir = (int) Mathf.Sign(speed);
         var currentDir = (int) Mathf.Sign(_rigidbody.velocity.x);
 
-        if (dir != _spriteForward*Math.Sign(_transform.localScale.x))
+        if (dir != _spriteForward * Math.Sign(_transform.localScale.x))
         {
             var localScale = _transform.localScale;
             localScale = new Vector3(-localScale.x, localScale.y, localScale.x);
@@ -69,17 +70,23 @@ public class MovementController
         _rigidbody.velocity = new Vector2(0, _rigidbody.velocity.y);
     }
 
-    public void Knockback(Damage dmg)
+    public IEnumerator Knockback(Damage dmg)
     {
-        // todo: improve knockback calculations and logic
-        var dir = ((Vector2)_transform.position - dmg.Source).normalized;
-        var knockbackForce = dir * dmg.Knockback;
+        var dir = Mathf.Sign(((Vector2) _transform.position - dmg.Source).x);
         _rigidbody.velocity = Vector2.zero;
-        _rigidbody.AddForce(knockbackForce, ForceMode2D.Impulse);
+        _rigidbody.AddForce(new Vector2(dir * dmg.Knockback, dmg.Knockback), ForceMode2D.Impulse);
+        yield return null;
+        while (!Grounded())
+        {
+            yield return null;
+        }
+
+        Stop();
     }
 
     public bool FrontClear()
     {
+        // todo: look for enemies/player as well. Add a layer mask parameter to the constructor?
         RaycastHit2D[] hit = new RaycastHit2D[1];
         if (_boxCollider.Raycast(new Vector2(_transform.localScale.x * (-1), 0), hit, 1, LayerMask.GetMask("Ground")) >
             0)
