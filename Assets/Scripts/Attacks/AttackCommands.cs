@@ -53,13 +53,11 @@ public class DashAttack : AttackCommand
 public class ProjectileAttack : AttackCommand
 {
     [SerializeField] private float _speed;
-    [SerializeField] private GameObject _go;
     [SerializeField] private GameObject _projectilePrefab;
 
-    public ProjectileAttack(GameObject projectilePrefab, GameObject go, float speed)
+    public ProjectileAttack(GameObject projectilePrefab, float speed)
     {
         _speed = speed;
-        _go = go;
         _projectilePrefab = projectilePrefab;
     }
     public bool IsRunning { get; private set; }
@@ -69,7 +67,7 @@ public class ProjectileAttack : AttackCommand
     {
         IsRunning = true;
         LockInput = true;
-        var transform = _go.GetComponent<Transform>();
+        var transform = attacker.GetComponent<Transform>();
         var pos = transform.position + new Vector3(transform.localScale.x*(-1),0,0);
         var projectile = GameObject.Instantiate(_projectilePrefab, pos, Quaternion.identity);
         projectile.transform.localScale = transform.localScale;

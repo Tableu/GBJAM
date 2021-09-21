@@ -10,7 +10,7 @@ public class SnailShellScript : ShellScript
     // Start is called before the first frame update
     void Start()
     {
-        projectileAttack = new ProjectileAttack(projectilePrefab, GameObject.FindWithTag("Player"), projectileSpeed); 
+        projectileAttack = new ProjectileAttack(projectilePrefab, projectileSpeed); 
         playerStats = new PlayerController.PlayerStats(speed, maxSpeed, health, armor, projectileAttack);
     }
 }
