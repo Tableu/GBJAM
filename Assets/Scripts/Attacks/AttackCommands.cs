@@ -56,10 +56,12 @@ public class ProjectileAttack : AttackCommand
     [SerializeField] private float _speed;
     [SerializeField] private GameObject _projectilePrefab;
     private float _horizontalOffset;
+    private float _attackDuration;
 
-    public ProjectileAttack(GameObject projectilePrefab, float speed, float horizontalOffset=1)
+    public ProjectileAttack(GameObject projectilePrefab, float speed, float attackDuration=0.5f, float horizontalOffset=1)
     {
         _speed = speed;
+        _attackDuration = attackDuration;
         _horizontalOffset = horizontalOffset;
         _projectilePrefab = projectilePrefab;
     }
@@ -70,13 +72,18 @@ public class ProjectileAttack : AttackCommand
     {
         IsRunning = true;
         LockInput = true;
+        
+        // needed to line up with attack animations
+        // todo: make parameter?
+        yield return new WaitForSeconds(0.5f);
+        
         var transform = attacker.GetComponent<Transform>();
         var dir = -1 * Mathf.Sign(transform.localScale.x);
         var pos = transform.position + dir * _horizontalOffset * Vector3.right;
         var projectile = GameObject.Instantiate(_projectilePrefab, pos, Quaternion.identity);
         projectile.transform.localScale = transform.localScale;
         projectile.GetComponent<Rigidbody2D>().velocity = new Vector2(_speed*(-1)*transform.localScale.x,0);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(_attackDuration);
         IsRunning = false;
         LockInput = false;
     }

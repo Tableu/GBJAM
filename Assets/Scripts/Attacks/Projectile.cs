@@ -9,6 +9,18 @@ public class Projectile : MonoBehaviour
     public int damage;
     public float knockback;
     public LayerMask enemyLayer;
+
+    private void Start()
+    {
+        StartCoroutine(DeathTimer());
+    }
+
+    private IEnumerator DeathTimer()
+    {
+        yield return new WaitForSeconds(5);
+        Destroy(gameObject);
+    }
+    
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (((1 << other.gameObject.layer) & enemyLayer) != 0)

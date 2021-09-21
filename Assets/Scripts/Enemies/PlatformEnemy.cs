@@ -11,7 +11,7 @@ public class PlatformEnemy : EnemyBase
 
     protected new void Awake()
     {
-        Attack = new ProjectileAttack(projectile, projectileSpeed, 1.5f);
+        Attack = new ProjectileAttack(projectile, projectileSpeed, 1.5f, 1.5f);
         base.Awake();
         _collider = GetComponent<BoxCollider2D>();
         StateMachine = new FSM();
