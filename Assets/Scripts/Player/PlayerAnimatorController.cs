@@ -6,14 +6,8 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-public class PlayerAnimatorController : MonoBehaviour
+public class PlayerAnimatorController : AnimationControllerBase
 {
-    Animator animCont;
-
-    private void Awake()
-    {
-        animCont = GetComponent<Animator>();
-    }
 
     public void SetIsGrounded(bool grounded)
     {
@@ -31,7 +25,11 @@ public class PlayerAnimatorController : MonoBehaviour
     {
         animCont.SetTrigger("JumpTrigger");
     }
-    //Jump?? Depends on if we get multiple states of airborne (going up and going down or something like that)
+
+    public void TriggerAttack()
+    {
+        animCont.SetTrigger("AttackTrigger");
+    }
 }
 
 
