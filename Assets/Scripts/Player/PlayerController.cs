@@ -259,7 +259,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         else
         {
             armor -= dmg.RawDamage;
-            HUDManager.Instance.UpdateArmor(armor);
+            HUDManager.Instance.UpdateArmor(Mathf.Max(0, armor));
             if (armor <= 0) { BreakShell(); }
             Debug.Log("Lose Armor");
         }
