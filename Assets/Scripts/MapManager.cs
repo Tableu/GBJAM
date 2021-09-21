@@ -8,6 +8,9 @@ public class MapManager : MonoBehaviour
     Transform confinerContainer;
     PlayerController player;
 
+    [SerializeField]
+    AudioSource bgmPlayer;
+
     static MapManager _instance;
     public static MapManager Instance
     {
@@ -21,7 +24,12 @@ public class MapManager : MonoBehaviour
             Destroy(gameObject);
         }
         _instance = this;
+
+        bgmPlayer = GetComponent<AudioSource>();
     }
+
+
+
     void Start()
     {
         pSoundManager.ClearNonexistentSources();
@@ -37,7 +45,6 @@ public class MapManager : MonoBehaviour
             HUDManager.Instance.UpdateArmor(player.Armor);
             //TODO: Update coins.
         }
-
 
         if (confinerContainer)
         {
