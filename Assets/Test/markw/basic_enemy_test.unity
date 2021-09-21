@@ -1168,6 +1168,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 192
   lookAheadDist: 1
+  projectileSpeed: 5
+  projectile: {fileID: 6077207994914079605, guid: d4b0c9ae837b84a488dc51ee56b39715, type: 3}
 --- !u!61 &1016052076
 BoxCollider2D:
   m_ObjectHideFlags: 0

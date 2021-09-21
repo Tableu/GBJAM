@@ -7,11 +7,11 @@ public class MeleeAttack : IState
 {
     private readonly MovementController _movement;
     private readonly Transform _target;
-    private readonly SnailEnemy _enemy;
+    private readonly PlatformEnemy _enemy;
     private readonly Collider2D _collider;
     private readonly LayerMask _playerLayer = LayerMask.GetMask("Player");
 
-    public MeleeAttack(SnailEnemy enemy, MovementController movement, Transform target)
+    public MeleeAttack(PlatformEnemy enemy, MovementController movement, Transform target)
     {
         _enemy = enemy;
         _movement = movement;
@@ -33,6 +33,54 @@ public class MeleeAttack : IState
         {
             _movement.MoveHorizontally(dir * _movement.WalkingSpeed);
         }
+    }
+
+    public void OnEnter()
+    {
+        _movement.Stop();
+    }
+
+    public void OnExit()
+    {
+        _movement.Stop();
+    }
+}
+
+public class RangedAttack : IState
+{
+    private readonly MovementController _movement;
+    private readonly Transform _playerTransform;
+    private readonly PlatformEnemy _enemy;
+    private readonly Collider2D _collider;
+    private readonly LayerMask _playerLayer = LayerMask.GetMask("Player");
+    private float _targetDistance;
+
+    public RangedAttack(PlatformEnemy enemy, MovementController movement, Transform playerTransform)
+    {
+        _enemy = enemy;
+        _movement = movement;
+        _playerTransform = playerTransform;
+        _collider = playerTransform.gameObject.GetComponent<Collider2D>();
+        _targetDistance = 5;
+    }
+
+    public void Tick()
+    {
+        var playerPosition = _playerTransform.position;
+        var position = _movement.Position;
+        var distance = playerPosition.x - _movement.Position.x;
+        var direction = Mathf.Sign(distance);
+        distance = Mathf.Abs(distance) - _targetDistance;
+
+        _enemy.CanAttack = Mathf.Abs(playerPosition.y - position.y) < 1f;
+
+        if (Mathf.Abs(distance) < 0.5)
+        {
+            return;
+        }
+        
+        var speed = Mathf.Clamp(distance * _movement.WalkingSpeed, -_movement.WalkingSpeed, _movement.WalkingSpeed);
+        _movement.MoveHorizontally(direction * speed);
     }
 
     public void OnEnter()
