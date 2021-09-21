@@ -10,6 +10,7 @@ namespace Attacks
         public GameObject projectilePrefab;
         public float windupTime;
         public float cooldownTime;
+        // todo: get from box collider
         public float horizontalOffset;
 
         public override AttackCommand MakeAttack()

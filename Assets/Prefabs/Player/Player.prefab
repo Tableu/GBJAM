@@ -68,6 +68,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 675939a7d60f82c4c8caa3d32ba41aee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  meleeStats:
+    _speed: {x: 12, y: 4}
+    _maxSpeed: {x: 12, y: 50}
+    _health: 1
+    _armor: 0
   projectile: {fileID: 9017503243157431788, guid: d81b8041e9a791446a4e0607804d0a34, type: 3}
   rigidBody: {fileID: 6985282805989476353}
   col: {fileID: 887794956}
@@ -75,9 +80,11 @@ MonoBehaviour:
   playerShellSpriteRenderer: {fileID: 2663926567196102169}
   health: 1
   armor: 0
-  speed: {x: 10, y: 4}
-  maxSpeed: {x: 10, y: 50}
+  speed: {x: 12, y: 4}
+  maxSpeed: {x: 12, y: 50}
   powerUp: Simple Projectile Attack
+  shell: {fileID: 0}
+  damagedShell: {fileID: 0}
   grounded: 0
   frontClear: 0
   hiding: 0

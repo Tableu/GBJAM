@@ -1,10 +1,11 @@
 using Enemies;
 using UnityEngine;
 
-
 public class PlatformEnemy : EnemyBase
 {
-    [SerializeField] public float lookAheadDist = 0.5f;
+    [Header("Platform Enemy Config")] [SerializeField]
+    public float lookAheadDist = 0.5f;
+
     private BoxCollider2D _collider;
 
     protected new void Awake()
@@ -16,9 +17,9 @@ public class PlatformEnemy : EnemyBase
         var patrol = new PatrolPlatform(this, _movementController);
         var attack = new RangedAttack(this, _movementController, PlayerTransform);
 
-        StateMachine.AddTransition(falling, patrol, 
+        StateMachine.AddTransition(falling, patrol,
             () => _movementController.Grounded());
-        StateMachine.AddAnyTransition(falling, 
+        StateMachine.AddAnyTransition(falling,
             () => !_movementController.Grounded());
         StateMachine.AddTransition(patrol, attack, PlayerVisible);
         StateMachine.AddTransition(attack, patrol, () => timeSinceSawPlayer > attackTime);
@@ -28,8 +29,8 @@ public class PlatformEnemy : EnemyBase
     public bool AtPlatformEdge()
     {
         var bounds = _collider.bounds;
-        var rayOrigin = new Vector2(bounds.center.x - lookAheadDist*transform.localScale.x, bounds.min.y);
-        var hit = Physics2D.Raycast(rayOrigin, Vector2.down, 0.5f, collisionLayers);
+        var rayOrigin = new Vector2(bounds.center.x - lookAheadDist * transform.localScale.x, bounds.min.y);
+        var hit = Physics2D.Raycast(rayOrigin, Vector2.down, 0.5f, groundLayer);
         return !hit;
     }
 }

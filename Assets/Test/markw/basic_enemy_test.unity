@@ -1188,11 +1188,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkingSpeed: 5
-  collisionLayers:
-    serializedVersion: 2
-    m_Bits: 128
+  knockbackFactor: 1
+  knockbackDamage: 0
   maxHealth: 100
-  knockbackFactor: 0.1
+  currentHealth: 0
+  attackConfig: {fileID: 11400000, guid: 76cba72a43bdf8f44b8a31b96c1d3a25, type: 2}
   fieldOfView: 25
   visionRange: 50
   detectionRange: 5
@@ -1200,7 +1200,6 @@ MonoBehaviour:
   sightBlockingLayers:
     serializedVersion: 2
     m_Bits: 192
-  attackConfig: {fileID: 11400000, guid: 76cba72a43bdf8f44b8a31b96c1d3a25, type: 2}
   lookAheadDist: 1
 --- !u!61 &1016052076
 BoxCollider2D:

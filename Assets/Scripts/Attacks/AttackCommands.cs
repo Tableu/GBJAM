@@ -71,8 +71,7 @@ public class ProjectileAttack : AttackCommand
     public IEnumerator DoAttack(GameObject attacker)
     {
         IsRunning = true;
-        LockInput = true;
-        
+
         // needed to line up with attack animations
         // todo: make parameter?
         yield return new WaitForSeconds(0.5f);
@@ -85,7 +84,6 @@ public class ProjectileAttack : AttackCommand
         projectile.GetComponent<Rigidbody2D>().velocity = new Vector2(_speed*(-1)*transform.localScale.x,0);
         yield return new WaitForSeconds(_attackDuration);
         IsRunning = false;
-        LockInput = false;
     }
 }
 

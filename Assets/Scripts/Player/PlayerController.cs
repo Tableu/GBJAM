@@ -38,6 +38,8 @@ public class PlayerController : MonoBehaviour, IDamageable
     private AttackCommand _attackCommand;
     private MovementController _movementController;
 
+    [SerializeField] private PlayerStats meleeStats;
+    [SerializeField] private AttackCommand meleeAttackCommand;
     [SerializeField] private GameObject projectile;
     [SerializeField] private Rigidbody2D rigidBody;
     [SerializeField] private Collider2D col;
@@ -49,6 +51,8 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] private Vector2 speed;
     [SerializeField] private Vector2 maxSpeed;
     [SerializeField] private string powerUp;
+    [SerializeField] private Sprite shell;
+    [SerializeField] private Sprite damagedShell;
 
     [SerializeField] private bool grounded;
     [SerializeField] public bool frontClear;
@@ -150,6 +154,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         armor = playerStats.Armor;
         speed = playerStats.Speed;
         maxSpeed = playerStats.MaxSpeed;
+        _movementController = new MovementController(gameObject,maxSpeed.x, -1);
         _attackCommand = playerStats.Attack;
     }
     private void Move()
@@ -187,9 +192,9 @@ public class PlayerController : MonoBehaviour, IDamageable
             if (!_attackCommand.IsRunning)
             {
                 StartCoroutine(_attackCommand.DoAttack(gameObject));
+                pSoundManager.PlaySound(pSoundManager.Sound.pAttack);
             }
         }
-        pSoundManager.PlaySound(pSoundManager.Sound.pAttack);
     }
 
     private void ChargeAttack(InputAction.CallbackContext context)
@@ -212,6 +217,8 @@ public class PlayerController : MonoBehaviour, IDamageable
                 var newShell = collider2D[0].gameObject;
                 DropShell();
                 SetStats(newShell.GetComponent<ShellScript>().playerStats);
+                shell = newShell.GetComponent<ShellScript>().shell;
+                damagedShell = newShell.GetComponent<ShellScript>().damagedShell;
                 playerShellSpriteRenderer.sprite = collider2D[0].GetComponent<SpriteRenderer>().sprite;
                 newShell.transform.parent = gameObject.transform;
                 newShell.SetActive(false);
@@ -220,6 +227,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             {
                 DropShell();
                 playerShellSpriteRenderer.sprite = null;
+                SetStats(meleeStats);
             }
             pSoundManager.PlaySound(pSoundManager.Sound.pPickup);
         }
@@ -232,6 +240,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             var oldShell = transform.GetChild(1);
             oldShell.gameObject.SetActive(true);
             oldShell.SetParent(null);
+            oldShell.GetComponent<SpriteRenderer>().sprite = playerShellSpriteRenderer.sprite;
             oldShell.localScale = new Vector3(transform.localScale.x, oldShell.localScale.y, oldShell.localScale.z);
             oldShell.GetComponent<ShellScript>().armor = armor;
         }
@@ -262,13 +271,25 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             health -= dmg.RawDamage;
             HUDManager.Instance.UpdateHealth(health);
-            if (health <= 0) { Death(); }
+            if (health <= 0)
+            {
+                Death();
+            }
             Debug.Log("Lose Health");
         }
         else
         {
+            // todo: make sure the player takes damage if their armour breaks
             armor -= dmg.RawDamage;
-            HUDManager.Instance.UpdateArmor(armor);
+            HUDManager.Instance.UpdateArmor(Mathf.Max(0,armor));
+            if (armor <= 0)
+            {
+                BreakShell(); 
+                
+            }else if(armor == 1)
+            {
+                playerShellSpriteRenderer.sprite = damagedShell;
+            }
             if (armor <= 0) { BreakShell(); }
             Debug.Log("Lose Armor");
         }
@@ -287,7 +308,12 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     private void BreakShell()
     {
-        //remove shell sprite
+        playerShellSpriteRenderer.sprite = null;
+        shell = null;
+        damagedShell = null;
+        Destroy(transform.GetChild(1).gameObject);
+        SetStats(meleeStats);
+        //switch to melee
     }
 
     // private IEnumerator KnockbackCoroutine()
@@ -309,8 +335,8 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             case "Enemy":
                 // todo: add variable for these properties
-                var dmg = new Damage(transform.position, 20, 1);
-                other.gameObject.GetComponent<IDamageable>().TakeDamage(dmg);
+                //var dmg = new Damage(transform.position, 20, 1);
+                //other.gameObject.GetComponent<IDamageable>().TakeDamage(dmg);
                 break;
         }
     }
