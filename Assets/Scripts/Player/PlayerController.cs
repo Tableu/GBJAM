@@ -54,6 +54,15 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] public bool frontClear;
     [SerializeField] private bool hiding;
 
+
+    public int Health
+    {
+        get { return health; }
+    }
+    public int Armor
+    {
+        get { return armor; }
+    }
     // [SerializeField, Range(0, 1f)] private float knockBackDuration = 0.25f;
     // private bool isInKnockback = false;
 

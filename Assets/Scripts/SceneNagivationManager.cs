@@ -33,26 +33,26 @@ public class SceneNagivationManager : MonoBehaviour
 
     public void GoToMainMenu()
     {
-        SceneManager.LoadScene("MainMenu");
-        HUDManager.Instance.Show(false);
+        StartCoroutine(SwitchSceneAfterTime("MainMenu", false));
     }
     public void GoToIojiojiTestScene()
     {
-        StartCoroutine(SceneWait());
-        SceneManager.LoadScene("IojiojiTestScene");
-        ///If you're gonna show the HUD, preferably do it when you're already inside a scene that uses it. Hiding it before is cool but do call show after (or manually update each value from inside the scene).
-        HUDManager.Instance.Show(true);
+        StartCoroutine(SwitchSceneAfterTime("IojiojiTestScene", true));
     }
     public void GoToTableuTestScene()
     {
-        StartCoroutine(SceneWait());
-        SceneManager.LoadScene("TableuTest");
-        ///If you're gonna show the HUD, preferably do it when you're already inside a scene that uses it. Hiding it before is cool but do call show after (or manually update each value from inside the scene).
-        HUDManager.Instance.Show(true);
+        StartCoroutine(SwitchSceneAfterTime("TableuTest", true));
+    }
+    public void GoToLevel1()
+    {
+        StartCoroutine(SwitchSceneAfterTime("Level1", true));
     }
 
-    IEnumerator SceneWait()
+    IEnumerator SwitchSceneAfterTime(string sceneName, bool showHUD)
     {
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(1f);
+        SceneManager.LoadScene(sceneName);
+        ///If you're gonna show the HUD, preferably do it when you're already inside a scene that uses it. Hiding it before is cool but do call show after (or manually update each value from inside the scene).
+        HUDManager.Instance.Show(showHUD);
     }
 }

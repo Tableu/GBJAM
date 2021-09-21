@@ -56,6 +56,11 @@ public class MainMenuManager : MonoBehaviour
         Debug.Log($"Ayy click {message}");
     }
 
+    public void GoToLevel1()
+    {
+        SceneNagivationManager.Instance.GoToLevel1();
+    }
+
     /// <summary>
     /// Kinda debug? Loads IojiojiTestSceney
     /// </summary>
