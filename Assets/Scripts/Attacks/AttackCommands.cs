@@ -88,3 +88,8 @@ public class ProjectileAttack : AttackCommand
         LockInput = false;
     }
 }
+
+public abstract class AttackScriptableObject : ScriptableObject
+{
+    public abstract AttackCommand MakeAttack();
+}

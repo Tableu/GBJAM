@@ -10,4 +10,5 @@ public class ShellScript : MonoBehaviour
     [SerializeField] public int health;
     [SerializeField] public int armor;
     [HideInInspector] public PlayerController.PlayerStats playerStats;
+    public AttackScriptableObject attackConfig;
 }

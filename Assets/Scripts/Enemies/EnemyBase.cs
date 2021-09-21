@@ -25,6 +25,7 @@ namespace Enemies
         [SerializeField] private LayerMask sightBlockingLayers;
 
         [NonSerialized] protected MovementController _movementController;
+        public AttackScriptableObject attackConfig;
 
         protected Vector2 Forward => Vector2.right * transform.localScale.x;
         protected float timeSinceSawPlayer = 0;
@@ -33,7 +34,7 @@ namespace Enemies
 
         protected Transform PlayerTransform;
         protected PlayerController Player;
-        protected AttackCommand Attack;
+        private AttackCommand _attack;
         [NonSerialized] public bool CanAttack = false;
 
         private int _currentHealth;
@@ -42,6 +43,7 @@ namespace Enemies
 
         protected void Awake()
         {
+            _attack = attackConfig.MakeAttack();
             Animator = GetComponentInChildren<EnemyAnimatorController>();
             _movementController = new MovementController(gameObject, walkingSpeed);
             StateMachine = new FSM();
@@ -56,10 +58,10 @@ namespace Enemies
         {
             LookForPlayer();
             StateMachine.Tick();
-            if (!Attack.IsRunning && CanAttack)
+            if (!_attack.IsRunning && CanAttack)
             {
                 Animator.TriggerAttack();
-                StartCoroutine(Attack.DoAttack(gameObject));
+                StartCoroutine(_attack.DoAttack(gameObject));
             }
         }
 
