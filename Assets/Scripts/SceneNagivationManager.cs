@@ -48,6 +48,11 @@ public class SceneNagivationManager : MonoBehaviour
         StartCoroutine(SwitchSceneAfterTime("Level1", true));
     }
 
+    public void ReloadScene()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
     IEnumerator SwitchSceneAfterTime(string sceneName, bool showHUD)
     {
         yield return new WaitForSeconds(1f);

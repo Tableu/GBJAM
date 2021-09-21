@@ -14,7 +14,19 @@ public static class pSoundManager
         pCoin,
         pPickup,
         pHide,
-    
+    }
+
+    public static void ClearNonexistentSources()
+    {
+        List<AudioSource> activeSources = new List<AudioSource>();
+        foreach (AudioSource auSo in sources)
+        {
+            if (auSo != null)
+            {
+                activeSources.Add(auSo);
+            }
+        }
+        sources = activeSources;
     }
 
     public static void PlaySound(Sound sound)

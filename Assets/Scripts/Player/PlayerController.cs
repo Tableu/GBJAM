@@ -154,9 +154,10 @@ public class PlayerController : MonoBehaviour, IDamageable
         armor = playerStats.Armor;
         speed = playerStats.Speed;
         maxSpeed = playerStats.MaxSpeed;
-        _movementController = new MovementController(gameObject,maxSpeed.x, -1);
+        _movementController = new MovementController(gameObject, maxSpeed.x, -1);
         _attackCommand = playerStats.Attack;
 
+        //Update UI each time stats are changed.
         HUDManager.Instance.UpdateHealth(health);
         HUDManager.Instance.UpdateArmor(armor);
     }
@@ -270,7 +271,40 @@ public class PlayerController : MonoBehaviour, IDamageable
     public void TakeDamage(Damage dmg)
     {
         var direction = Math.Sign(transform.position.x - dmg.Source.x);
-        if (direction == Math.Sign(transform.localScale.x))
+        //Only do the 'Got hit from behind?' thing if you actually have armor left
+        //I may just not have understood how shell armor was supposed to work, given that player also gets more health from the shell but when the shell breaks, player's health returns to pre-shell.
+        //TODO: Check this behaviour later  ^^^
+        if (armor > 0)
+        {
+            if (direction == Math.Sign(transform.localScale.x))
+            {
+                health -= dmg.RawDamage;
+                HUDManager.Instance.UpdateHealth(Mathf.Max(0, health));
+                if (health <= 0)
+                {
+                    Death();
+                }
+                Debug.Log("Lose Health");
+            }
+            else
+            {
+                // todo: make sure the player takes damage if their armour breaks
+                armor -= dmg.RawDamage;
+                HUDManager.Instance.UpdateArmor(Mathf.Max(0, armor));
+                if (armor <= 0)
+                {
+                    BreakShell();
+
+                }
+                else if (armor == 1)
+                {
+                    playerShellSpriteRenderer.sprite = damagedShell;
+                }
+                if (armor <= 0) { BreakShell(); }
+                Debug.Log("Lose Armor");
+            }
+        }
+        else
         {
             health -= dmg.RawDamage;
             HUDManager.Instance.UpdateHealth(Mathf.Max(0, health));
@@ -280,31 +314,24 @@ public class PlayerController : MonoBehaviour, IDamageable
             }
             Debug.Log("Lose Health");
         }
-        else
-        {
-            // todo: make sure the player takes damage if their armour breaks
-            armor -= dmg.RawDamage;
-            HUDManager.Instance.UpdateArmor(Mathf.Max(0,armor));
-            if (armor <= 0)
-            {
-                BreakShell(); 
-                
-            }else if(armor == 1)
-            {
-                playerShellSpriteRenderer.sprite = damagedShell;
-            }
-            if (armor <= 0) { BreakShell(); }
-            Debug.Log("Lose Armor");
-        }
         pSoundManager.PlaySound(pSoundManager.Sound.pHit);
         StartCoroutine(Invulnerable());
-        StartCoroutine(_movementController.Knockback(dmg));
+        //Only do the Knockback coroutine if knockback on dmg isn't 0, so player doesn't come to a full stop for a moment if knockback is 0.
+        if (dmg.Knockback != 0)
+        {
+            StartCoroutine(_movementController.Knockback(dmg));
+        }
         // StartCoroutine(KnockbackCoroutine());
     }
 
     private void Death()
     {
         pSoundManager.PlaySound(pSoundManager.Sound.pDie);
+        //Tell MapManager the player died, it handles respawn and such.
+        if (MapManager.Instance)
+        {
+            MapManager.Instance.PlayerDied();
+        }
         //Perform other death tasks
         Destroy(gameObject);
     }
@@ -314,7 +341,11 @@ public class PlayerController : MonoBehaviour, IDamageable
         playerShellSpriteRenderer.sprite = null;
         shell = null;
         damagedShell = null;
-        Destroy(transform.GetChild(1).gameObject);
+        //TODO: Check out this thing cus it's pumping out errors sometimes, this if is just so that it doesn't do that and it actually Sets Stats.
+        if (transform.childCount > 1)
+        {
+            Destroy(transform.GetChild(1).gameObject);
+        }
         SetStats(meleeStats);
         //switch to melee
     }
@@ -331,7 +362,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         yield return new WaitForSeconds(1);
         gameObject.layer = LayerMask.NameToLayer("Player");
     }
-    
+
     private void OnCollisionEnter2D(Collision2D other)
     {
         switch (LayerMask.LayerToName(other.collider.gameObject.layer))
@@ -340,6 +371,19 @@ public class PlayerController : MonoBehaviour, IDamageable
                 // todo: add variable for these properties
                 //var dmg = new Damage(transform.position, 20, 1);
                 //other.gameObject.GetComponent<IDamageable>().TakeDamage(dmg);
+                break;
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        switch (LayerMask.LayerToName(other.transform.gameObject.layer))
+        {
+            case "Secret":
+                //Do something??
+                break;
+            case "Spikes":
+                //TakeDamage(new Damage(new Vector2(transform.position.x - transform.localScale.x, transform.position.y), 20f, 1));
+                TakeDamage(new Damage(transform.position, 0, 1));
                 break;
         }
     }
