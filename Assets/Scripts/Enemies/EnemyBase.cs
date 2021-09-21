@@ -2,11 +2,6 @@ using System;
 using System.IO;
 using UnityEngine;
 
-#if UNITY_EDITOR
-using Enemies;
-using UnityEditor;
-#endif
-
 
 namespace Enemies
 {
@@ -39,6 +34,8 @@ namespace Enemies
 
         protected Transform PlayerTransform;
         protected PlayerController Player;
+        protected AttackCommand Attack;
+        [NonSerialized]public bool CanAttack = false;
         
         private int _currentHealth;
         private LayerMask _playerLayer;
@@ -58,6 +55,10 @@ namespace Enemies
         {
             LookForPlayer();
             StateMachine.Tick();
+            if (!Attack.IsRunning && CanAttack)
+            {
+                StartCoroutine(Attack.DoAttack(gameObject));
+            }
         }
         
         protected bool PlayerVisible()
@@ -130,30 +131,3 @@ namespace Enemies
         }
     }
 }
-
-#if UNITY_EDITOR
-[CustomEditor(typeof(SnailEnemy))]
-class EnemyControllerEditor : Editor
-{
-    SnailEnemy enemy { get { return target as SnailEnemy; } }
-
-    public override void OnInspectorGUI()
-    {
-        base.OnInspectorGUI();
-        if (Application.isPlaying)
-        {
-            EditorExtensionMethods.DrawSeparator(Color.gray);
-            if (GUILayout.Button("Damage left"))
-            {
-                Damage auxDamage = new Damage((Vector2)enemy.transform.position + new Vector2(0.5f, -0.5f), 20f, 0);
-                enemy.TakeDamage(auxDamage);
-            }
-            if (GUILayout.Button("Damage right"))
-            {
-                Damage auxDamage = new Damage((Vector2)enemy.transform.position + new Vector2(-0.5f, -0.5f), 20f, 0);
-                enemy.TakeDamage(auxDamage);
-            }
-        }
-    }
-}
-#endif

@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class PatrolPlatform: IState
 {
-    private readonly SnailEnemy _enemy;
+    private readonly PlatformEnemy _enemy;
     private readonly MovementController _movement;
     private float _speed;
-    public PatrolPlatform(SnailEnemy enemy, MovementController movement)
+    public PatrolPlatform(PlatformEnemy enemy, MovementController movement)
     {
         _enemy = enemy;
         _movement = movement;

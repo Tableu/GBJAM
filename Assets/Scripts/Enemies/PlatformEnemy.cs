@@ -2,19 +2,22 @@ using Enemies;
 using UnityEngine;
 
 
-public class SnailEnemy : EnemyBase
+public class PlatformEnemy : EnemyBase
 {
     [SerializeField] public float lookAheadDist = 0.5f;
+    [SerializeField] private float projectileSpeed = 5f;
+    [SerializeField] public GameObject projectile;
     private BoxCollider2D _collider;
 
     protected new void Awake()
     {
+        Attack = new ProjectileAttack(projectile, projectileSpeed, 1.5f);
         base.Awake();
         _collider = GetComponent<BoxCollider2D>();
         StateMachine = new FSM();
         var falling = new FallState(this);
         var patrol = new PatrolPlatform(this, _movementController);
-        var attack = new MeleeAttack(this, _movementController, PlayerTransform);
+        var attack = new RangedAttack(this, _movementController, PlayerTransform);
 
         StateMachine.AddTransition(falling, patrol, 
             () => _movementController.Grounded());

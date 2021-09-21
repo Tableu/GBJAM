@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Runtime.InteropServices.ComTypes;
 using UnityEngine;
 
 public interface AttackCommand
@@ -54,10 +55,12 @@ public class ProjectileAttack : AttackCommand
 {
     [SerializeField] private float _speed;
     [SerializeField] private GameObject _projectilePrefab;
+    private float _horizontalOffset;
 
-    public ProjectileAttack(GameObject projectilePrefab, float speed)
+    public ProjectileAttack(GameObject projectilePrefab, float speed, float horizontalOffset=1)
     {
         _speed = speed;
+        _horizontalOffset = horizontalOffset;
         _projectilePrefab = projectilePrefab;
     }
     public bool IsRunning { get; private set; }
@@ -68,11 +71,12 @@ public class ProjectileAttack : AttackCommand
         IsRunning = true;
         LockInput = true;
         var transform = attacker.GetComponent<Transform>();
-        var pos = transform.position + new Vector3(transform.localScale.x*(-1),0,0);
+        var dir = -1 * Mathf.Sign(transform.localScale.x);
+        var pos = transform.position + dir * _horizontalOffset * Vector3.right;
         var projectile = GameObject.Instantiate(_projectilePrefab, pos, Quaternion.identity);
         projectile.transform.localScale = transform.localScale;
         projectile.GetComponent<Rigidbody2D>().velocity = new Vector2(_speed*(-1)*transform.localScale.x,0);
-        yield return "Projectile";
+        yield return new WaitForSeconds(0.5f);
         IsRunning = false;
         LockInput = false;
     }
