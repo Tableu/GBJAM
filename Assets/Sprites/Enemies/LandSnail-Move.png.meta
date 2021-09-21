@@ -1,19 +1,19 @@
 fileFormatVersion: 2
-guid: 64d63bc50f1fcf74c891120479347ff4
+guid: a213a3a229b2dee49938c8c0f5e501ab
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -5126213757013884773
-    second: crabAtkSheet_0
+      213: 5465822180869744340
+    second: LandSnail-Move_0
   - first:
-      213: 2485540686309686507
-    second: crabAtkSheet_1
+      213: -1713865605162666510
+    second: LandSnail-Move_1
   - first:
-      213: -3550097026149908951
-    second: crabAtkSheet_2
+      213: 1924553784883215403
+    second: LandSnail-Move_2
   - first:
-      213: 4262435448729411134
-    second: crabAtkSheet_3
+      213: -7712355319244806166
+    second: LandSnail-Move_3
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -115,85 +115,85 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: crabAtkSheet_0
+      name: LandSnail-Move_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 24
-        height: 20
-      alignment: 9
-      pivot: {x: 0.5833333, y: 0.2}
+        width: 32
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b9087727fb70cd8b0800000000000000
-      internalID: -5126213757013884773
+      spriteID: 4d6213870508adb40800000000000000
+      internalID: 5465822180869744340
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: crabAtkSheet_1
+      name: LandSnail-Move_1
       rect:
         serializedVersion: 2
-        x: 24
+        x: 32
         y: 0
-        width: 24
-        height: 20
-      alignment: 9
-      pivot: {x: 0.5833333, y: 0.2}
+        width: 32
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: becf442d51a6e7220800000000000000
-      internalID: 2485540686309686507
+      spriteID: 2f5f48300502738e0800000000000000
+      internalID: -1713865605162666510
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: crabAtkSheet_2
+      name: LandSnail-Move_2
       rect:
         serializedVersion: 2
-        x: 48
+        x: 64
         y: 0
-        width: 24
-        height: 20
-      alignment: 9
-      pivot: {x: 0.5833333, y: 0.2}
+        width: 32
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 92ef92e50958bbec0800000000000000
-      internalID: -3550097026149908951
+      spriteID: b2cf81b787365ba10800000000000000
+      internalID: 1924553784883215403
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: crabAtkSheet_3
+      name: LandSnail-Move_3
       rect:
         serializedVersion: 2
-        x: 72
+        x: 96
         y: 0
-        width: 24
-        height: 20
-      alignment: 9
-      pivot: {x: 0.5833333, y: 0.2}
+        width: 32
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e3e9c8f0576372b30800000000000000
-      internalID: 4262435448729411134
+      spriteID: ae7a1dee2b538f490800000000000000
+      internalID: -7712355319244806166
       vertices: []
       indices: 
       edges: []
