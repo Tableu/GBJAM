@@ -258,6 +258,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
         else
         {
+            // todo: make sure the player takes damage if their armour breaks
             armor -= dmg.RawDamage;
             HUDManager.Instance.UpdateArmor(Mathf.Max(0, armor));
             if (armor <= 0) { BreakShell(); }
