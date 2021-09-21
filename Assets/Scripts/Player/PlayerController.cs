@@ -201,8 +201,8 @@ public class PlayerController : MonoBehaviour, IDamageable
             if (Physics2D.OverlapCollider(col, contactFilter2D, collider2D) == 1)
             {
                 var newShell = collider2D[0].gameObject;
-                SetStats(newShell.GetComponent<ShellScript>().playerStats);
                 DropShell();
+                SetStats(newShell.GetComponent<ShellScript>().playerStats);
                 playerShellSpriteRenderer.sprite = collider2D[0].GetComponent<SpriteRenderer>().sprite;
                 newShell.transform.parent = gameObject.transform;
                 newShell.SetActive(false);
@@ -224,6 +224,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             oldShell.gameObject.SetActive(true);
             oldShell.SetParent(null);
             oldShell.localScale = new Vector3(transform.localScale.x, oldShell.localScale.y, oldShell.localScale.z);
+            oldShell.GetComponent<ShellScript>().armor = armor;
         }
     }
     private void Hide(InputAction.CallbackContext context)
