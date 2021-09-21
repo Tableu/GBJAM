@@ -73,5 +73,7 @@ public class ProjectileAttack : AttackCommand
         projectile.transform.localScale = transform.localScale;
         projectile.GetComponent<Rigidbody2D>().velocity = new Vector2(_speed*(-1)*transform.localScale.x,0);
         yield return "Projectile";
+        IsRunning = false;
+        LockInput = false;
     }
 }

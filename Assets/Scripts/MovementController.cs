@@ -42,11 +42,7 @@ public class MovementController
         {
             return;
         }
-
-        if (Mathf.Abs(_rigidbody.velocity.x) > 9)
-        {
-            Debug.Log("9");
-        }
+        
         var dir = (int) Mathf.Sign(speed);
         var currentDir = (int) Mathf.Sign(_rigidbody.velocity.x);
 

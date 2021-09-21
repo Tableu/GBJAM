@@ -196,15 +196,36 @@ public class PlayerController : MonoBehaviour, IDamageable
             useLayerMask = true
         };
         Collider2D[] collider2D = new Collider2D[1];
-        if (Physics2D.OverlapCollider(col, contactFilter2D, collider2D) == 1 && grounded)
+        if (grounded)
         {
-            SetStats(collider2D[0].gameObject.GetComponent<ShellScript>().playerStats);
-            playerShellSpriteRenderer.sprite = collider2D[0].GetComponent<SpriteRenderer>().sprite;
-            Destroy(collider2D[0].gameObject);
+            if (Physics2D.OverlapCollider(col, contactFilter2D, collider2D) == 1)
+            {
+                var newShell = collider2D[0].gameObject;
+                SetStats(newShell.GetComponent<ShellScript>().playerStats);
+                DropShell();
+                playerShellSpriteRenderer.sprite = collider2D[0].GetComponent<SpriteRenderer>().sprite;
+                newShell.transform.parent = gameObject.transform;
+                newShell.SetActive(false);
+            }
+            else
+            {
+                DropShell();
+                playerShellSpriteRenderer.sprite = null;
+            }
             pSoundManager.PlaySound(pSoundManager.Sound.pPickup);
         }
     }
 
+    private void DropShell()
+    {
+        if (transform.childCount > 1)
+        {
+            var oldShell = transform.GetChild(1);
+            oldShell.gameObject.SetActive(true);
+            oldShell.SetParent(null);
+            oldShell.localScale = new Vector3(transform.localScale.x, oldShell.localScale.y, oldShell.localScale.z);
+        }
+    }
     private void Hide(InputAction.CallbackContext context)
     {
         //Call playerAnimatorController
