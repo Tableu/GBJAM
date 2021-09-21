@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface AttackCommand
 {
-    public IEnumerator DoAttack(IDamageable target);
+    public IEnumerator DoAttack(GameObject attacker);
     public bool IsRunning { get; }
     public bool LockInput { get; }
 }
@@ -14,28 +14,26 @@ public class DashAttack : AttackCommand
     [SerializeField]private float _distance;
     [SerializeField]private float _speed;
     [SerializeField]private int _damage;
-    [SerializeField]private GameObject _go;
     
-    public DashAttack(GameObject go, float distance, float speed, int damage)
+    public DashAttack(float distance, float speed, int damage)
     {
         _distance = distance;
         _speed = speed;
         _damage = damage;
-        _go = go;
     }
 
     public bool IsRunning { get; private set; }
     public bool LockInput { get; private set; }
 
-    public IEnumerator DoAttack(IDamageable target)
+    public IEnumerator DoAttack(GameObject attacker)
     {
         IsRunning = true;
         LockInput = true;
-        var transform = _go.GetComponent<Transform>();
-        var rigidBody = _go.GetComponent<Rigidbody2D>();
-        var collider = _go.GetComponent<Collider2D>();
+        var transform = attacker.GetComponent<Transform>();
+        var rigidBody = attacker.GetComponent<Rigidbody2D>();
+        var collider = attacker.GetComponent<Collider2D>();
         // todo: use movement controller
-        var controller = _go.GetComponent<PlayerController>();
+        var controller = attacker.GetComponent<PlayerController>();
         var start = transform.position.x;
 
         while (Mathf.Abs(transform.position.x - start) <= _distance &&
@@ -67,7 +65,7 @@ public class ProjectileAttack : AttackCommand
     public bool IsRunning { get; private set; }
     public bool LockInput { get; private set; }
 
-    public IEnumerator DoAttack(IDamageable target)
+    public IEnumerator DoAttack(GameObject attacker)
     {
         IsRunning = true;
         LockInput = true;

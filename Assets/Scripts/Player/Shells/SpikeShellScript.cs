@@ -11,7 +11,7 @@ public class SpikeShellScript : ShellScript
     // Start is called before the first frame update
     void Start()
     {
-        dashAttack = new DashAttack(GameObject.FindWithTag("Player"), distance, dashSpeed, damage);
+        dashAttack = new DashAttack( distance, dashSpeed, damage);
         playerStats = new PlayerController.PlayerStats(speed, maxSpeed, health, armor, dashAttack);
     }
 }

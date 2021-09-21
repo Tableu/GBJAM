@@ -177,7 +177,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             Debug.Log("Attack");
             if (!_attackCommand.IsRunning)
             {
-                StartCoroutine(_attackCommand.DoAttack(null));
+                StartCoroutine(_attackCommand.DoAttack(gameObject));
             }
         }
         pSoundManager.PlaySound(pSoundManager.Sound.pAttack);
