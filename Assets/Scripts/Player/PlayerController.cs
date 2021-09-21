@@ -156,6 +156,9 @@ public class PlayerController : MonoBehaviour, IDamageable
         maxSpeed = playerStats.MaxSpeed;
         _movementController = new MovementController(gameObject,maxSpeed.x, -1);
         _attackCommand = playerStats.Attack;
+
+        HUDManager.Instance.UpdateHealth(health);
+        HUDManager.Instance.UpdateArmor(armor);
     }
     private void Move()
     {
@@ -270,7 +273,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         if (direction == Math.Sign(transform.localScale.x))
         {
             health -= dmg.RawDamage;
-            HUDManager.Instance.UpdateHealth(health);
+            HUDManager.Instance.UpdateHealth(Mathf.Max(0, health));
             if (health <= 0)
             {
                 Death();

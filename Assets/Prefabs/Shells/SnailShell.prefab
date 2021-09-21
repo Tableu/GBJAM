@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3537151017550152801}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.1, y: -2, z: -5.770265}
+  m_LocalPosition: {x: 7.1, y: -2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -132,6 +132,7 @@ MonoBehaviour:
     _maxSpeed: {x: 0, y: 0}
     _health: 0
     _armor: 0
+  attackConfig: {fileID: 0}
   shell: {fileID: 21300000, guid: ed4383fa72307e84997a258ca30b9f8c, type: 3}
   damagedShell: {fileID: 21300000, guid: 343b99f49db44034b938d0a62ed90d3c, type: 3}
   projectileSpeed: 10
