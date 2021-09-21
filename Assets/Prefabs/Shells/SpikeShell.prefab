@@ -123,8 +123,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 930683ed4b8c26d4680e29aab6b092b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: {x: 20, y: 4}
-  maxSpeed: {x: 30, y: 50}
+  speed: {x: 11, y: 4}
+  maxSpeed: {x: 11, y: 50}
   health: 3
   armor: 1
   playerStats:
