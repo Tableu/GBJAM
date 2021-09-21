@@ -270,8 +270,9 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
         else
         {
+            // todo: make sure the player takes damage if their armour breaks
             armor -= dmg.RawDamage;
-            HUDManager.Instance.UpdateArmor(armor);
+            HUDManager.Instance.UpdateArmor(Mathf.Max(0,armor));
             if (armor <= 0)
             {
                 BreakShell(); 
@@ -280,6 +281,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             {
                 playerShellSpriteRenderer.sprite = damagedShell;
             }
+            if (armor <= 0) { BreakShell(); }
             Debug.Log("Lose Armor");
         }
         pSoundManager.PlaySound(pSoundManager.Sound.pHit);

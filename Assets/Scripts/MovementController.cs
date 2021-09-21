@@ -55,10 +55,22 @@ public class MovementController
 
         if (currentDir != dir || Mathf.Abs(_rigidbody.velocity.x) < _maxWalkSpeed)
         {
-            var diff = Mathf.Abs(_maxWalkSpeed)-Mathf.Abs(_rigidbody.velocity.x);
+            var diff = Mathf.Abs(_maxWalkSpeed) - Mathf.Abs(_rigidbody.velocity.x);
             speed = Mathf.Min(diff, Mathf.Abs(speed));
-            _rigidbody.AddForce(new Vector2(speed*dir, 0), ForceMode2D.Impulse);
+            _rigidbody.AddForce(new Vector2(speed * dir, 0), ForceMode2D.Impulse);
         }
+    }
+
+    public int GetDirection()
+    {
+        return (int) Mathf.Sign(_transform.localScale.x * _spriteForward);
+    }
+
+    public void SetDirection(int dir)
+    {
+        var localScale = _transform.localScale;
+        localScale = new Vector3(Mathf.Abs(localScale.x) * dir * _spriteForward, localScale.y, localScale.x);
+        _transform.localScale = localScale;
     }
 
     public bool Jump(float height)
@@ -97,6 +109,7 @@ public class MovementController
             {
                 break;
             }
+
             yield return null;
         }
 

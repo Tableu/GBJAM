@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 /// <summary>
@@ -66,20 +67,22 @@ public class RangedAttack : IState
 
     public void Tick()
     {
+        // todo: stop enemy from running off edge of platform
         var playerPosition = _playerTransform.position;
         var position = _movement.Position;
         var distance = playerPosition.x - _movement.Position.x;
         var direction = Mathf.Sign(distance);
-        distance = Mathf.Abs(distance) - _targetDistance;
+        var error = Mathf.Abs(distance) - _targetDistance;
 
-        _enemy.CanAttack = Mathf.Abs(playerPosition.y - position.y) < 1f;
-
-        if (Mathf.Abs(distance) < 0.5)
+        _enemy.CanAttack = Mathf.Abs(playerPosition.y - position.y) < 1f &&
+                           Math.Sign(distance) == _movement.GetDirection();
+        if (Mathf.Abs(error) < 0.5f)
         {
+            _movement.SetDirection(Math.Sign(distance));
             return;
         }
         
-        var speed = Mathf.Clamp(distance * _movement.WalkingSpeed, -_movement.WalkingSpeed, _movement.WalkingSpeed);
+        var speed = Mathf.Clamp(error * _movement.WalkingSpeed, -_movement.WalkingSpeed, _movement.WalkingSpeed);
         _movement.MoveHorizontally(direction * speed);
     }
 
