@@ -69,7 +69,6 @@ public class ProjectileAttack : AttackCommand
     public IEnumerator DoAttack(GameObject attacker)
     {
         IsRunning = true;
-        LockInput = true;
         var transform = attacker.GetComponent<Transform>();
         var dir = -1 * Mathf.Sign(transform.localScale.x);
         var pos = transform.position + dir * _horizontalOffset * Vector3.right;
@@ -78,6 +77,5 @@ public class ProjectileAttack : AttackCommand
         projectile.GetComponent<Rigidbody2D>().velocity = new Vector2(_speed*(-1)*transform.localScale.x,0);
         yield return new WaitForSeconds(0.5f);
         IsRunning = false;
-        LockInput = false;
     }
 }
