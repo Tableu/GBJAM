@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6077207994914079600}
   - component: {fileID: -1033200797653279898}
   - component: {fileID: 8044066785799970802}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlayerSlimeProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,8 +72,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -1530610801
+  m_SortingLayer: 4
   m_SortingOrder: 0
   m_Sprite: {fileID: 4922512440488779246, guid: 0a6c3a1772b80a648b42f220ecfac1c3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
