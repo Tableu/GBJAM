@@ -44,7 +44,6 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] private int health;
     [SerializeField] private int armor;
     [SerializeField] private Vector2 speed;
-    [SerializeField] private Vector2 maxSpeed;
     [SerializeField] private Sprite shell;
     [SerializeField] private Sprite damagedShell;
 
@@ -143,8 +142,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         armor = playerStats.Armor;
         speed = playerStats.Speed;
-        maxSpeed = playerStats.MaxSpeed;
-        _movementController = new MovementController(gameObject, maxSpeed.x, -1);
+        _movementController.WalkingSpeed = playerStats.MaxSpeed.x;
         _attackCommand = playerStats.Attack.MakeAttack();
 
         //Update UI each time stats are changed.
@@ -170,7 +168,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     private void Attack(InputAction.CallbackContext context)
     {
-        if (context.duration < 1 && _attackCommand != null)
+        if (_attackCommand != null)
         {
             Debug.Log("Attack");
             if (!_attackCommand.IsRunning)
@@ -235,8 +233,9 @@ public class PlayerController : MonoBehaviour, IDamageable
         if (context.started)
         {
             _playerInputActions.Player.Jump.Disable();
-            rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
             hiding = true;
+            _movementController.WalkingSpeed *= 0.5f;
+            speed *= 0.5f;
             playerAnimatorController.SetIsHiding(true);
             pSoundManager.PlaySound(pSoundManager.Sound.pHide);
         }
@@ -244,6 +243,8 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             _playerInputActions.Player.Jump.Enable();
             hiding = false;
+            _movementController.WalkingSpeed *= 2f;
+            speed *= 2f;
             playerAnimatorController.SetIsHiding(false);
         }
     }

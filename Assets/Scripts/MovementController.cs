@@ -7,7 +7,6 @@ public class MovementController
     private Rigidbody2D _rigidbody;
     private BoxCollider2D _boxCollider;
     private Transform _transform;
-    private float _maxWalkSpeed;
     private int _spriteForward;
 
     private bool _inKnockback;
@@ -19,7 +18,7 @@ public class MovementController
     };
 
     public Vector2 Position => _transform.position;
-    public float WalkingSpeed => _maxWalkSpeed;
+    public float WalkingSpeed { get; set; }
 
     /// <summary>
     /// Movement controller constructor
@@ -32,7 +31,7 @@ public class MovementController
         _rigidbody = go.GetComponent<Rigidbody2D>();
         _transform = go.transform;
         _boxCollider = go.GetComponent<BoxCollider2D>();
-        _maxWalkSpeed = maxWalkSpeed;
+        WalkingSpeed = maxWalkSpeed;
         _spriteForward = spriteForwardDir;
     }
 
@@ -53,9 +52,9 @@ public class MovementController
             _transform.localScale = localScale;
         }
 
-        if (currentDir != dir || Mathf.Abs(_rigidbody.velocity.x) < _maxWalkSpeed)
+        if (currentDir != dir || Mathf.Abs(_rigidbody.velocity.x) < WalkingSpeed)
         {
-            var diff = Mathf.Abs(_maxWalkSpeed) - Mathf.Abs(_rigidbody.velocity.x);
+            var diff = Mathf.Abs(WalkingSpeed) - Mathf.Abs(_rigidbody.velocity.x);
             speed = Mathf.Min(diff, Mathf.Abs(speed));
             _rigidbody.AddForce(new Vector2(speed * dir, 0), ForceMode2D.Impulse);
         }
