@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6666176715580743}
   - component: {fileID: 5916625166058093823}
   - component: {fileID: 887794956}
+  - component: {fileID: 2902957441605840076}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -68,25 +69,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 675939a7d60f82c4c8caa3d32ba41aee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  meleeStats:
-    _speed: {x: 12, y: 4}
-    _maxSpeed: {x: 12, y: 50}
-    _health: 1
-    _armor: 0
-  projectile: {fileID: 9017503243157431788, guid: d81b8041e9a791446a4e0607804d0a34, type: 3}
+  meleeStats: {fileID: 2902957441605840076}
+  currentStats: {fileID: 2902957441605840076}
   rigidBody: {fileID: 6985282805989476353}
   col: {fileID: 887794956}
   playerAnimatorController: {fileID: 3549133949129490232}
   playerShellSpriteRenderer: {fileID: 2663926567196102169}
+  _attack: {fileID: 0}
   health: 1
   armor: 0
-  speed: {x: 12, y: 4}
-  maxSpeed: {x: 12, y: 50}
-  powerUp: Simple Projectile Attack
+  speed: {x: 11, y: 4}
   shell: {fileID: 0}
   damagedShell: {fileID: 0}
   grounded: 0
   frontClear: 0
+  inputLocked: 0
   hiding: 0
 --- !u!114 &5916625166058093823
 MonoBehaviour:
@@ -131,7 +128,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0.5}
+  m_Offset: {x: -0.06859231, y: 0.5}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -142,8 +139,25 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.75, y: 1}
+  m_Size: {x: 1.3727431, y: 1}
   m_EdgeRadius: 0
+--- !u!114 &2902957441605840076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5309410706653045697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faa785cb054170f4fad430790183e001, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: {x: 11, y: 5}
+  armor: 0
+  attackConfig: {fileID: 0}
+  shell: {fileID: 0}
+  damagedShell: {fileID: 0}
 --- !u!1001 &1958461991788847387
 PrefabInstance:
   m_ObjectHideFlags: 0

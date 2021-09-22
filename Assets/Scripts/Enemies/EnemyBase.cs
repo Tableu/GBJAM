@@ -71,7 +71,7 @@ namespace Enemies
 
         private void OnCollisionEnter2D(Collision2D other)
         {
-            if (1 << other.gameObject.layer != _playerLayer) return;
+            if (!other.gameObject.CompareTag("Player")) return;
             // todo: add variable for these properties
             var dmg = new Damage(transform.position, 20, 1);
             Player.TakeDamage(dmg);

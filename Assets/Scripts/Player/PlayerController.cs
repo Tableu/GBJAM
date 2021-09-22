@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Attacks;
 using UnityEngine.InputSystem;
 using UnityEngine;
 using Cinemachine;
@@ -10,52 +11,28 @@ using UnityEditor;
 
 public class PlayerController : MonoBehaviour, IDamageable
 {
-    [Serializable]
-    public struct PlayerStats
-    {
-        public PlayerStats(Vector2 speed, Vector2 maxSpeed, int health, int armor, AttackCommand attack)
-        {
-            _speed = speed;
-            _maxSpeed = maxSpeed;
-            _health = health;
-            _armor = armor;
-            _attack = attack;
-        }
-
-        [SerializeField] private Vector2 _speed;
-        [SerializeField] private Vector2 _maxSpeed;
-        [SerializeField] private int _health;
-        [SerializeField] private int _armor;
-        [SerializeField] private AttackCommand _attack;
-        public Vector2 Speed => _speed;
-        public Vector2 MaxSpeed => _maxSpeed;
-        public int Health => _health;
-        public int Armor => _armor;
-        public AttackCommand Attack => _attack;
-    }
     private PlayerInputActions _playerInputActions;
-    private ContactFilter2D _groundFilter2D;
+    private ContactFilter2D _groundFilter2D; 
     private AttackCommand _attackCommand;
     private MovementController _movementController;
 
     [SerializeField] private PlayerStats meleeStats;
-    [SerializeField] private AttackCommand meleeAttackCommand;
-    [SerializeField] private GameObject projectile;
+    [SerializeField] private PlayerStats currentStats;
     [SerializeField] private Rigidbody2D rigidBody;
     [SerializeField] private Collider2D col;
     [SerializeField] private PlayerAnimatorController playerAnimatorController;
     [SerializeField] private SpriteRenderer playerShellSpriteRenderer;
+    [SerializeField] private AttackScriptableObject _attack;
 
     [SerializeField] private int health;
     [SerializeField] private int armor;
     [SerializeField] private Vector2 speed;
-    [SerializeField] private Vector2 maxSpeed;
-    [SerializeField] private string powerUp;
     [SerializeField] private Sprite shell;
     [SerializeField] private Sprite damagedShell;
 
     [SerializeField] private bool grounded;
     [SerializeField] public bool frontClear;
+    [SerializeField] public bool inputLocked;
     [SerializeField] private bool hiding;
 
 
@@ -94,16 +71,11 @@ public class PlayerController : MonoBehaviour, IDamageable
                 pSoundManager.PlaySound(pSoundManager.Sound.pJump);
             }
         });
-        // _playerInputActions.Player.Move.started += Rotate;
         _playerInputActions.Player.Move.canceled += Idle;
         _playerInputActions.Player.PickUpShell.started += SwitchShells;
 
         _playerInputActions.Player.Hide.started += Hide;
         _playerInputActions.Player.Hide.canceled += Hide;
-
-        //_playerInputActions.Player.ChargeAttack.started += ChargeAttack;
-        //_playerInputActions.Player.ChargeAttack.performed += ChargeAttack;
-        _playerInputActions.Player.ChargeAttack.canceled += ChargeAttack;
 
         _playerInputActions.Player.Attack.canceled += Attack;
         _groundFilter2D = new ContactFilter2D
@@ -139,24 +111,29 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             if (_attackCommand.LockInput)
             {
-                _playerInputActions.Player.Disable();
+                inputLocked = true;
             }
             else
             {
-                _playerInputActions.Player.Enable();
+                inputLocked = false;
             }
         }
     }
 
-    public void SetStats(PlayerStats playerStats)
+    public void SetStats(PlayerStats shellStats)
     {
-        health = playerStats.Health;
-        armor = playerStats.Armor;
-        speed = playerStats.Speed;
-        maxSpeed = playerStats.MaxSpeed;
-        _movementController = new MovementController(gameObject, maxSpeed.x, -1);
-        _attackCommand = playerStats.Attack;
+        armor = shellStats.armor;
+        speed = shellStats.speed;
+        _movementController.WalkingSpeed = shellStats.speed.x;
+        _attack = shellStats.attackConfig;
+        if (_attack != null)
+        {
+            _attackCommand = _attack.MakeAttack();
+        }
 
+        shell = shellStats.shell;
+        damagedShell = shellStats.damagedShell;
+        currentStats = shellStats;
         //Update UI each time stats are changed.
         HUDManager.Instance.UpdateHealth(health);
         HUDManager.Instance.UpdateArmor(armor);
@@ -165,32 +142,25 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         var horizontal = _playerInputActions.Player.Move.ReadValue<float>();
         var horizontalVelocity = horizontal * speed.x;
-        _movementController.MoveHorizontally(horizontalVelocity);
-        if (horizontalVelocity != 0)
+        if (!inputLocked)
         {
-            playerAnimatorController.SetIsMoving(true);
+            _movementController.MoveHorizontally(horizontalVelocity);
+            if (horizontalVelocity != 0)
+            {
+                playerAnimatorController.SetIsMoving(true);
+            }
         }
-        // else
-        // {
-        //     if (!isInKnockback && grounded)
-        //     {
-        //         //rigidBody.velocity = new Vector2(Mathf.Lerp(rigidBody.velocity.x, 0, Something???), rigidBody.velocity.y);
-        //         //To avoid the player from sliding after knockback
-        //         rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
-        //     }
-        // }
     }
 
     private void Idle(InputAction.CallbackContext context)
     {
         rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
         playerAnimatorController.SetIsMoving(false);
-        // Debug.Log("Idle");
     }
 
     private void Attack(InputAction.CallbackContext context)
     {
-        if (context.duration < 1 && _attackCommand != null)
+        if (_attackCommand != null)
         {
             Debug.Log("Attack");
             if (!_attackCommand.IsRunning)
@@ -199,11 +169,6 @@ public class PlayerController : MonoBehaviour, IDamageable
                 pSoundManager.PlaySound(pSoundManager.Sound.pAttack);
             }
         }
-    }
-
-    private void ChargeAttack(InputAction.CallbackContext context)
-    {
-
     }
 
     private void SwitchShells(InputAction.CallbackContext context)
@@ -220,9 +185,9 @@ public class PlayerController : MonoBehaviour, IDamageable
             {
                 var newShell = collider2D[0].gameObject;
                 DropShell();
-                SetStats(newShell.GetComponent<ShellScript>().playerStats);
-                shell = newShell.GetComponent<ShellScript>().shell;
-                damagedShell = newShell.GetComponent<ShellScript>().damagedShell;
+                SetStats(newShell.GetComponent<PlayerStats>());
+                shell = newShell.GetComponent<PlayerStats>().shell;
+                damagedShell = newShell.GetComponent<PlayerStats>().damagedShell;
                 playerShellSpriteRenderer.sprite = collider2D[0].GetComponent<SpriteRenderer>().sprite;
                 newShell.transform.parent = gameObject.transform;
                 newShell.SetActive(false);
@@ -233,7 +198,6 @@ public class PlayerController : MonoBehaviour, IDamageable
                 playerShellSpriteRenderer.sprite = null;
                 SetStats(meleeStats);
             }
-            pSoundManager.PlaySound(pSoundManager.Sound.pPickup);
         }
     }
 
@@ -246,7 +210,8 @@ public class PlayerController : MonoBehaviour, IDamageable
             oldShell.SetParent(null);
             oldShell.GetComponent<SpriteRenderer>().sprite = playerShellSpriteRenderer.sprite;
             oldShell.localScale = new Vector3(transform.localScale.x, oldShell.localScale.y, oldShell.localScale.z);
-            oldShell.GetComponent<ShellScript>().armor = armor;
+            oldShell.GetComponent<PlayerStats>().armor = armor;
+            pSoundManager.PlaySound(pSoundManager.Sound.pPickup);
         }
     }
     private void Hide(InputAction.CallbackContext context)
@@ -255,8 +220,9 @@ public class PlayerController : MonoBehaviour, IDamageable
         if (context.started)
         {
             _playerInputActions.Player.Jump.Disable();
-            rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
             hiding = true;
+            _movementController.WalkingSpeed *= 0.4f;
+            _movementController.Stop();
             playerAnimatorController.SetIsHiding(true);
             pSoundManager.PlaySound(pSoundManager.Sound.pHide);
         }
@@ -264,6 +230,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             _playerInputActions.Player.Jump.Enable();
             hiding = false;
+            _movementController.WalkingSpeed = currentStats.speed.x;
             playerAnimatorController.SetIsHiding(false);
         }
     }
@@ -271,12 +238,10 @@ public class PlayerController : MonoBehaviour, IDamageable
     public void TakeDamage(Damage dmg)
     {
         var direction = Math.Sign(transform.position.x - dmg.Source.x);
-        //Only do the 'Got hit from behind?' thing if you actually have armor left
-        //I may just not have understood how shell armor was supposed to work, given that player also gets more health from the shell but when the shell breaks, player's health returns to pre-shell.
-        //TODO: Check this behaviour later  ^^^
+        
         if (armor > 0)
         {
-            if (direction == Math.Sign(transform.localScale.x))
+            if (direction == Math.Sign(transform.localScale.x) && !hiding)
             {
                 health -= dmg.RawDamage;
                 HUDManager.Instance.UpdateHealth(Mathf.Max(0, health));
@@ -288,7 +253,6 @@ public class PlayerController : MonoBehaviour, IDamageable
             }
             else
             {
-                // todo: make sure the player takes damage if their armour breaks
                 armor -= dmg.RawDamage;
                 HUDManager.Instance.UpdateArmor(Mathf.Max(0, armor));
                 if (armor <= 0)
@@ -321,7 +285,6 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             StartCoroutine(_movementController.Knockback(dmg));
         }
-        // StartCoroutine(KnockbackCoroutine());
     }
 
     private void Death()
@@ -349,13 +312,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         SetStats(meleeStats);
         //switch to melee
     }
-
-    // private IEnumerator KnockbackCoroutine()
-    // {
-    //     isInKnockback = true;
-    //     yield return new WaitForSeconds(knockBackDuration);
-    //     isInKnockback = false;
-    // }
+    
     private IEnumerator Invulnerable()
     {
         gameObject.layer = LayerMask.NameToLayer("Invulnerable");
