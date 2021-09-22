@@ -69,11 +69,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meleeStats:
-    _speed: {x: 12, y: 4}
-    _maxSpeed: {x: 12, y: 50}
-    _health: 1
+    _speed: {x: 11, y: 5}
+    _maxSpeed: {x: 11, y: 50}
     _armor: 0
-  projectile: {fileID: 9017503243157431788, guid: d81b8041e9a791446a4e0607804d0a34, type: 3}
+    _attack: {fileID: 0}
   rigidBody: {fileID: 6985282805989476353}
   col: {fileID: 887794956}
   playerAnimatorController: {fileID: 3549133949129490232}
@@ -82,7 +81,6 @@ MonoBehaviour:
   armor: 0
   speed: {x: 12, y: 4}
   maxSpeed: {x: 12, y: 50}
-  powerUp: Simple Projectile Attack
   shell: {fileID: 0}
   damagedShell: {fileID: 0}
   grounded: 0

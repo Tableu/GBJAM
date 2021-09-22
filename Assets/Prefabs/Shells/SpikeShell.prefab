@@ -99,7 +99,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1371730675
   m_SortingLayer: 3
-  m_SortingOrder: -1
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 5e4a2af37d7f6bd42b2cf4bae7bb1097, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -123,14 +123,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faa785cb054170f4fad430790183e001, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: {x: 11, y: 4}
-  maxSpeed: {x: 11, y: 50}
-  health: 3
-  armor: 1
+  speed: {x: 10, y: 5}
+  maxSpeed: {x: 10, y: 50}
+  armor: 2
   playerStats:
     _speed: {x: 0, y: 0}
     _maxSpeed: {x: 0, y: 0}
-    _health: 0
     _armor: 0
     _attack: {fileID: 0}
   attackConfig: {fileID: 11400000, guid: 285e737cb8afc96439f32882d2ac60d4, type: 2}
