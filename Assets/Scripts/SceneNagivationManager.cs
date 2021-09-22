@@ -45,8 +45,8 @@ public class SceneNagivationManager : MonoBehaviour
     }
     public void GoToLevel1()
     {
-        MusicManager.MusicInstance.PlayMusic(Music.Level1);
         StartCoroutine(SwitchSceneAfterTime("Level1", true));
+        MusicManager.MusicInstance.PlayMusic(Music.Level1);
     }
 
     public void ReloadScene()
@@ -61,4 +61,5 @@ public class SceneNagivationManager : MonoBehaviour
         ///If you're gonna show the HUD, preferably do it when you're already inside a scene that uses it. Hiding it before is cool but do call show after (or manually update each value from inside the scene).
         HUDManager.Instance.Show(showHUD);
     }
+
 }

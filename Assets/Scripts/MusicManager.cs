@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public enum Music
 {
@@ -9,6 +10,7 @@ public enum Music
 }
 public class MusicManager : MonoBehaviour
 {
+    public AudioSource musicSource;
     public AudioClip[] musicTracks;
     private static MusicManager _musicInstance;
     public static MusicManager MusicInstance
@@ -35,24 +37,17 @@ public class MusicManager : MonoBehaviour
 
     public void PlayMusic(Music toChangeTo)
     {
-        GameObject musicGameObject = new GameObject("Music");
-        AudioSource audioSource = musicGameObject.AddComponent<AudioSource>();
-        audioSource.Stop();
-        audioSource.clip = musicTracks[(int)toChangeTo];
-        audioSource.loop = true;
-//        audioSource.PlayOneShot(GetMusicClip(toChangeTo));
+        musicSource.Stop();
+        musicSource.clip = musicTracks[(int)toChangeTo];
+        StartCoroutine(PlayMusicAfterTime());
     }
 
-//    private static AudioClip GetMusicClip(Music music)
-//    {
-//        foreach (MusicAssets.MusicAudioClip musicAudioClip in MusicAssets.MusicInstance.musicAudioClipArray)
-//        {
-//            if (musicAudioClip.music == music)
-//            {
-//                return musicAudioClip.audioClip;
-//            }
-//        }
-//        return null;
-//    }
+    IEnumerator PlayMusicAfterTime()
+    {
+        yield return new WaitForSeconds(1f);
+        musicSource = GetComponent<AudioSource>();
+        musicSource.Play();
+        musicSource.loop = true;
+    }
 
 }
