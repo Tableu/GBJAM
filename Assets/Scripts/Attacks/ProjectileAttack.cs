@@ -45,7 +45,6 @@ namespace Attacks
             public IEnumerator DoAttack(GameObject attacker)
             {
                 IsRunning = true;
-
                 yield return new WaitForSeconds(_windupTime);
 
                 var transform = attacker.GetComponent<Transform>();

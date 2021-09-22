@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -39,13 +40,11 @@ namespace Attacks
                 LockInput = true;
                 var transform = attacker.GetComponent<Transform>();
                 var rigidBody = attacker.GetComponent<Rigidbody2D>();
-                var collider = attacker.GetComponent<Collider2D>();
                 // todo: use movement controller
                 var controller = attacker.GetComponent<PlayerController>();
                 var start = transform.position.x;
 
                 while (Mathf.Abs(transform.position.x - start) <= _distance &&
-                       !collider.IsTouchingLayers(LayerMask.NameToLayer("Ground")) &&
                        controller.frontClear)
                 {
                     rigidBody.AddRelativeForce(new Vector2((-1) * _speed * transform.localScale.x, 0));

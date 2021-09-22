@@ -124,13 +124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: {x: 10, y: 5}
-  maxSpeed: {x: 10, y: 50}
   armor: 2
-  playerStats:
-    _speed: {x: 0, y: 0}
-    _maxSpeed: {x: 0, y: 0}
-    _armor: 0
-    _attack: {fileID: 0}
-  attackConfig: {fileID: 11400000, guid: 285e737cb8afc96439f32882d2ac60d4, type: 2}
+  attackConfig: {fileID: 11400000, guid: 0231fe1ce13574f4696e3d579bd4e855, type: 2}
   shell: {fileID: 21300000, guid: 5e4a2af37d7f6bd42b2cf4bae7bb1097, type: 3}
   damagedShell: {fileID: 21300000, guid: 1c5dd6741345a0649be927b5036a489e, type: 3}
