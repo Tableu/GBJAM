@@ -15,12 +15,12 @@ public class MusicAssets : MonoBehaviour
         }
     }
 
-    public MusicAudioClip[] musicAudioClipArray;
+   // public MusicAudioClip[] musicAudioClipArray;
 
-    [System.Serializable]
-    public class MusicAudioClip
-    {
-        public MusicManager.Music music;
-        public AudioClip audioClip;
-    }
+ //   [System.Serializable]
+   // public class MusicAudioClip
+  //  {
+  //      public MusicManager.Music music;
+ //       public AudioClip audioClip;
+ //   }
 }

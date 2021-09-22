@@ -2,30 +2,57 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class MusicManager
+public enum Music
 {
-    public enum Music
+    MainMenu,
+    Level1,
+}
+public class MusicManager : MonoBehaviour
+{
+    public AudioClip[] musicTracks;
+    private static MusicManager _musicInstance;
+    public static MusicManager MusicInstance
     {
-        MainMenu,
-        Level1,
+        get
+        {
+            return _musicInstance;
+        }
     }
-    public static void PlayMusic(Music music)
+
+    private void Awake()
+    {
+        if (_musicInstance != null && _musicInstance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            _musicInstance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+    }
+
+
+    public void PlayMusic(Music toChangeTo)
     {
         GameObject musicGameObject = new GameObject("Music");
         AudioSource audioSource = musicGameObject.AddComponent<AudioSource>();
-        audioSource.PlayOneShot(GetMusicClip(music));
+        audioSource.Stop();
+        audioSource.clip = musicTracks[(int)toChangeTo];
+        audioSource.loop = true;
+//        audioSource.PlayOneShot(GetMusicClip(toChangeTo));
     }
 
-    private static AudioClip GetMusicClip(Music music)
-    {
-        foreach (MusicAssets.MusicAudioClip musicAudioClip in MusicAssets.MusicInstance.musicAudioClipArray)
-        {
-            if (musicAudioClip.music == music)
-            {
-                return musicAudioClip.audioClip;
-            }
-        }
-        return null;
-    }
+//    private static AudioClip GetMusicClip(Music music)
+//    {
+//        foreach (MusicAssets.MusicAudioClip musicAudioClip in MusicAssets.MusicInstance.musicAudioClipArray)
+//        {
+//            if (musicAudioClip.music == music)
+//            {
+//                return musicAudioClip.audioClip;
+//            }
+//        }
+//        return null;
+//    }
 
 }
