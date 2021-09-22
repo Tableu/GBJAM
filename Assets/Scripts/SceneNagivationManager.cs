@@ -57,6 +57,7 @@ public class SceneNagivationManager : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         SceneManager.LoadScene(sceneName);
+        MusicManager.PlayMusic(MusicManager.Music.Level1);
         ///If you're gonna show the HUD, preferably do it when you're already inside a scene that uses it. Hiding it before is cool but do call show after (or manually update each value from inside the scene).
         HUDManager.Instance.Show(showHUD);
     }
