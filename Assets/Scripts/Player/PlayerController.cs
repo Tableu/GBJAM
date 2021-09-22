@@ -13,25 +13,22 @@ public class PlayerController : MonoBehaviour, IDamageable
     [Serializable]
     public struct PlayerStats
     {
-        public PlayerStats(Vector2 speed, Vector2 maxSpeed, int health, int armor, AttackCommand attack)
+        public PlayerStats(Vector2 speed, Vector2 maxSpeed, int armor, AttackScriptableObject attack)
         {
             _speed = speed;
             _maxSpeed = maxSpeed;
-            _health = health;
             _armor = armor;
             _attack = attack;
         }
 
         [SerializeField] private Vector2 _speed;
         [SerializeField] private Vector2 _maxSpeed;
-        [SerializeField] private int _health;
         [SerializeField] private int _armor;
-        [SerializeField] private AttackCommand _attack;
+        [SerializeField] private AttackScriptableObject _attack;
         public Vector2 Speed => _speed;
         public Vector2 MaxSpeed => _maxSpeed;
-        public int Health => _health;
         public int Armor => _armor;
-        public AttackCommand Attack => _attack;
+        public AttackScriptableObject Attack => _attack;
     }
     private PlayerInputActions _playerInputActions;
     private ContactFilter2D _groundFilter2D;
@@ -39,8 +36,6 @@ public class PlayerController : MonoBehaviour, IDamageable
     private MovementController _movementController;
 
     [SerializeField] private PlayerStats meleeStats;
-    [SerializeField] private AttackCommand meleeAttackCommand;
-    [SerializeField] private GameObject projectile;
     [SerializeField] private Rigidbody2D rigidBody;
     [SerializeField] private Collider2D col;
     [SerializeField] private PlayerAnimatorController playerAnimatorController;
@@ -50,7 +45,6 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] private int armor;
     [SerializeField] private Vector2 speed;
     [SerializeField] private Vector2 maxSpeed;
-    [SerializeField] private string powerUp;
     [SerializeField] private Sprite shell;
     [SerializeField] private Sprite damagedShell;
 
@@ -94,15 +88,12 @@ public class PlayerController : MonoBehaviour, IDamageable
                 pSoundManager.PlaySound(pSoundManager.Sound.pJump);
             }
         });
-        // _playerInputActions.Player.Move.started += Rotate;
         _playerInputActions.Player.Move.canceled += Idle;
         _playerInputActions.Player.PickUpShell.started += SwitchShells;
 
         _playerInputActions.Player.Hide.started += Hide;
         _playerInputActions.Player.Hide.canceled += Hide;
-
-        //_playerInputActions.Player.ChargeAttack.started += ChargeAttack;
-        //_playerInputActions.Player.ChargeAttack.performed += ChargeAttack;
+        
         _playerInputActions.Player.ChargeAttack.canceled += ChargeAttack;
 
         _playerInputActions.Player.Attack.canceled += Attack;
@@ -150,12 +141,11 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     public void SetStats(PlayerStats playerStats)
     {
-        health = playerStats.Health;
         armor = playerStats.Armor;
         speed = playerStats.Speed;
         maxSpeed = playerStats.MaxSpeed;
         _movementController = new MovementController(gameObject, maxSpeed.x, -1);
-        _attackCommand = playerStats.Attack;
+        _attackCommand = playerStats.Attack.MakeAttack();
 
         //Update UI each time stats are changed.
         HUDManager.Instance.UpdateHealth(health);
@@ -170,22 +160,12 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             playerAnimatorController.SetIsMoving(true);
         }
-        // else
-        // {
-        //     if (!isInKnockback && grounded)
-        //     {
-        //         //rigidBody.velocity = new Vector2(Mathf.Lerp(rigidBody.velocity.x, 0, Something???), rigidBody.velocity.y);
-        //         //To avoid the player from sliding after knockback
-        //         rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
-        //     }
-        // }
     }
 
     private void Idle(InputAction.CallbackContext context)
     {
         rigidBody.velocity = new Vector2(0, rigidBody.velocity.y);
         playerAnimatorController.SetIsMoving(false);
-        // Debug.Log("Idle");
     }
 
     private void Attack(InputAction.CallbackContext context)
@@ -321,7 +301,6 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             StartCoroutine(_movementController.Knockback(dmg));
         }
-        // StartCoroutine(KnockbackCoroutine());
     }
 
     private void Death()
@@ -349,13 +328,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         SetStats(meleeStats);
         //switch to melee
     }
-
-    // private IEnumerator KnockbackCoroutine()
-    // {
-    //     isInKnockback = true;
-    //     yield return new WaitForSeconds(knockBackDuration);
-    //     isInKnockback = false;
-    // }
+    
     private IEnumerator Invulnerable()
     {
         gameObject.layer = LayerMask.NameToLayer("Invulnerable");

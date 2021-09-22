@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2475743824458145728}
   - component: {fileID: 3010005673500899171}
   - component: {fileID: 2455662057874184188}
-  - component: {fileID: 233768495069051230}
+  - component: {fileID: 3935862940330126200}
   m_Layer: 10
   m_Name: SnailShell
   m_TagString: Untagged
@@ -97,9 +97,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -1530610801
-  m_SortingLayer: 4
-  m_SortingOrder: 0
+  m_SortingLayerID: -1371730675
+  m_SortingLayer: 3
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: ed4383fa72307e84997a258ca30b9f8c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -111,7 +111,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &233768495069051230
+--- !u!114 &3935862940330126200
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -120,20 +120,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 3537151017550152801}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a5d9195701922ec45aa86be5b9b40d2f, type: 3}
+  m_Script: {fileID: 11500000, guid: faa785cb054170f4fad430790183e001, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: {x: 10, y: 4}
-  maxSpeed: {x: 10, y: 50}
-  health: 3
-  armor: 3
+  speed: {x: 10, y: 5}
+  maxSpeed: {x: 10, y: 40}
+  health: 1
+  armor: 5
   playerStats:
     _speed: {x: 0, y: 0}
     _maxSpeed: {x: 0, y: 0}
     _health: 0
     _armor: 0
-  attackConfig: {fileID: 0}
+    _attack: {fileID: 0}
+  attackConfig: {fileID: 11400000, guid: 56d59aad6f75efd4d8129e1cd87c44ba, type: 2}
   shell: {fileID: 21300000, guid: ed4383fa72307e84997a258ca30b9f8c, type: 3}
   damagedShell: {fileID: 21300000, guid: 343b99f49db44034b938d0a62ed90d3c, type: 3}
-  projectileSpeed: 10
-  projectilePrefab: {fileID: 9017503243157431788, guid: d81b8041e9a791446a4e0607804d0a34, type: 3}

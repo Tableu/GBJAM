@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1d3e8b78c8c4436dba2455b605771a07, type: 3}
-  m_Name: ProjectileTest
+  m_Name: SlimeProjectile
   m_EditorClassIdentifier: 
   projectileSpeed: 10
-  projectilePrefab: {fileID: 6077207994914079605, guid: d4b0c9ae837b84a488dc51ee56b39715, type: 3}
+  projectilePrefab: {fileID: 2652267829570171499, guid: 2be836e25afdb094982bb828798bd51e, type: 3}
   windupTime: 0.5
   cooldownTime: 1.5
-  horizontalOffset: 1.5
+  offset: {x: 1.5, y: 0}

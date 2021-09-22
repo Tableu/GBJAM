@@ -11,18 +11,18 @@ namespace Attacks
         public float windupTime;
         public float cooldownTime;
         // todo: get from box collider
-        public float horizontalOffset;
+        public Vector2 offset;
 
         public override AttackCommand MakeAttack()
         {
-            return new Attack(projectileSpeed, projectilePrefab, windupTime, cooldownTime, horizontalOffset);
+            return new Attack(projectileSpeed, projectilePrefab, windupTime, cooldownTime, offset);
         }
         
         private class Attack : AttackCommand
         {
             private float _speed;
             private GameObject _projectilePrefab;
-            private float _horizontalOffset;
+            private Vector2 _offset;
             private float _windupTime;
             private float _cooldownTime;
 
@@ -30,12 +30,12 @@ namespace Attacks
                 GameObject projectilePrefab, 
                 float windupTime, 
                 float cooldownTime, 
-                float horizontalOffset)
+                Vector2 offset)
             {
                 _speed = projectileSpeed;
                 _windupTime = windupTime;
                 _cooldownTime = cooldownTime;
-                _horizontalOffset = horizontalOffset;
+                _offset = offset;
                 _projectilePrefab = projectilePrefab;
             }
 
@@ -45,21 +45,18 @@ namespace Attacks
             public IEnumerator DoAttack(GameObject attacker)
             {
                 IsRunning = true;
-                LockInput = true;
-
 
                 yield return new WaitForSeconds(_windupTime);
 
                 var transform = attacker.GetComponent<Transform>();
                 var dir = -1 * Mathf.Sign(transform.localScale.x);
-                var pos = transform.position + dir * _horizontalOffset * Vector3.right;
+                var pos = transform.position + dir * _offset.x * Vector3.right + Vector3.up * _offset.y;
                 var projectile = Instantiate(_projectilePrefab, pos, Quaternion.identity);
                 projectile.transform.localScale = transform.localScale;
                 projectile.GetComponent<Rigidbody2D>().velocity =
                     new Vector2(_speed * (-1) * transform.localScale.x, 0);
                 yield return new WaitForSeconds(_cooldownTime);
                 IsRunning = false;
-                LockInput = false;
             }
         }
     }
