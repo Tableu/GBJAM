@@ -44,6 +44,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] private int health;
     [SerializeField] private int armor;
     [SerializeField] private Vector2 speed;
+    [SerializeField] private Vector2 maxSpeed;
     [SerializeField] private Sprite shell;
     [SerializeField] private Sprite damagedShell;
 
