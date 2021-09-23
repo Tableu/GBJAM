@@ -8,7 +8,7 @@ public class PlatformEnemy : EnemyBase
 
     private BoxCollider2D _collider;
 
-    protected new void Awake()
+    protected new void Start()
     {
         base.Awake();
         _collider = GetComponent<BoxCollider2D>();

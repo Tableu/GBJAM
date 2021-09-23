@@ -62,7 +62,11 @@ namespace Enemies
 
         protected void Update()
         {
-            LookForPlayer();
+            if (Player != null && PlayerTransform != null)
+            {
+                LookForPlayer();
+            }
+
             StateMachine.Tick();
             if (!_attack.IsRunning && CanAttack)
             {
@@ -100,14 +104,17 @@ namespace Enemies
         protected bool PlayerVisible()
         {
             // Check if player is in fov
-            Vector2 playerPos = PlayerTransform.position - transform.position;
-            var angle = Vector2.Angle(Forward, playerPos);
-            var distance = playerPos.magnitude;
-            if (angle <= fieldOfView / 2 && distance <= visionRange || distance < detectionRange)
+            if (PlayerTransform != null)
             {
-                // Check for line of sight
-                var hit = Physics2D.Raycast(transform.position, playerPos, distance + 1, sightBlockingLayers);
-                if (hit.transform == PlayerTransform) return true;
+                Vector2 playerPos = PlayerTransform.position - transform.position;
+                var angle = Vector2.Angle(Forward, playerPos);
+                var distance = playerPos.magnitude;
+                if (angle <= fieldOfView / 2 && distance <= visionRange || distance < detectionRange)
+                {
+                    // Check for line of sight
+                    var hit = Physics2D.Raycast(transform.position, playerPos, distance + 1, sightBlockingLayers);
+                    if (hit.transform == PlayerTransform) return true;
+                }
             }
 
             return false;
