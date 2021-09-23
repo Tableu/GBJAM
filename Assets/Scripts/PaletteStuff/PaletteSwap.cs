@@ -12,6 +12,11 @@ using UnityEditor;
 [RequireComponent(typeof(Camera))]
 public class PaletteSwap : MonoBehaviour
 {
+    enum BackgroundColor { Color1, Color2, Color3, Color4 }
+
+    [SerializeField, Tooltip("The starting background color (1-4, darkest to brightest)")]
+    BackgroundColor startingBGColor = BackgroundColor.Color2;
+
     [SerializeField, Tooltip("The source colors to be changed")]
     ColorPalette inputPalette;
 
@@ -86,9 +91,29 @@ public class PaletteSwap : MonoBehaviour
         DontDestroyOnLoad(this);
 
         Init();
-        MakeBackgroundColor2();
+        //MakeBackgroundColor2();
+        SetStartingBGColor();
         SetColors();
         //SetColorTolerance();
+    }
+
+    void SetStartingBGColor()
+    {
+        switch (startingBGColor)
+        {
+            case BackgroundColor.Color1:
+                MakeBackgroundColor1();
+                break;
+            case BackgroundColor.Color2:
+                MakeBackgroundColor2();
+                break;
+            case BackgroundColor.Color3:
+                MakeBackgroundColor3();
+                break;
+            case BackgroundColor.Color4:
+                MakeBackgroundColor4();
+                break;
+        }
     }
 
     /// <summary>

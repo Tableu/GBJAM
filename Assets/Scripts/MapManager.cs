@@ -51,6 +51,8 @@ public class MapManager : MonoBehaviour
             CinemachineConfiner2D camConfiner = FindObjectOfType<CinemachineConfiner2D>();
             camConfiner.m_BoundingShape2D = confinerContainer.GetComponent<PolygonCollider2D>();
         }
+
+        //UpdateCameraBG();
     }
 
     public void PlayerDied()
@@ -61,5 +63,17 @@ public class MapManager : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
         SceneNagivationManager.Instance.ReloadScene();
+    }
+
+    void UpdateCameraBG()
+    {
+        Transform mainCamera = Camera.main.transform;
+        if (mainCamera.Find("LevelBG"))
+        {
+            Destroy(mainCamera.Find("LevelBG").gameObject);
+        }
+        Transform bgObject = GameObject.Find("- - - World - - -").transform.Find("LevelBG");
+        bgObject.SetParent(mainCamera);
+        bgObject.localPosition = new Vector3(0, 0, 10f);
     }
 }
