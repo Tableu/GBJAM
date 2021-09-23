@@ -285,7 +285,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd176c8aaaed13c489b2650f49ccce61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  updateType: 0
+  updateType: 2
   layers: []
   parallaxEffect: 0
 --- !u!4 &603020200
