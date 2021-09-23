@@ -83,6 +83,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             layerMask = LayerMask.GetMask("Ground"),
             useLayerMask = true
         };
+        SetStats(gameObject.GetComponent<PlayerStats>());
 
         CinemachineVirtualCamera virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
         if (virtualCamera)
@@ -165,6 +166,11 @@ public class PlayerController : MonoBehaviour, IDamageable
             Debug.Log("Attack");
             if (!_attackCommand.IsRunning)
             {
+                Debug.Log(_attack.GetType());
+                if (_attack.GetType() == typeof(Attacks.MeleeAttack))
+                {
+                    playerAnimatorController.TriggerAttack();
+                }
                 StartCoroutine(_attackCommand.DoAttack(gameObject));
                 pSoundManager.PlaySound(pSoundManager.Sound.pAttack);
             }
@@ -238,7 +244,10 @@ public class PlayerController : MonoBehaviour, IDamageable
     public void TakeDamage(Damage dmg)
     {
         var direction = Math.Sign(transform.position.x - dmg.Source.x);
-        
+        if (_attackCommand.IsRunning && _attack.GetType() == typeof(Attacks.MeleeAttack))
+        {
+            return;
+        }
         if (armor > 0)
         {
             if (direction == Math.Sign(transform.localScale.x) && !hiding)

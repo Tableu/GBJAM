@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3391332105126726129}
   - component: {fileID: 3391332105126726128}
   - component: {fileID: 3752693858287113725}
+  - component: {fileID: 1238895095237273255}
   m_Layer: 10
   m_Name: SpikeShell
   m_TagString: Untagged
@@ -128,3 +129,24 @@ MonoBehaviour:
   attackConfig: {fileID: 11400000, guid: 0231fe1ce13574f4696e3d579bd4e855, type: 2}
   shell: {fileID: 21300000, guid: 5e4a2af37d7f6bd42b2cf4bae7bb1097, type: 3}
   damagedShell: {fileID: 21300000, guid: 1c5dd6741345a0649be927b5036a489e, type: 3}
+--- !u!50 &1238895095237273255
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3391332105126726130}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 2
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 3
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 4

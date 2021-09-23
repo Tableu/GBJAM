@@ -1,4 +1,5 @@
 using System;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace Enemies
@@ -13,6 +14,7 @@ namespace Enemies
         [SerializeField] private int knockbackDamage;
         [SerializeField] private int maxHealth;
         [SerializeField] private int currentHealth;
+        [SerializeField] private GameObject shell;
         [SerializeField] public AttackScriptableObject attackConfig;
 
 
@@ -83,7 +85,7 @@ namespace Enemies
             // kill if zero health
             if (currentHealth <= 0)
             {
-                // todo: add death state to play animation (Coroutine)
+                Instantiate(shell, new Vector3(transform.position.x,transform.position.y,0), Quaternion.identity);
                 Animator.TriggerDeath();
                 Destroy(gameObject);
                 return;
@@ -94,7 +96,7 @@ namespace Enemies
             dmg.Knockback *= knockbackFactor;
             StartCoroutine(_movementController.Knockback(dmg));
         }
-
+        
         protected bool PlayerVisible()
         {
             // Check if player is in fov

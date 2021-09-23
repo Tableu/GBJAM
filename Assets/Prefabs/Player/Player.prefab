@@ -75,10 +75,10 @@ MonoBehaviour:
   col: {fileID: 887794956}
   playerAnimatorController: {fileID: 3549133949129490232}
   playerShellSpriteRenderer: {fileID: 2663926567196102169}
-  _attack: {fileID: 0}
+  _attack: {fileID: 11400000, guid: 8af698b8cc4dc6b4bb444c8dd4fa46ac, type: 2}
   health: 1
   armor: 0
-  speed: {x: 11, y: 4}
+  speed: {x: 11, y: 5}
   shell: {fileID: 0}
   damagedShell: {fileID: 0}
   grounded: 0
@@ -155,9 +155,52 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: {x: 11, y: 5}
   armor: 0
-  attackConfig: {fileID: 0}
+  attackConfig: {fileID: 11400000, guid: 8af698b8cc4dc6b4bb444c8dd4fa46ac, type: 2}
   shell: {fileID: 0}
   damagedShell: {fileID: 0}
+--- !u!61 &6447664322975341343
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8910281056685804987}
+  m_Enabled: 0
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.42781305, y: 0.61206514}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.2}
+    oldSize: {x: 3, y: 2.5}
+    newSize: {x: 2, y: 2}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.8771257, y: 0.72983897}
+  m_EdgeRadius: 0
+--- !u!114 &6301768467925767185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8910281056685804987}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca11e7006f092734fb0359faf8122fa6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 1
+  knockback: 1
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 2048
 --- !u!1001 &1958461991788847387
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -245,6 +288,18 @@ PrefabInstance:
       propertyPath: m_WasSpriteAssigned
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5481301712156583250, guid: 01f1f05f357a4ac47b893246c68b1ff9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.97
+      objectReference: {fileID: 0}
+    - target: {fileID: 6956504135953542304, guid: 01f1f05f357a4ac47b893246c68b1ff9, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 6956504135953542304, guid: 01f1f05f357a4ac47b893246c68b1ff9, type: 3}
+      propertyPath: m_TagString
+      value: MeleeAttack
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 01f1f05f357a4ac47b893246c68b1ff9, type: 3}
 --- !u!4 &2663926566048199160 stripped
@@ -266,5 +321,10 @@ MonoBehaviour:
 --- !u!212 &2663926567196102169 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 4599848501623303938, guid: 01f1f05f357a4ac47b893246c68b1ff9, type: 3}
+  m_PrefabInstance: {fileID: 1958461991788847387}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &8910281056685804987 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6956504135953542304, guid: 01f1f05f357a4ac47b893246c68b1ff9, type: 3}
   m_PrefabInstance: {fileID: 1958461991788847387}
   m_PrefabAsset: {fileID: 0}
