@@ -204,6 +204,7 @@ public class PlayerController : MonoBehaviour, IDamageable
                 playerShellSpriteRenderer.sprite = null;
                 SetStats(meleeStats);
             }
+            pSoundManager.PlaySound(pSoundManager.Sound.pPickup);
         }
     }
 
@@ -218,7 +219,6 @@ public class PlayerController : MonoBehaviour, IDamageable
             oldShell.GetComponent<SpriteRenderer>().sprite = playerShellSpriteRenderer.sprite;
             oldShell.localScale = new Vector3(transform.localScale.x, oldShell.localScale.y, oldShell.localScale.z);
             oldShell.GetComponent<PlayerStats>().armor = armor;
-            pSoundManager.PlaySound(pSoundManager.Sound.pPickup);
         }
     }
     private void Hide(InputAction.CallbackContext context)
