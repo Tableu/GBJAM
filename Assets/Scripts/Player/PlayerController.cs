@@ -77,7 +77,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         _playerInputActions.Player.Hide.started += Hide;
         _playerInputActions.Player.Hide.canceled += Hide;
 
-        _playerInputActions.Player.Attack.canceled += Attack;
+        _playerInputActions.Player.Attack.started += Attack;
         _groundFilter2D = new ContactFilter2D
         {
             layerMask = LayerMask.GetMask("Ground"),
@@ -232,6 +232,8 @@ public class PlayerController : MonoBehaviour, IDamageable
             _movementController.Stop();
             playerAnimatorController.SetIsHiding(true);
             pSoundManager.PlaySound(pSoundManager.Sound.pHide);
+            BoxCollider2D box = (BoxCollider2D)col;
+            box.size = new Vector2(box.size.x, box.size.y*0.5f);
         }
         else if (context.canceled)
         {
@@ -239,6 +241,8 @@ public class PlayerController : MonoBehaviour, IDamageable
             hiding = false;
             _movementController.WalkingSpeed = currentStats.speed.x;
             playerAnimatorController.SetIsHiding(false);
+            BoxCollider2D box = (BoxCollider2D)col;
+            box.size = new Vector2(box.size.x, box.size.y*2f);
         }
     }
 
@@ -253,40 +257,16 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             if (direction == Math.Sign(transform.localScale.x) && !hiding)
             {
-                health -= dmg.RawDamage;
-                HUDManager.Instance.UpdateHealth(Mathf.Max(0, health));
-                if (health <= 0)
-                {
-                    Death();
-                }
-                Debug.Log("Lose Health");
+                LoseHealth(dmg);
             }
             else
             {
-                armor -= dmg.RawDamage;
-                HUDManager.Instance.UpdateArmor(Mathf.Max(0, armor));
-                if (armor <= 0)
-                {
-                    BreakShell();
-
-                }
-                else if (armor == 1)
-                {
-                    playerShellSpriteRenderer.sprite = damagedShell;
-                }
-                if (armor <= 0) { BreakShell(); }
-                Debug.Log("Lose Armor");
+                LoseArmor(dmg);
             }
         }
         else
         {
-            health -= dmg.RawDamage;
-            HUDManager.Instance.UpdateHealth(Mathf.Max(0, health));
-            if (health <= 0)
-            {
-                Death();
-            }
-            Debug.Log("Lose Health");
+            LoseHealth(dmg);
         }
         pSoundManager.PlaySound(pSoundManager.Sound.pHit);
         StartCoroutine(Invulnerable());
@@ -295,6 +275,33 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             StartCoroutine(_movementController.Knockback(dmg));
         }
+    }
+
+    private void LoseArmor(Damage dmg)
+    {
+        armor -= dmg.RawDamage;
+        HUDManager.Instance.UpdateArmor(Mathf.Max(0, armor));
+        if (armor <= 0)
+        {
+            BreakShell();
+
+        }
+        else if (armor == 1)
+        {
+            playerShellSpriteRenderer.sprite = damagedShell;
+        }
+        if (armor <= 0) { BreakShell(); }
+        Debug.Log("Lose Armor");
+    }
+    private void LoseHealth(Damage dmg)
+    {
+        health -= dmg.RawDamage;
+        HUDManager.Instance.UpdateHealth(Mathf.Max(0, health));
+        if (health <= 0)
+        {
+            Death();
+        }
+        Debug.Log("Lose Health");
     }
 
     private void Death()
@@ -350,7 +357,22 @@ public class PlayerController : MonoBehaviour, IDamageable
                 break;
             case "Spikes":
                 //TakeDamage(new Damage(new Vector2(transform.position.x - transform.localScale.x, transform.position.y), 20f, 1));
-                TakeDamage(new Damage(transform.position, 0, 1));
+                Damage dmg = new Damage(transform.position, 0, 1);
+                if (armor > 0)
+                {
+                    LoseArmor(dmg);
+                }
+                else
+                {
+                    LoseHealth(dmg);
+                }
+                pSoundManager.PlaySound(pSoundManager.Sound.pHit);
+                StartCoroutine(Invulnerable());
+                //Only do the Knockback coroutine if knockback on dmg isn't 0, so player doesn't come to a full stop for a moment if knockback is 0.
+                if (dmg.Knockback != 0)
+                {
+                    StartCoroutine(_movementController.Knockback(dmg));
+                }
                 break;
         }
     }

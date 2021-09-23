@@ -8,6 +8,7 @@ TagManager:
   - Spikes
   - Secret
   - Projectile
+  - MeleeAttack
   layers:
   - Default
   - TransparentFX
@@ -23,7 +24,7 @@ TagManager:
   - Enemy
   - Invulnerable
   - CameraConfiner
-  - 
+  - MeleeAttack
   - 
   - 
   - 

@@ -77,6 +77,7 @@ MonoBehaviour:
   knockbackDamage: 0
   maxHealth: 2
   currentHealth: 0
+  shell: {fileID: 3537151017550152801, guid: 2d624e681e75bc341ba671881655c407, type: 3}
   attackConfig: {fileID: 11400000, guid: 76cba72a43bdf8f44b8a31b96c1d3a25, type: 2}
   fieldOfView: 25
   visionRange: 50

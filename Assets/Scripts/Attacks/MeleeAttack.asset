@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58e9fbab2c3bfaa43bb08d1a6c117f4b, type: 3}
   m_Name: MeleeAttack
   m_EditorClassIdentifier: 
-  meleeDamage: 0
-  windupTime: 0
-  cooldownTime: 0
+  meleeDamage: 1
+  windupTime: 0.1
+  cooldownTime: 0.5
