@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cce846b10404a384aa8ba1d708548c42, type: 3}
   m_Name: DashAttack
   m_EditorClassIdentifier: 
-  distance: 0
-  speed: 0
-  damage: 0
+  distance: 6
+  speed: 80
+  damage: 1
