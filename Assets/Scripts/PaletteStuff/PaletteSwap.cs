@@ -88,7 +88,7 @@ public class PaletteSwap : MonoBehaviour
             Destroy(gameObject);
         }
         _instance = this;
-        DontDestroyOnLoad(this);
+        //DontDestroyOnLoad(this);
 
         Init();
         //MakeBackgroundColor2();
