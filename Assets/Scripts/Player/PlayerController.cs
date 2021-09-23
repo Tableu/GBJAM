@@ -212,6 +212,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         if (transform.childCount > 1)
         {
             var oldShell = transform.GetChild(1);
+            oldShell.localPosition = Vector3.zero;
             oldShell.gameObject.SetActive(true);
             oldShell.SetParent(null);
             oldShell.GetComponent<SpriteRenderer>().sprite = playerShellSpriteRenderer.sprite;
