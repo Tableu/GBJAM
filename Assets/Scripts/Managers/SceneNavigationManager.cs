@@ -3,7 +3,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-
 public class SceneNavigationManager : MonoBehaviour
 {
 
@@ -36,22 +35,60 @@ public class SceneNavigationManager : MonoBehaviour
         return SceneManager.GetActiveScene();
     }
 
-    public void GoToMainMenu()
+    public void GoToMainMenu(float delay = 0)
     {
-        StartCoroutine(SwitchSceneAfterTime("MainMenu", false));
+        if (delay == 0)
+        {
+            SwitchScene("MainScene", false, Music.MainMenu);
+        }
+        else
+        {
+            StartCoroutine(SwitchSceneAfterTime("MainScene", false, Music.MainMenu));
+        }
     }
-    public void GoToIojiojiTestScene()
+    public void GoToIojiojiTestScene(float delay = 0)
     {
-        StartCoroutine(SwitchSceneAfterTime("IojiojiTestScene", true));
+        if (delay == 0)
+        {
+            SwitchScene("IojiojiTestScene", true, Music.Level1);
+        }
+        else
+        {
+            StartCoroutine(SwitchSceneAfterTime("IojiojiTestScene", true, Music.Level1));
+        }
     }
-    public void GoToTableuTestScene()
+    public void GoToTableuTestScene(float delay = 0)
     {
-        StartCoroutine(SwitchSceneAfterTime("TableuTest", true));
+        if (delay == 0)
+        {
+            SwitchScene("TableuTest", true, Music.Level1);
+        }
+        else
+        {
+            StartCoroutine(SwitchSceneAfterTime("TableuTest", true, Music.Level1));
+        }
     }
-    public void GoToLevel1()
+    public void GoToLevel1(float delay = 0)
     {
-        StartCoroutine(SwitchSceneAfterTime("Level1", true));
-        MusicManager.MusicInstance.PlayMusic(Music.Level1);
+        if (delay == 0)
+        {
+            SwitchScene("Level1", true, Music.Level1);
+        }
+        else
+        {
+            StartCoroutine(SwitchSceneAfterTime("Level1", true, Music.Level1));
+        }
+    }
+    public void GoToLevel2(float delay = 0)
+    {
+        if (delay == 0)
+        {
+            SwitchScene("Level2", true, Music.Level1);
+        }
+        else
+        {
+            StartCoroutine(SwitchSceneAfterTime("Level2", true, Music.Level1));
+        }
     }
 
     public void ReloadScene()
@@ -59,12 +96,34 @@ public class SceneNavigationManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    IEnumerator SwitchSceneAfterTime(string sceneName, bool showHUD)
+    IEnumerator SwitchSceneAfterTime(string sceneName, bool showHUD, Music music)
     {
         yield return new WaitForSeconds(1f);
+        SwitchScene(sceneName, showHUD, music);
+    }
+    void SwitchScene(string sceneName, bool showHUD, Music music)
+    {
         SceneManager.LoadScene(sceneName);
+        MusicManager.MusicInstance.PlayMusic(music);
         ///If you're gonna show the HUD, preferably do it when you're already inside a scene that uses it. Hiding it before is cool but do call show after (or manually update each value from inside the scene).
         HUDManager.Instance.Show(showHUD);
     }
 
+    public void GoToNextLevel()
+    {
+        string currentScene = GetCurrentlyActiveScene().name;
+        switch (currentScene)
+        {
+            case "Level1":
+                GoToMainMenu();
+                //GoToLevel2();
+                break;
+            case "Level2":
+                //Go to level 3 and so on and so forth
+                break;
+            default:
+                Debug.Log($"Uuuh what? How did you manage to trigger a level change if you're not on one of the levels? o:");
+                break;
+        }
+    }
 }

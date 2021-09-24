@@ -8,7 +8,7 @@ using UnityEditor;
 
 public enum Levels { Level1, Level2, Level3 }
 
-public class GameManager : MonoBehaviour
+public class CoinManager : MonoBehaviour
 {
     [SerializeField]
     LevelStats level1Stats = new LevelStats(Levels.Level1);
@@ -18,14 +18,14 @@ public class GameManager : MonoBehaviour
     LevelStats level3Stats = new LevelStats(Levels.Level3);
 
 
-    static GameManager _instance;
-    public static GameManager Instance
+    static CoinManager _instance;
+    public static CoinManager Instance
     {
         get 
         {
-            if (_instance == null && !FindObjectOfType<GameManager>())
+            if (_instance == null && !FindObjectOfType<CoinManager>())
             {
-                _instance = new GameObject("GameManager").AddComponent<GameManager>();
+                _instance = new GameObject("GameManager").AddComponent<CoinManager>();
             }
             return _instance; 
         }

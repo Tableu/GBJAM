@@ -11,6 +11,12 @@ public class MapManager : MonoBehaviour
     [SerializeField]
     AudioSource bgmPlayer;
 
+    bool isEndingLevel = false;
+    public bool IsEndingLevel
+    {
+        get { return isEndingLevel; }
+    }
+
     static MapManager _instance;
     public static MapManager Instance
     {
@@ -27,7 +33,6 @@ public class MapManager : MonoBehaviour
 
         bgmPlayer = GetComponent<AudioSource>();
     }
-
 
 
     void Start()
@@ -75,5 +80,18 @@ public class MapManager : MonoBehaviour
         Transform bgObject = GameObject.Find("- - - World - - -").transform.Find("LevelBG");
         bgObject.SetParent(mainCamera);
         bgObject.localPosition = new Vector3(0, 0, 10f);
+    }
+
+    IEnumerator LevelEndCoroutine()
+    {
+        MusicManager.MusicInstance.PlayMusic(Music.EndJingle, false);
+        yield return new WaitForSeconds(7.25f);
+        SceneNavigationManager.Instance.GoToNextLevel();
+    }
+
+    public void EndLevel()
+    {
+        isEndingLevel = true;
+        StartCoroutine(LevelEndCoroutine());
     }
 }

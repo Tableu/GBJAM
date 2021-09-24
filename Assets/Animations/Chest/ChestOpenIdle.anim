@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SnailShellBreak
+  m_Name: ChestOpenIdle
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -20,16 +20,12 @@ AnimationClip:
   m_PPtrCurves:
   - curve:
     - time: 0
-      value: {fileID: -8873783307284713526, guid: 7df4ce919f09dbc4798cd7cd65f94c6f, type: 3}
-    - time: 0.33333334
-      value: {fileID: -5422239052240508483, guid: 7df4ce919f09dbc4798cd7cd65f94c6f, type: 3}
-    - time: 0.6666667
-      value: {fileID: -6525913918991581502, guid: 7df4ce919f09dbc4798cd7cd65f94c6f, type: 3}
+      value: {fileID: 7429822970295999662, guid: 1fe4e97208c2c8f40a2caa9eb466c057, type: 3}
     attribute: m_Sprite
-    path: 
+    path: Visuals
     classID: 212
     script: {fileID: 0}
-  m_SampleRate: 3
+  m_SampleRate: 1
   m_WrapMode: 0
   m_Bounds:
     m_Center: {x: 0, y: 0, z: 0}
@@ -37,16 +33,14 @@ AnimationClip:
   m_ClipBindingConstant:
     genericBindings:
     - serializedVersion: 2
-      path: 0
+      path: 1498428138
       attribute: 0
       script: {fileID: 0}
       typeID: 212
       customType: 23
       isPPtrCurve: 1
     pptrCurveMapping:
-    - {fileID: -8873783307284713526, guid: 7df4ce919f09dbc4798cd7cd65f94c6f, type: 3}
-    - {fileID: -5422239052240508483, guid: 7df4ce919f09dbc4798cd7cd65f94c6f, type: 3}
-    - {fileID: -6525913918991581502, guid: 7df4ce919f09dbc4798cd7cd65f94c6f, type: 3}
+    - {fileID: 7429822970295999662, guid: 1fe4e97208c2c8f40a2caa9eb466c057, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}

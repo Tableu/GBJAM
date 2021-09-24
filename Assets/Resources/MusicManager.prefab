@@ -44,10 +44,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed525ecedefefe44ea67fbdce59c23b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Level1Snap: {fileID: -5391006145104984897, guid: e164b2a8d4323fb47948577046bed3a0, type: 2}
   musicSource: {fileID: 4611058484475625663}
   musicTracks:
   - {fileID: 8300000, guid: 3e7728e0499082e459bb95534f3d8ab1, type: 3}
+  - {fileID: 8300000, guid: 0bbd9b2274bbc5c498f153e4e238a930, type: 3}
+  - {fileID: 8300000, guid: 65ca8c7eb4afaf545a3f324c4b67d738, type: 3}
   - {fileID: 8300000, guid: 93f15214a455efb489b4c6e5a477db33, type: 3}
 --- !u!82 &4611058484475625663
 AudioSource:
