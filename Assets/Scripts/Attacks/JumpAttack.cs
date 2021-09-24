@@ -82,10 +82,10 @@ public class JumpAttack : AttackScriptableObject
                 attackerDmg.TakeDamage(new Damage(targetTransform.position, _knockback, 0));
             }
 
-            yield return new WaitForSeconds(_cooldown);
-            IsRunning = false;
             LockInput = false;
             movement.SetMovementEnable(true);
+            yield return new WaitForSeconds(_cooldown);
+            IsRunning = false;
         }
 
         public bool IsRunning { get; private set; }

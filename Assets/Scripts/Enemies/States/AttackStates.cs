@@ -93,5 +93,6 @@ public class RangedAttack : IState
 
     public void OnExit()
     {
+        _enemy.CanAttack = false;
     }
 }

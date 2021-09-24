@@ -145,6 +145,6 @@ public class MovementController
 
     public void SetMovementEnable(bool status)
     {
-        _inputLocked = status;
+        _inputLocked = !status;
     }
 }
