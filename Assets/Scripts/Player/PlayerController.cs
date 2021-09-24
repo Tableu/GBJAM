@@ -350,10 +350,15 @@ public class PlayerController : MonoBehaviour, IDamageable
         playerShellSpriteRenderer.sprite = null;
         shell = null;
         damagedShell = null;
-        //TODO: Check out this thing cus it's pumping out errors sometimes, this if is just so that it doesn't do that and it actually Sets Stats.
         if (transform.childCount > 1)
         {
-            Destroy(transform.GetChild(1).gameObject);
+            var shell = transform.GetChild(1);
+            shell.transform.position = transform.position;
+            shell.transform.localScale = transform.localScale;
+            shell.parent = null;
+            shell.gameObject.SetActive(true);
+            shell.gameObject.GetComponent<ShellAnimator>().SetIsDead();
+            Destroy(shell.gameObject, 0.5f);
         }
         SetStats(meleeStats);
         //switch to melee
