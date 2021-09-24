@@ -23,8 +23,8 @@ public class JumpAttack : AttackScriptableObject
         private readonly float _cooldown;
         private readonly float _windup;
         private readonly int _damage;
-        private readonly float _jumpAngle = 45f;
-        private readonly float _jumpDistance = 5f;
+        private readonly float _jumpAngle;
+        private readonly float _jumpDistance;
         private readonly float _knockback;
 
         public Attack(float jumpAngle, float jumpDistance, float knockback, int damage, float windup, float cooldown)
