@@ -115,11 +115,12 @@ public class SceneNavigationManager : MonoBehaviour
         switch (currentScene)
         {
             case "Level1":
-                GoToMainMenu();
-                //GoToLevel2();
+                //GoToMainMenu();
+                GoToLevel2();
                 break;
             case "Level2":
                 //Go to level 3 and so on and so forth
+                GoToMainMenu();
                 break;
             default:
                 Debug.Log($"Uuuh what? How did you manage to trigger a level change if you're not on one of the levels? o:");
