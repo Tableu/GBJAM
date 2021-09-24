@@ -23,6 +23,7 @@ public class MainMenuManager : MonoBehaviour
         {
             panels[0].Show(true);
         }
+        MusicManager.MusicInstance.PlayMusic(Music.MainMenu);
     }
 
     /// <summary>
