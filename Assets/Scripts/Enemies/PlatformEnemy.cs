@@ -5,6 +5,10 @@ public class PlatformEnemy : EnemyBase
 {
     [Header("Platform Enemy Config")] [SerializeField]
     public float lookAheadDist = 0.5f;
+    /// <summary>
+    /// The distance the enemy will try to maintain from the target
+    /// </summary>
+    public float targetDistance = 5f;
 
     private BoxCollider2D _collider;
 
@@ -14,13 +18,13 @@ public class PlatformEnemy : EnemyBase
         _collider = GetComponent<BoxCollider2D>();
         StateMachine = new FSM();
         var falling = new FallState(this);
-        var patrol = new PatrolPlatform(this, _movementController);
-        var attack = new RangedAttack(this, _movementController, PlayerTransform);
+        var patrol = new PatrolPlatform(this, MovementController);
+        var attack = new RangedAttack(this, MovementController, PlayerTransform, targetDistance);
 
         StateMachine.AddTransition(falling, patrol,
-            () => _movementController.Grounded());
+            () => MovementController.Grounded());
         StateMachine.AddAnyTransition(falling,
-            () => !_movementController.Grounded());
+            () => !MovementController.Grounded());
         StateMachine.AddTransition(patrol, attack, PlayerVisible);
         StateMachine.AddTransition(attack, patrol, () => timeSinceSawPlayer > attackTime);
         StateMachine.SetState(falling);

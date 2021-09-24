@@ -56,13 +56,13 @@ public class RangedAttack : IState
     private readonly LayerMask _playerLayer = LayerMask.GetMask("Player");
     private float _targetDistance;
 
-    public RangedAttack(PlatformEnemy enemy, MovementController movement, Transform playerTransform)
+    public RangedAttack(PlatformEnemy enemy, MovementController movement, Transform playerTransform, float targetDistance)
     {
         _enemy = enemy;
         _movement = movement;
         _playerTransform = playerTransform;
         _collider = playerTransform.gameObject.GetComponent<Collider2D>();
-        _targetDistance = 5;
+        _targetDistance = targetDistance;
     }
 
     public void Tick()
@@ -93,6 +93,9 @@ public class RangedAttack : IState
 
     public void OnExit()
     {
-        _movement.Stop();
+        _enemy.CanAttack = false;
     }
 }
+
+// todo: Attack Pattern for Jump attack
+// Try to charge the player and jump when out of range
