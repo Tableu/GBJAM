@@ -4,18 +4,18 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 
-public class SceneNagivationManager : MonoBehaviour
+public class SceneNavigationManager : MonoBehaviour
 {
 
-    static SceneNagivationManager _instance;
+    static SceneNavigationManager _instance;
 
-    public static SceneNagivationManager Instance
+    public static SceneNavigationManager Instance
     {
         get
         {
-            if (_instance == null && !FindObjectOfType<SceneNagivationManager>())
+            if (_instance == null && !FindObjectOfType<SceneNavigationManager>())
             {
-                _instance = new GameObject("SceneNavigationManager").AddComponent<SceneNagivationManager>();
+                _instance = new GameObject("SceneNavigationManager").AddComponent<SceneNavigationManager>();
             }
             return _instance;
         }
@@ -29,6 +29,11 @@ public class SceneNagivationManager : MonoBehaviour
         }
         _instance = this;
         DontDestroyOnLoad(this);
+    }
+
+    public Scene GetCurrentlyActiveScene()
+    {
+        return SceneManager.GetActiveScene();
     }
 
     public void GoToMainMenu()
