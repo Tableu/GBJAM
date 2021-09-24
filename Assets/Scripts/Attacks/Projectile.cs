@@ -32,7 +32,10 @@ public class Projectile : MonoBehaviour
                 RawDamage = damage,
                 Source = transform.position
             };
-            enemy.TakeDamage(dmg);
+            if (enemy != null)
+            {
+                enemy.TakeDamage(dmg);
+            }
         }
         Destroy(gameObject);
     }
