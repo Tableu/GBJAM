@@ -336,8 +336,10 @@ public class PlayerController : MonoBehaviour, IDamageable
     private IEnumerator Invulnerable()
     {
         gameObject.layer = LayerMask.NameToLayer("Invulnerable");
+        playerAnimatorController.SetIsInvulnerable(true);
         yield return new WaitForSeconds(1);
         gameObject.layer = LayerMask.NameToLayer("Player");
+        playerAnimatorController.SetIsInvulnerable(false);
     }
 
     private void OnCollisionEnter2D(Collision2D other)

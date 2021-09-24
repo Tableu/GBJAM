@@ -21,6 +21,11 @@ public class PlayerAnimatorController : AnimationControllerBase
     {
         animCont.SetBool("IsHiding", hiding);
     }
+
+    public void SetIsInvulnerable(bool invulnerable)
+    {
+        animCont.SetBool("IsInvulnerable", invulnerable);
+    }
     public void TriggerJump()
     {
         animCont.SetTrigger("JumpTrigger");
