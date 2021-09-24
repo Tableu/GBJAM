@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] private PlayerAnimatorController playerAnimatorController;
     [SerializeField] private SpriteRenderer playerShellSpriteRenderer;
     [SerializeField] private AttackScriptableObject _attack;
+    [SerializeField] private ParticleSystem particleSystem;
 
     [SerializeField] private int health;
     [SerializeField] private int armor;
@@ -189,6 +190,7 @@ public class PlayerController : MonoBehaviour, IDamageable
                         return;
                     }
                     playerAnimatorController.TriggerAttack();
+                    particleSystem.Emit(20);
                     StartCoroutine(DashCooldown(1f));
                 }
                 StartCoroutine(_attackCommand.DoAttack(gameObject));
