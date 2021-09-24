@@ -58,7 +58,7 @@ public class MainMenuManager : MonoBehaviour
 
     public void GoToLevel1()
     {
-        SceneNagivationManager.Instance.GoToLevel1();
+        SceneNavigationManager.Instance.GoToLevel1();
     }
 
     /// <summary>
@@ -66,13 +66,13 @@ public class MainMenuManager : MonoBehaviour
     /// </summary>
     public void GoToIojiTestScene()
     {
-        SceneNagivationManager.Instance.GoToIojiojiTestScene();
+        SceneNavigationManager.Instance.GoToIojiojiTestScene();
     }
     /// <summary>
     /// Kinda debug? Loads TableuTestScene
     /// </summary>
     public void GoToTableuTestScene()
     {
-        SceneNagivationManager.Instance.GoToTableuTestScene();
+        SceneNavigationManager.Instance.GoToTableuTestScene();
     }
 }

@@ -62,7 +62,7 @@ public class MapManager : MonoBehaviour
     IEnumerator ReloadSceneAfterSeconds()
     {
         yield return new WaitForSeconds(2f);
-        SceneNagivationManager.Instance.ReloadScene();
+        SceneNavigationManager.Instance.ReloadScene();
     }
 
     void UpdateCameraBG()
