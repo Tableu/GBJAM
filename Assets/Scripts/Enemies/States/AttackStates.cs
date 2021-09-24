@@ -93,6 +93,5 @@ public class RangedAttack : IState
 
     public void OnExit()
     {
-        _movement.Stop();
     }
 }

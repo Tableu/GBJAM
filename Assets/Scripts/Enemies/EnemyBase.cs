@@ -29,7 +29,7 @@ namespace Enemies
         [SerializeField] protected LayerMask sightBlockingLayers;
 
         private AttackCommand _attack;
-        protected MovementController _movementController;
+        public MovementController MovementController { get; private set; }
         private LayerMask _playerLayer;
 
         [NonSerialized] public EnemyAnimatorController Animator;
@@ -52,7 +52,7 @@ namespace Enemies
             Animator = GetComponentInChildren<EnemyAnimatorController>();
             Player = playerGO.GetComponent<PlayerController>();
 
-            _movementController = new MovementController(gameObject, walkingSpeed);
+            MovementController = new MovementController(gameObject, walkingSpeed);
             StateMachine = new FSM();
             _attack = attackConfig.MakeAttack();
 
@@ -98,7 +98,7 @@ namespace Enemies
             Animator.TriggerHurt();
             // apply knockback
             dmg.Knockback *= knockbackFactor;
-            StartCoroutine(_movementController.Knockback(dmg));
+            StartCoroutine(MovementController.Knockback(dmg));
         }
         
         protected bool PlayerVisible()
