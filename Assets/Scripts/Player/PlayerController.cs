@@ -126,6 +126,10 @@ public class PlayerController : MonoBehaviour, IDamageable
         armor = shellStats.armor;
         speed = shellStats.speed;
         _movementController.WalkingSpeed = shellStats.speed.x;
+        if (hiding)
+        {
+            _movementController.WalkingSpeed *= 0.4f;
+        }
         _attack = shellStats.attackConfig;
         if (_attack != null)
         {
@@ -223,7 +227,6 @@ public class PlayerController : MonoBehaviour, IDamageable
     }
     private void Hide(InputAction.CallbackContext context)
     {
-        //Call playerAnimatorController
         if (context.started)
         {
             _playerInputActions.Player.Jump.Disable();
@@ -232,8 +235,8 @@ public class PlayerController : MonoBehaviour, IDamageable
             _movementController.Stop();
             playerAnimatorController.SetIsHiding(true);
             pSoundManager.PlaySound(pSoundManager.Sound.pHide);
-            BoxCollider2D box = (BoxCollider2D)col;
-            box.size = new Vector2(box.size.x, box.size.y*0.5f);
+            //BoxCollider2D box = (BoxCollider2D)col;
+            //box.size = new Vector2(box.size.x, box.size.y*0.5f);
         }
         else if (context.canceled)
         {
@@ -241,8 +244,8 @@ public class PlayerController : MonoBehaviour, IDamageable
             hiding = false;
             _movementController.WalkingSpeed = currentStats.speed.x;
             playerAnimatorController.SetIsHiding(false);
-            BoxCollider2D box = (BoxCollider2D)col;
-            box.size = new Vector2(box.size.x, box.size.y*2f);
+            //BoxCollider2D box = (BoxCollider2D)col;
+            //box.size = new Vector2(box.size.x, box.size.y*2f);
         }
     }
 
