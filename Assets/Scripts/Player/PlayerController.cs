@@ -69,6 +69,11 @@ public class PlayerController : MonoBehaviour, IDamageable
             if (_movementController.Jump(speed.y))
             {
                 pSoundManager.PlaySound(pSoundManager.Sound.pJump);
+                if (hiding)
+                {
+                    _playerInputActions.Player.Hide.Disable();
+                    _playerInputActions.Player.Hide.Enable();
+                }
             }
         });
         _playerInputActions.Player.Move.canceled += Idle;
@@ -139,6 +144,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         shell = shellStats.shell;
         damagedShell = shellStats.damagedShell;
         currentStats = shellStats;
+        _playerInputActions.Player.Attack.Enable();
         //Update UI each time stats are changed.
         HUDManager.Instance.UpdateHealth(health);
         HUDManager.Instance.UpdateArmor(armor);
@@ -175,12 +181,28 @@ public class PlayerController : MonoBehaviour, IDamageable
                 {
                     playerAnimatorController.TriggerAttack();
                 }
+
+                if (_attack.GetType() == typeof(Attacks.DashAttack))
+                {
+                    if (hiding)
+                    {
+                        return;
+                    }
+                    playerAnimatorController.TriggerAttack();
+                    StartCoroutine(DashCooldown(1f));
+                }
                 StartCoroutine(_attackCommand.DoAttack(gameObject));
                 pSoundManager.PlaySound(pSoundManager.Sound.pAttack);
             }
         }
     }
 
+    private IEnumerator DashCooldown(float coolDown)
+    {
+        _playerInputActions.Player.Attack.Disable();
+        yield return new WaitForSeconds(coolDown);
+        _playerInputActions.Player.Attack.Enable();
+    }
     private void SwitchShells(InputAction.CallbackContext context)
     {
         ContactFilter2D contactFilter2D = new ContactFilter2D
@@ -229,23 +251,25 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         if (context.started)
         {
-            _playerInputActions.Player.Jump.Disable();
+            //_playerInputActions.Player.Jump.Disable();
             hiding = true;
             _movementController.WalkingSpeed *= 0.4f;
             _movementController.Stop();
             playerAnimatorController.SetIsHiding(true);
             pSoundManager.PlaySound(pSoundManager.Sound.pHide);
-            //BoxCollider2D box = (BoxCollider2D)col;
-            //box.size = new Vector2(box.size.x, box.size.y*0.5f);
+            BoxCollider2D box = (BoxCollider2D)col;
+            box.size = new Vector2(box.size.x, box.size.y*0.5f);
+            box.offset = new Vector2(box.offset.x, box.offset.y*0.5f);
         }
         else if (context.canceled)
         {
-            _playerInputActions.Player.Jump.Enable();
+            //_playerInputActions.Player.Jump.Enable();
             hiding = false;
             _movementController.WalkingSpeed = currentStats.speed.x;
             playerAnimatorController.SetIsHiding(false);
-            //BoxCollider2D box = (BoxCollider2D)col;
-            //box.size = new Vector2(box.size.x, box.size.y*2f);
+            BoxCollider2D box = (BoxCollider2D)col;
+            box.offset = new Vector2(box.offset.x, box.offset.y*2f);
+            box.size = new Vector2(box.size.x, box.size.y*2f);
         }
     }
 
