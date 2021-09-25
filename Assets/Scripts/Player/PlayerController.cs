@@ -208,7 +208,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         if (_attackCommand != null)
         {
             Debug.Log("Attack");
-            if (!_attackCommand.IsRunning)
+            if (!_attackCommand.IsRunning && !hiding)
             {
                 Debug.Log(_attack.GetType());
                 if (_attack.GetType() == typeof(Attacks.MeleeAttack))
@@ -218,10 +218,6 @@ public class PlayerController : MonoBehaviour, IDamageable
 
                 if (_attack.GetType() == typeof(Attacks.DashAttack))
                 {
-                    if (hiding)
-                    {
-                        return;
-                    }
                     playerAnimatorController.TriggerAttack();
                     particleSystem.Emit(20);
                     StartCoroutine(DashCooldown(1f));
