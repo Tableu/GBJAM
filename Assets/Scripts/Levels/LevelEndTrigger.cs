@@ -20,6 +20,5 @@ public class LevelEndTrigger : MonoBehaviour
                 MapManager.Instance.EndLevel();
             }
         }
-
     }
 }
