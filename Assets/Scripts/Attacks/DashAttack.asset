@@ -16,4 +16,4 @@ MonoBehaviour:
   speed: 50
   damage: 1
   windupTime: 0
-  cooldownTime: 0.4
+  cooldownTime: 1

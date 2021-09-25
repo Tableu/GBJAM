@@ -25,6 +25,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] private SpriteRenderer playerShellSpriteRenderer;
     [SerializeField] private AttackScriptableObject _attack;
     [SerializeField] private ParticleSystem particleSystem;
+    [SerializeField] private SpriteRenderer smearSprite;
 
     [SerializeField] private int health;
     [SerializeField] private int armor;
@@ -312,7 +313,12 @@ public class PlayerController : MonoBehaviour, IDamageable
     public void TakeDamage(Damage dmg)
     {
         var direction = Math.Sign(transform.position.x - dmg.Source.x);
-        if (_attackCommand.IsRunning && _attack.GetType() == typeof(Attacks.MeleeAttack))
+        if (_attackCommand.IsRunning && _attack.GetType() == typeof(Attacks.DashAttack))
+        {
+            return;
+        }
+
+        if (_attackCommand.IsRunning && _attack.GetType() == typeof(Attacks.MeleeAttack) && smearSprite.enabled)
         {
             return;
         }
