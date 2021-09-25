@@ -4,6 +4,7 @@ using Attacks;
 using UnityEngine.InputSystem;
 using UnityEngine;
 using Cinemachine;
+using UnityEngine.SceneManagement;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -30,13 +31,20 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] private Vector2 speed;
     [SerializeField] private Sprite shell;
     [SerializeField] private Sprite damagedShell;
-
+    [Header("Bools")]
     [SerializeField] private bool grounded;
     [SerializeField] public bool frontClear;
     [SerializeField] public bool inputLocked;
     [SerializeField] private bool hiding;
+    [Header("Shell Prefabs")]
+    [SerializeField] private GameObject snailShell;
+    [SerializeField] private GameObject spikyShell;
+    [SerializeField] private GameObject conchShell;
 
-
+    private const int NO_SHELL = 0;
+    private const int SNAIL_SHELL = 1;
+    private const int SPIKY_SHELL = 2;
+    private const int CONCH_SHELL = 3;
     public int Health
     {
         get { return health; }
@@ -89,8 +97,30 @@ public class PlayerController : MonoBehaviour, IDamageable
             layerMask = LayerMask.GetMask("Ground"),
             useLayerMask = true
         };
-        SetStats(gameObject.GetComponent<PlayerStats>());
-
+        
+        int savedShell = PlayerPrefs.GetInt("Shell", 0);
+        GameObject shell;
+        switch (savedShell)
+        {
+            case NO_SHELL:
+                SetStats(gameObject.GetComponent<PlayerStats>());
+                break;
+            case SNAIL_SHELL: 
+                shell = Instantiate(snailShell, transform.position, Quaternion.identity);
+                EquipShell(shell);
+                SetStats(shell.GetComponent<PlayerStats>());
+                break;
+            case SPIKY_SHELL: 
+                shell = Instantiate(spikyShell, transform.position, Quaternion.identity);
+                EquipShell(shell);
+                SetStats(shell.GetComponent<PlayerStats>());
+                break;
+            case CONCH_SHELL: 
+                shell = Instantiate(conchShell, transform.position, Quaternion.identity);
+                EquipShell(shell);
+                SetStats(shell.GetComponent<PlayerStats>());
+                break;
+        }
         CinemachineVirtualCamera virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
         if (virtualCamera)
         {
@@ -141,10 +171,10 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             _attackCommand = _attack.MakeAttack();
         }
-
-        shell = shellStats.shell;
+        shell = shellStats.shellSprite;
         damagedShell = shellStats.damagedShell;
         currentStats = shellStats;
+        PlayerPrefs.SetInt("Shell", currentStats.shell);
         _playerInputActions.Player.Attack.Enable();
         //Update UI each time stats are changed.
         HUDManager.Instance.UpdateHealth(health);
@@ -220,11 +250,7 @@ public class PlayerController : MonoBehaviour, IDamageable
                 var newShell = collider2D[0].gameObject;
                 DropShell();
                 SetStats(newShell.GetComponent<PlayerStats>());
-                shell = newShell.GetComponent<PlayerStats>().shell;
-                damagedShell = newShell.GetComponent<PlayerStats>().damagedShell;
-                playerShellSpriteRenderer.sprite = collider2D[0].GetComponent<SpriteRenderer>().sprite;
-                newShell.transform.parent = gameObject.transform;
-                newShell.SetActive(false);
+                EquipShell(newShell);
             }
             else
             {
@@ -236,6 +262,14 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
     }
 
+    private void EquipShell(GameObject newShell)
+    {
+        shell = newShell.GetComponent<PlayerStats>().shellSprite;
+        damagedShell = newShell.GetComponent<PlayerStats>().damagedShell;
+        playerShellSpriteRenderer.sprite = newShell.GetComponent<SpriteRenderer>().sprite;
+        newShell.transform.parent = gameObject.transform;
+        newShell.SetActive(false);
+    }
     private void DropShell()
     {
         if (transform.childCount > 1)
@@ -341,6 +375,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             MapManager.Instance.PlayerDied();
         }
+        PlayerPrefs.SetInt("Shell", NO_SHELL);
         //Perform other death tasks
         Destroy(gameObject);
     }

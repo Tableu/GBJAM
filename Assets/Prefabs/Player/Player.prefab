@@ -4860,6 +4860,9 @@ MonoBehaviour:
   frontClear: 0
   inputLocked: 0
   hiding: 0
+  snailShell: {fileID: 3537151017550152801, guid: 2d624e681e75bc341ba671881655c407, type: 3}
+  spikyShell: {fileID: 3391332105126726130, guid: 154cc52a83849d2449a7ed2add4067e6, type: 3}
+  conchShell: {fileID: 8426349346880946997, guid: 7a8bd38bd3813fc459446413ec94af3a, type: 3}
 --- !u!114 &5916625166058093823
 MonoBehaviour:
   m_ObjectHideFlags: 0
