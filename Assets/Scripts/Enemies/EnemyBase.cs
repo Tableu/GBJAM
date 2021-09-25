@@ -54,7 +54,7 @@ namespace Enemies
 
             MovementController = new MovementController(gameObject, walkingSpeed);
             StateMachine = new FSM();
-            _attack = attackConfig.MakeAttack();
+            _attack = attackConfig?.MakeAttack();
 
             currentHealth = maxHealth;
             PlayerTransform = playerGO.transform;
@@ -68,7 +68,7 @@ namespace Enemies
             }
 
             StateMachine.Tick();
-            if (!_attack.IsRunning && CanAttack)
+            if (_attack is {IsRunning: false} && CanAttack)
             {
                 Animator.TriggerAttack();
                 StartCoroutine(_attack.DoAttack(gameObject));

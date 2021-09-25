@@ -1,4 +1,5 @@
 using System;
+using Enemies;
 using UnityEngine;
 
 /// <summary>
@@ -87,11 +88,44 @@ public class RangedAttack : IState
     public void OnEnter()
     {
         _movement.Stop();
+        _enemy.Animator.SetCanSeePlayer(true);
     }
 
     public void OnExit()
     {
         _enemy.CanAttack = false;
+        _enemy.Animator.SetCanSeePlayer(false);
+    }
+}
+
+public class FloatingAttack : IState
+{
+    private readonly MovementController _movement;
+    private readonly Transform _playerTransform;
+    private readonly EnemyBase _enemy;
+    
+    public FloatingAttack(EnemyBase enemy)
+    {
+        _enemy = enemy;
+        _movement = enemy.MovementController;
+        _playerTransform = enemy.PlayerTransform;
+        _playerTransform.gameObject.GetComponent<Collider2D>();
+    }
+    public void Tick()
+    {
+        Vector2 distToPoint = _playerTransform.position - _enemy.transform.position;
+        var dir = distToPoint.normalized;
+        _movement.Move(dir*_movement.WalkingSpeed);
+    }
+
+    public void OnEnter()
+    {
+        _enemy.Animator.SetCanSeePlayer(true);
+    }
+
+    public void OnExit()
+    {
+        _enemy.Animator.SetCanSeePlayer(true);
     }
 }
 

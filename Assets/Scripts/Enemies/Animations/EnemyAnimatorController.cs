@@ -5,29 +5,17 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-public class EnemyAnimatorController : AnimationControllerBase
+public abstract class EnemyAnimatorController : AnimationControllerBase
 {
-    public void SetIsMoving(bool moving)
-    {
-        animCont.SetBool("IsMoving", moving);
-    }
-    public void TriggerHurt()
-    {
-        animCont.SetTrigger("Hit");
-    }
-    public void TriggerAttack()
-    {
-        animCont.SetTrigger("Attack");
-    }
-    public void TriggerDeath()
-    {
-        animCont.SetTrigger("Death");
-    }
+    public abstract void SetIsMoving(bool moving);
+    public abstract void TriggerHurt();
+    public abstract void TriggerAttack();
+    public abstract void TriggerDeath();
+    public abstract void SetCanSeePlayer(bool canSee);
 }
 
-
 #if UNITY_EDITOR
-[CustomEditor(typeof(EnemyAnimatorController))]
+[CustomEditor(typeof(EnemyAnimatorController), true)]
 class EnemyAnimatorEditor : Editor
 {
     EnemyAnimatorController anim { get { return target as EnemyAnimatorController; } }
@@ -45,6 +33,16 @@ class EnemyAnimatorEditor : Editor
             if (GUILayout.Button("Set IsMoving False"))
             {
                 anim.SetIsMoving(false);
+            }
+            EditorGUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+            if (GUILayout.Button("Set CanSee True"))
+            {
+                anim.SetCanSeePlayer(true);
+            }
+            if (GUILayout.Button("Set CanSee False"))
+            {
+                anim.SetCanSeePlayer(false);
             }
             EditorGUILayout.EndHorizontal();
 
