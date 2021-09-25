@@ -123,6 +123,12 @@ public class PlayerController : MonoBehaviour, IDamageable
                 SetStats(shell.GetComponent<PlayerStats>());
                 break;
         }
+        armor = PlayerPrefs.GetInt("armor");
+        if (armor == 1)
+        {
+            playerShellSpriteRenderer.sprite = damagedShell;
+        }
+
         CinemachineVirtualCamera virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
         if (virtualCamera)
         {
@@ -261,6 +267,7 @@ public class PlayerController : MonoBehaviour, IDamageable
                 var newShell = collider2D[0].gameObject;
                 DropShell();
                 SetStats(newShell.GetComponent<PlayerStats>());
+                PlayerPrefs.SetInt("armor", armor);
                 EquipShell(newShell);
             }
             else
@@ -290,10 +297,6 @@ public class PlayerController : MonoBehaviour, IDamageable
             oldShell.gameObject.SetActive(true);
             oldShell.localScale = new Vector3(transform.localScale.x, oldShell.localScale.y, oldShell.localScale.z);
             oldShell.GetComponent<PlayerStats>().armor = armor;
-            if (armor == 1)
-            {
-                oldShell.gameObject.GetComponent<ShellAnimator>().SetIsDamaged();
-            }
             oldShell.SetParent(null);
         }
     }
@@ -374,6 +377,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         armor -= dmg.RawDamage;
         HUDManager.Instance.UpdateArmor(Mathf.Max(0, armor));
+        PlayerPrefs.SetInt("armor", armor);
         if (armor <= 0)
         {
             BreakShell();
@@ -406,6 +410,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             MapManager.Instance.PlayerDied();
         }
         PlayerPrefs.SetInt("Shell", NO_SHELL);
+        PlayerPrefs.SetInt("armor", 0);
         //Perform other death tasks
         Destroy(gameObject);
     }
