@@ -9,4 +9,9 @@ public class ShellAnimator : AnimationControllerBase
     {
         animCont.SetBool("Dead", true);
     }
+
+    public void SetIsDamaged()
+    {
+        animCont.SetBool("Damaged", true);
+    }
 }
