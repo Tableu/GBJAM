@@ -37,6 +37,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] public bool frontClear;
     [SerializeField] public bool inputLocked;
     [SerializeField] private bool hiding;
+    [SerializeField] private bool nearCeiling;
     [Header("Shell Prefabs")]
     [SerializeField] private GameObject snailShell;
     [SerializeField] private GameObject spikyShell;
@@ -133,15 +134,16 @@ public class PlayerController : MonoBehaviour, IDamageable
     void Update()
     {
         grounded = _movementController.Grounded();
+        nearCeiling = _movementController.NearCeiling();
         if (grounded)
         {
             playerAnimatorController.SetIsGrounded(true);
-            _playerInputActions.Player.Hide.Enable();
+            //_playerInputActions.Player.Hide.Enable();
         }
         else
         {
             playerAnimatorController.SetIsGrounded(false);
-            _playerInputActions.Player.Hide.Disable();
+            //_playerInputActions.Player.Hide.Disable();
         }
         frontClear = _movementController.FrontClear();
         Move();
@@ -286,9 +288,8 @@ public class PlayerController : MonoBehaviour, IDamageable
     }
     private void Hide(InputAction.CallbackContext context)
     {
-        if (context.started)
+        if ((context.started || context.performed) && !hiding && grounded)
         {
-            //_playerInputActions.Player.Jump.Disable();
             hiding = true;
             _movementController.WalkingSpeed *= 0.4f;
             _movementController.Stop();
@@ -298,21 +299,41 @@ public class PlayerController : MonoBehaviour, IDamageable
             box.size = new Vector2(box.size.x, box.size.y*0.5f);
             box.offset = new Vector2(box.offset.x, box.offset.y*0.5f);
         }
-        else if (context.canceled)
+        else if (context.canceled && hiding && !nearCeiling)
         {
-            //_playerInputActions.Player.Jump.Enable();
-            hiding = false;
-            _movementController.WalkingSpeed = currentStats.speed.x;
-            playerAnimatorController.SetIsHiding(false);
-            BoxCollider2D box = (BoxCollider2D)col;
-            box.offset = new Vector2(box.offset.x, box.offset.y*2f);
-            box.size = new Vector2(box.size.x, box.size.y*2f);
+            StopHiding();
+            //comment
         }
+        else if(context.canceled && hiding && nearCeiling)
+        {
+            StartCoroutine(autoStopHide());
+        }
+        
     }
 
+    private IEnumerator autoStopHide()
+    {
+        while (hiding)
+        {
+            if (!nearCeiling && hiding && grounded)
+            {
+                StopHiding();
+            }
+            yield return null;
+        }
+    }
+    
+    private void StopHiding()
+    {
+        hiding = false;
+        _movementController.WalkingSpeed = currentStats.speed.x;
+        playerAnimatorController.SetIsHiding(false);
+        BoxCollider2D box = (BoxCollider2D)col;
+        box.offset = new Vector2(box.offset.x, box.offset.y*2f);
+        box.size = new Vector2(box.size.x, box.size.y*2f);
+    }
     public void TakeDamage(Damage dmg)
     {
-        var direction = Math.Sign(transform.position.x - dmg.Source.x);
         if (_attackCommand.IsRunning && _attack.GetType() == typeof(Attacks.DashAttack))
         {
             return;
@@ -405,18 +426,6 @@ public class PlayerController : MonoBehaviour, IDamageable
         yield return new WaitForSeconds(1);
         gameObject.layer = LayerMask.NameToLayer("Player");
         playerAnimatorController.SetIsInvulnerable(false);
-    }
-
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        switch (LayerMask.LayerToName(other.collider.gameObject.layer))
-        {
-            case "Enemy":
-                // todo: add variable for these properties
-                //var dmg = new Damage(transform.position, 20, 1);
-                //other.gameObject.GetComponent<IDamageable>().TakeDamage(dmg);
-                break;
-        }
     }
     private void OnTriggerEnter2D(Collider2D other)
     {

@@ -122,6 +122,25 @@ public class MovementController
         return true;
     }
 
+    public bool NearCeiling()
+    {
+        RaycastHit2D hit;
+        var bounds = _boxCollider.bounds;
+        Vector2[] posArray =
+        {
+            new Vector2(bounds.max.x, bounds.max.y),
+            new Vector2(bounds.center.x, bounds.max.y),
+            new Vector2(bounds.min.x, bounds.max.y)
+        };
+        for (var x = 0; x < 3; x++)
+        {
+            hit = Physics2D.Raycast(posArray[x], Vector2.up, 0.3f, LayerMask.GetMask("Ground"));
+            Debug.DrawRay(posArray[x], new Vector2(0, -0.3f), Color.red);
+            if (hit.collider != null) return _boxCollider.IsTouching(_groundFilter2D);
+        }
+
+        return false;
+    }
     public bool Grounded()
     {
         // todo: try to only update once per frame (use Time.frameCount)
