@@ -276,10 +276,13 @@ public class PlayerController : MonoBehaviour, IDamageable
             var oldShell = transform.GetChild(1);
             oldShell.localPosition = Vector3.zero;
             oldShell.gameObject.SetActive(true);
-            oldShell.SetParent(null);
-            oldShell.GetComponent<SpriteRenderer>().sprite = playerShellSpriteRenderer.sprite;
             oldShell.localScale = new Vector3(transform.localScale.x, oldShell.localScale.y, oldShell.localScale.z);
             oldShell.GetComponent<PlayerStats>().armor = armor;
+            if (armor == 1)
+            {
+                oldShell.gameObject.GetComponent<ShellAnimator>().SetIsDamaged();
+            }
+            oldShell.SetParent(null);
         }
     }
     private void Hide(InputAction.CallbackContext context)
@@ -298,7 +301,6 @@ public class PlayerController : MonoBehaviour, IDamageable
         else if (context.canceled && hiding && !nearCeiling)
         {
             StopHiding();
-            //comment
         }
         else if(context.canceled && hiding && nearCeiling)
         {
