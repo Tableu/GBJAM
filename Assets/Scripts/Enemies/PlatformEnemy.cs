@@ -19,7 +19,7 @@ public class PlatformEnemy : EnemyBase
         StateMachine = new FSM();
         var falling = new FallState(this);
         var patrol = new PatrolPlatform(this, MovementController);
-        var attack = new RangedAttack(this, MovementController, PlayerTransform, targetDistance);
+        var attack = new RangedAttack(this, targetDistance);
 
         StateMachine.AddTransition(falling, patrol,
             () => MovementController.Grounded());
