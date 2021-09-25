@@ -120,6 +120,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PufferfishVisuals
       objectReference: {fileID: 0}
+    - target: {fileID: 6270580418392728583, guid: 2a23993db05da0245b8cf1cd0a0c1ffc, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 2538468166569900687, guid: 4cb9f96e50822dc499a9b4a981a0177b, type: 3}
     - target: {fileID: 6270580418392728600, guid: 2a23993db05da0245b8cf1cd0a0c1ffc, type: 3}
       propertyPath: m_RootOrder
       value: 0
