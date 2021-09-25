@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faa785cb054170f4fad430790183e001, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: {x: 10, y: 5}
+  speed: {x: 10, y: 5.5}
   armor: 2
   attackConfig: {fileID: 11400000, guid: 0231fe1ce13574f4696e3d579bd4e855, type: 2}
   shellSprite: {fileID: 0}

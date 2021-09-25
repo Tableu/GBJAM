@@ -324,14 +324,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
         if (armor > 0)
         {
-            if (direction == Math.Sign(transform.localScale.x) && !hiding)
-            {
-                LoseHealth(dmg);
-            }
-            else
-            {
-                LoseArmor(dmg);
-            }
+            LoseArmor(dmg);
         }
         else
         {
