@@ -453,6 +453,16 @@ public class PlayerController : MonoBehaviour, IDamageable
                 break;
         }
     }
+    
+    private void OnTriggerStay2D(Collider2D other)
+    {
+        if (other.CompareTag("Finish") && _playerInputActions.Player.PickUpShell.phase == InputActionPhase.Started)
+        {
+            SwitchShells(new InputAction.CallbackContext());
+            other.gameObject.GetComponent<LevelEndTrigger>().OpenChest();
+            _playerInputActions.Disable();
+        }
+    }
 
     //private void OnCollisionExit(Collision other)
     //{
