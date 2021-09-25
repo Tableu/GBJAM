@@ -86,12 +86,14 @@ public class MapManager : MonoBehaviour
     {
         MusicManager.MusicInstance.PlayMusic(Music.EndJingle, false);
         yield return new WaitForSeconds(7.25f);
+        //Spawn level transition dialogue, transition to next level once the first thing is over.
         SceneNavigationManager.Instance.GoToNextLevel();
     }
 
     public void EndLevel()
     {
         isEndingLevel = true;
+        player.transform.Find("PlayerVisuals").GetComponent<PlayerAnimatorController>().SetIsDancing(true);
         StartCoroutine(LevelEndCoroutine());
     }
 }

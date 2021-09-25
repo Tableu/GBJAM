@@ -52,16 +52,14 @@ public class RangedAttack : IState
     private readonly MovementController _movement;
     private readonly Transform _playerTransform;
     private readonly PlatformEnemy _enemy;
-    private readonly Collider2D _collider;
-    private readonly LayerMask _playerLayer = LayerMask.GetMask("Player");
     private float _targetDistance;
 
-    public RangedAttack(PlatformEnemy enemy, MovementController movement, Transform playerTransform, float targetDistance)
+    public RangedAttack(PlatformEnemy enemy, float targetDistance)
     {
         _enemy = enemy;
-        _movement = movement;
-        _playerTransform = playerTransform;
-        _collider = playerTransform.gameObject.GetComponent<Collider2D>();
+        _movement = enemy.MovementController;
+        _playerTransform = enemy.PlayerTransform;
+        _playerTransform.gameObject.GetComponent<Collider2D>();
         _targetDistance = targetDistance;
     }
 

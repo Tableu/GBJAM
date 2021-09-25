@@ -37,7 +37,7 @@ namespace Enemies
         protected LayerMask groundLayer;
 
         protected PlayerController Player;
-        protected Transform PlayerTransform;
+        public Transform PlayerTransform { get; private set; }
         protected FSM StateMachine;
         protected float timeSinceSawPlayer;
 
