@@ -11,6 +11,8 @@ public enum Music
     EndJingle,
     TransitionJingle,
     Level1,
+    Level2,
+    Level3
 }
 public class MusicManager : MonoBehaviour
 {
