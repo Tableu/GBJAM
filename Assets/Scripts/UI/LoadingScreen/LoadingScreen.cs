@@ -72,10 +72,18 @@ public class LoadingScreen : MonoBehaviour
         isHiding = false;
         GetComponent<GraphicRaycaster>().enabled = false;
     }
+
+    private void SetCamera()
+    {
+        Canvas canvas = GetComponent<Canvas>();
+        canvas.worldCamera = FindObjectOfType<Camera>();
+    }
+
     public void ShowLoadingScreen(showCallbackEvent callbackEvent = null)
     {
         if (!_isScreenShown && !isShowing)
         {
+            SetCamera();
             savedCallbackEvents = callbackEvent;
             StartCoroutine(ShowLoadingScreenCoroutine());
         }
@@ -84,6 +92,7 @@ public class LoadingScreen : MonoBehaviour
     {
         if ((_isScreenShown && !isHiding) || isShowing)
         {
+            SetCamera();
             if (isShowing)
             {
                 hideWhenShowFinish = true;
@@ -96,6 +105,7 @@ public class LoadingScreen : MonoBehaviour
             }
         }
     }
+
 
     IEnumerator ShowLoadingScreenCoroutine()
     {
