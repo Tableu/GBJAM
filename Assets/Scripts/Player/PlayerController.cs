@@ -160,6 +160,18 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
     }
 
+    public void EnableInputActions(bool enable)
+    {
+        if (enable)
+        {
+            _playerInputActions.Enable();
+        }
+        else
+        {
+            _playerInputActions.Disable();
+        }
+    }
+
     public void SetStats(PlayerStats shellStats)
     {
         armor = shellStats.armor;

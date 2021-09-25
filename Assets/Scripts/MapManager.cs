@@ -57,6 +57,7 @@ public class MapManager : MonoBehaviour
             camConfiner.m_BoundingShape2D = confinerContainer.GetComponent<PolygonCollider2D>();
         }
 
+        LoadingScreen.Instance.HideLoadingScreen();
         //UpdateCameraBG();
     }
 
@@ -87,13 +88,19 @@ public class MapManager : MonoBehaviour
         MusicManager.MusicInstance.PlayMusic(Music.EndJingle, false);
         yield return new WaitForSeconds(7.25f);
         //Spawn level transition dialogue, transition to next level once the first thing is over.
-        SceneNavigationManager.Instance.GoToNextLevel();
+        LoadingScreen.Instance.ShowLoadingScreen(LoadingScreenCallback);
     }
 
     public void EndLevel()
     {
         isEndingLevel = true;
+        player.EnableInputActions(false);
         player.transform.Find("PlayerVisuals").GetComponent<PlayerAnimatorController>().SetIsDancing(true);
         StartCoroutine(LevelEndCoroutine());
+    }
+
+    public void LoadingScreenCallback()
+    {
+        SceneNavigationManager.Instance.GoToNextLevel();
     }
 }
