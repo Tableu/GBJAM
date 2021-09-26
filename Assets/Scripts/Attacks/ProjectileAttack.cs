@@ -47,6 +47,7 @@ namespace Attacks
                 IsRunning = true;
                 yield return new WaitForSeconds(_windupTime);
 
+                pSoundManager.PlaySound(pSoundManager.Sound.eFireball);
                 var transform = attacker.GetComponent<Transform>();
                 var dir = -1 * Mathf.Sign(transform.localScale.x);
                 var pos = transform.position + dir * _offset.x * Vector3.right + Vector3.up * _offset.y;
