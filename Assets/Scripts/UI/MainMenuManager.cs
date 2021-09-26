@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
 public class MainMenuManager : MonoBehaviour
 {
@@ -62,6 +63,13 @@ public class MainMenuManager : MonoBehaviour
     }
 
     public void GoToLevel1()
+    {
+        FindObjectOfType<InputSystemUIInputModule>().enabled = false;
+        LoadingScreen.Instance.ShowLoadingScreen(LoadingScreenCallback);
+        MusicManager.MusicInstance.PlayMusic(Music.TransitionJingle);
+    }
+
+    void LoadingScreenCallback()
     {
         SceneNavigationManager.Instance.GoToLevel1();
     }

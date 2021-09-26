@@ -16,21 +16,49 @@ public class LoadingScreen : MonoBehaviour
     internal float transitionTime = 1f;
     [SerializeField]
     float fullBackgroundWidth = 480;
+    [SerializeField, Range(1f, 100f)]
+    float textScrollSpeed = 5f;
 
+    [SerializeField]
+    LoadingScreenText textsToShow;
 
     bool isShowing = false;
     bool isHiding = false;
+
+    bool isScrollingText = false;
 
     bool hideWhenShowFinish = false;
 
     showCallbackEvent savedCallbackEvents;
     showCallbackEvent backupCallbackEvents;
 
+    TextMeshProUGUI textThing;
+    RectTransform textRect;
+
     [SerializeField]
     bool _isScreenShown;
     public bool IsScreenShown
     {
         get { return _isScreenShown; }
+    }
+    public bool IsShowing
+    {
+        get { return isShowing; }
+    }
+    public bool IsHiding
+    {
+        get { return isHiding; }
+    }
+    public bool IsScrollingText
+    {
+        get { return isScrollingText; }
+    }
+    /// <summary>
+    /// If it should be blocking other behaviour because you're in a loading screen silly, why would you be able to move stuff around.
+    /// </summary>
+    public bool ShouldBlockStuff
+    {
+        get { return _isScreenShown || isShowing || isScrollingText; }
     }
 
     static LoadingScreen _instance;
@@ -60,6 +88,8 @@ public class LoadingScreen : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         backgroundImage = transform.Find("Background").GetComponent<RectTransform>();
+        textThing = transform.Find("LevelText").GetComponent<TextMeshProUGUI>();
+        textRect = textThing.GetComponent<RectTransform>();
 
         Reset();
     }
@@ -70,6 +100,9 @@ public class LoadingScreen : MonoBehaviour
         _isScreenShown = false;
         isShowing = false;
         isHiding = false;
+        isScrollingText = true;
+        backgroundImage.sizeDelta = new Vector2(32f, backgroundImage.sizeDelta.y);
+        textThing.text = "";
         GetComponent<GraphicRaycaster>().enabled = false;
     }
 
@@ -93,6 +126,9 @@ public class LoadingScreen : MonoBehaviour
         if ((_isScreenShown && !isHiding) || isShowing)
         {
             SetCamera();
+            textRect.anchoredPosition = new Vector2(150, 0);
+            textThing.text = "";
+            textThing.enabled = false;
             if (isShowing)
             {
                 hideWhenShowFinish = true;
@@ -111,26 +147,10 @@ public class LoadingScreen : MonoBehaviour
     {
         isShowing = true;
         yield return StartCoroutine(ShowBackground(true));
-
         isShowing = false;
+        yield return StartCoroutine(ScrollTextCoroutine());
 
         HandleCallbacks();
-
-        //---------------------------------------------------------------------------------------
-        //isShowing = true;
-        ////yield return StartCoroutine(ChangeLoadingScreenAlpha(1));
-        //yield return null;
-
-        //HandleCallbacks();
-
-        //isShowing = false;
-        //if (hideWhenShowFinish)
-        //{
-        //    hideWhenShowFinish = false;
-        //    savedCallbackEvents = backupCallbackEvents;
-        //    backupCallbackEvents = null;
-        //    HideLoadingScreen();
-        //}
     }
     IEnumerator HideLoadingScreenCoroutine()
     {
@@ -138,17 +158,28 @@ public class LoadingScreen : MonoBehaviour
         yield return StartCoroutine(ShowBackground(false));
 
         isHiding = false;
-        //---------------------------------------------------------------------------------------
-        //isHiding = true;
-        ////yield return new WaitForSeconds(timeBeforeHidingTexts);
-        ////yield return StartCoroutine(ChangeLoadingScreenAlpha(0));
-        //yield return null;
-        //GetComponent<GraphicRaycaster>().enabled = false;
-        //HandleCallbacks();
-
-        //isHiding = false;
     }
 
+    IEnumerator ScrollTextCoroutine()
+    {
+        textThing.enabled = true;
+        textThing.text = GetLevelText();
+        if (textThing.text != "")
+        {
+            MusicManager.MusicInstance.PlayMusic(Music.TransitionJingle);
+            yield return null;
+            textRect.anchoredPosition = new Vector2(0, -textRect.sizeDelta.y * 0.5f - 72f);
+
+            float targetPos = -textRect.anchoredPosition.y;
+            while (textRect.anchoredPosition.y < targetPos)
+            {
+                SetTextPosition(textRect.anchoredPosition.y + textScrollSpeed * Time.unscaledDeltaTime);
+                yield return null;
+            }
+            SetTextPosition(targetPos);
+        }
+        isScrollingText = false;
+    }
     IEnumerator ShowBackground(bool show)
     {
         float currentTime = 0;
@@ -170,27 +201,10 @@ public class LoadingScreen : MonoBehaviour
         backgroundImage.sizeDelta = new Vector2(targetValue, backgroundImage.sizeDelta.y);
         _isScreenShown = show;
     }
-    //IEnumerator ChangeLoadingScreenAlpha(float value)
-    //{
-    //    isTransitioning = true;
-    //    float currentTime = 0;
-    //    float currentPercentage = 0;
-    //    float startValue = screenCanvasGroup.alpha;
-
-    //    while (currentTime <= fadeTime)
-    //    {
-    //        currentTime += Time.deltaTime;
-    //        currentPercentage = Mathf.Clamp(currentTime / fadeTime, 0f, 1f);
-
-    //        ////screenCanvasGroup.alpha = func(startValue, value, currentPercentage);
-    //        yield return null;
-    //    }
-    //    _isScreenShown = value == 1f ? true : false;
-    //    isTransitioning = false;
-    //}
 
     void HandleCallbacks()
     {
+        Debug.Log("Handling callbacks!");
         if (savedCallbackEvents != null)
         {
             savedCallbackEvents.Invoke();
@@ -198,74 +212,32 @@ public class LoadingScreen : MonoBehaviour
         }
     }
 
-    //public void ShowHideTexts()
-    //{
-    //    StopCoroutine(ShowTextsComplete());
-    //    StopCoroutine(ShowText(episodeText));
-    //    StopCoroutine(ShowText(titleText));
-    //    StopCoroutine(HideTexts(new Text[] { episodeText, titleText }));
+    string GetLevelText()
+    {
+        string sceneName = SceneNavigationManager.Instance.GetCurrentlyActiveScene().name;
+        string result = "String not found\r\nBlame Iojioji lmao";
+        switch (sceneName)
+        {
+            case "MainScene":
+                result = textsToShow.IntroText;
+                break;
+            case "Level1":
+                result = textsToShow.Level1Text;
+                break;
+            case "Level2":
+                result = textsToShow.Level2Text;
+                break;
+            case "Level3":
+                result = textsToShow.Level3Text;
+                break;
+        }
+        return result;
+    }
 
-    //    StartCoroutine(ShowTextsComplete());
-    //}
-
-    //IEnumerator ShowTextsComplete()
-    //{
-    //    float startTime = Time.time;
-    //    Debug.Log($"Starting ({startTime})");
-    //    yield return StartCoroutine(ShowText(episodeText));
-    //    yield return new WaitForSeconds(timeBetweenTexts);
-    //    yield return StartCoroutine(ShowText(titleText));
-    //    yield return new WaitForSeconds(timeBeforeHidingTexts);
-    //    yield return StartCoroutine(HideTexts(new Text[] { episodeText, titleText }));
-    //    Debug.Log($"Ended with: {Time.time - startTime} ({Time.time})");
-    //}
-
-    //void WriteEpisodeTexts()
-    //{
-    //    episodeText.text = episodeString;
-    //    titleText.text = titleString;
-    //}
-
-    //IEnumerator ShowText(Text toShow)
-    //{
-    //    UIEffect effect = toShow.GetComponent<UIEffect>();
-    //    float currentTime = 0;
-    //    float progress = 0;
-
-    //    do
-    //    {
-    //        currentTime += Time.deltaTime;
-    //        progress = currentTime / showTextDuration;
-
-    //        ChangeTextAlpha(toShow, GetEquivalentProgress(showAlphaMinVal, showAlphaMaxVal, progress));
-    //        effect.colorFactor = 1 - GetEquivalentProgress(showColorMinVal, showColorMaxVal, progress);
-    //        effect.blurFactor = 1 - GetEquivalentProgress(showBlurMinVal, showBlurMaxVal, progress);
-    //        //Debug.Log($"Prog: {progress:F4}, text alpha: {toShow.color.a:F4}");
-    //        yield return null;
-    //    } while (currentTime < showTextDuration);
-    //}
-
-    //IEnumerator HideTexts(Text[] toHide)
-    //{
-    //    UIEffect[] effects = new UIEffect[] { toHide[0].GetComponent<UIEffect>(), toHide[1].GetComponent<UIEffect>() };
-    //    float currentTime = 0;
-    //    float progress = 0;
-
-    //    do
-    //    {
-    //        currentTime += Time.deltaTime;
-    //        progress = currentTime / hideTextDuration;
-
-    //        for (int i = 0; i < toHide.Length; i++)
-    //        {
-    //            ChangeTextAlpha(toHide[i], 1 - GetEquivalentProgress(hideAlphaMinVal, hideAlphaMaxVal, progress));
-    //            effects[i].colorFactor = GetEquivalentProgress(hideColorMinVal, hideColorMaxVal, progress);
-    //            effects[i].blurFactor = GetEquivalentProgress(hideBlurMinVal, hideBlurMaxVal, progress);
-    //        }
-    //        yield return null;
-    //    } while (currentTime <= hideTextDuration);
-    //}
-
+    void SetTextPosition(float yPos)
+    {
+        textRect.anchoredPosition = new Vector2(textRect.anchoredPosition.x, yPos);
+    }
     float GetEquivalentProgress(float minLimit, float maxLimit, float currentValue)
     {
         float auxMin = minLimit - minLimit;
