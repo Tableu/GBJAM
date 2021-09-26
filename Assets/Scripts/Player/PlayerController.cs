@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     [SerializeField] private int health;
     [SerializeField] private int armor;
+    [SerializeField] private int coins;
     [SerializeField] private Vector2 speed;
     [SerializeField] private Sprite shell;
     [SerializeField] private Sprite damagedShell;
@@ -123,7 +124,8 @@ public class PlayerController : MonoBehaviour, IDamageable
                 SetStats(shell.GetComponent<PlayerStats>());
                 break;
         }
-        armor = PlayerPrefs.GetInt("armor");
+        armor = PlayerPrefs.GetInt("armor", 0);
+        coins = PlayerPrefs.GetInt("coins", 0);
         if (armor == 1)
         {
             playerShellSpriteRenderer.sprite = damagedShell;
@@ -368,7 +370,11 @@ public class PlayerController : MonoBehaviour, IDamageable
             LoseHealth(dmg);
         }
         pSoundManager.PlaySound(pSoundManager.Sound.pHit);
-        StartCoroutine(Invulnerable());
+        if (health > 0)
+        {
+            StartCoroutine(Invulnerable());
+        }
+
         //Only do the Knockback coroutine if knockback on dmg isn't 0, so player doesn't come to a full stop for a moment if knockback is 0.
         if (dmg.Knockback != 0)
         {
@@ -448,6 +454,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         gameObject.layer = LayerMask.NameToLayer("Player");
         playerAnimatorController.SetIsInvulnerable(false);
     }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         switch (LayerMask.LayerToName(other.transform.gameObject.layer))
@@ -467,12 +474,23 @@ public class PlayerController : MonoBehaviour, IDamageable
                     LoseHealth(dmg);
                 }
                 pSoundManager.PlaySound(pSoundManager.Sound.pHit);
-                StartCoroutine(Invulnerable());
+                if (health > 0)
+                {
+                    StartCoroutine(Invulnerable());
+                }
+
                 //Only do the Knockback coroutine if knockback on dmg isn't 0, so player doesn't come to a full stop for a moment if knockback is 0.
                 if (dmg.Knockback != 0)
                 {
                     StartCoroutine(_movementController.Knockback(dmg));
                 }
+                break;
+            case "Coins":
+                Destroy(other.gameObject);
+                coins++;
+                HUDManager.Instance.UpdateCoins(Mathf.Max(0, coins));
+                PlayerPrefs.SetInt("Coins", coins);
+                pSoundManager.PlaySound(pSoundManager.Sound.pCoin);
                 break;
         }
     }
