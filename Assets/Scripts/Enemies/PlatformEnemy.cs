@@ -27,7 +27,7 @@ public class PlatformEnemy : EnemyBase
         StateMachine.AddAnyTransition(falling,
             () => !MovementController.Grounded());
         StateMachine.AddTransition(patrol, attack, PlayerVisible);
-        StateMachine.AddTransition(attack, patrol, () => timeSinceSawPlayer > attackTime);
+        StateMachine.AddTransition(attack, patrol, () => timeSinceSawPlayer > deaggroTime);
         StateMachine.SetState(falling);
     }
 
