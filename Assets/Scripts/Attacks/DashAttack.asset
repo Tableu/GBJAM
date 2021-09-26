@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: DashAttack
   m_EditorClassIdentifier: 
   distance: 4
+  knockback: 2
   speed: 50
-  damage: 1
-  knockback: 1
   windupTime: 0
   cooldownTime: 0
