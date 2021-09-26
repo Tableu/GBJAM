@@ -77,12 +77,13 @@ public class RangedAttack : IState
 
         _enemy.CanAttack = Mathf.Abs(playerPosition.y - position.y) < _verticalAttackRange &&
                            Math.Sign(distance) == _movement.GetDirection();
-        if (Mathf.Abs(error) < 0.5f)
+
+        if (Mathf.Abs(error) < 0.5f || !_movement.FrontClear() || !_movement.BackClear())
         {
             _movement.SetDirection(Math.Sign(distance));
             return;
         }
-        
+
         var speed = Mathf.Clamp(error * _movement.WalkingSpeed, -_movement.WalkingSpeed, _movement.WalkingSpeed);
         _movement.MoveHorizontally(direction * speed);
     }
