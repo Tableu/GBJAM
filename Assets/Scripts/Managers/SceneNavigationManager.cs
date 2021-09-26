@@ -7,6 +7,11 @@ public class SceneNavigationManager : MonoBehaviour
 {
 
     static SceneNavigationManager _instance;
+    public int difficulty = NORMAL;
+    public const int NORMAL = 0;
+    public const int HARD = 1;
+    public const int VERYHARD = 2;
+    private string[] diffStrings = {"Normal", "Hard", "VeryHard"};
 
     public static SceneNavigationManager Instance
     {
@@ -70,35 +75,39 @@ public class SceneNavigationManager : MonoBehaviour
     }
     public void GoToLevel1(float delay = 0)
     {
+        string scene = "Level1-" + diffStrings[difficulty];
+        
         if (delay == 0)
         {
-            SwitchScene("Level1", true, Music.Level1);
+            SwitchScene(scene, true, Music.Level1);
         }
         else
         {
-            StartCoroutine(SwitchSceneAfterTime("Level1", true, Music.Level1));
+            StartCoroutine(SwitchSceneAfterTime(scene, true, Music.Level1));
         }
     }
     public void GoToLevel2(float delay = 0)
     {
+        string scene = "Level2-" + diffStrings[difficulty];
         if (delay == 0)
         {
-            SwitchScene("Level2", true, Music.Level2);
+            SwitchScene(scene, true, Music.Level2);
         }
         else
         {
-            StartCoroutine(SwitchSceneAfterTime("Level2", true, Music.Level2));
+            StartCoroutine(SwitchSceneAfterTime(scene, true, Music.Level2));
         }
     }
     public void GoToLevel3(float delay = 0)
     {
+        string scene = "Level3-" + diffStrings[difficulty];
         if (delay == 0)
         {
-            SwitchScene("Level3", true, Music.Level3);
+            SwitchScene(scene, true, Music.Level3);
         }
         else
         {
-            StartCoroutine(SwitchSceneAfterTime("Level3", true, Music.Level3));
+            StartCoroutine(SwitchSceneAfterTime(scene, true, Music.Level3));
         }
     }
 
@@ -123,7 +132,7 @@ public class SceneNavigationManager : MonoBehaviour
     public void GoToNextLevel()
     {
         string currentScene = GetCurrentlyActiveScene().name;
-        switch (currentScene)
+        switch (currentScene.Substring(0,6))
         {
             case "Level1":
                 //GoToMainMenu();

@@ -62,6 +62,15 @@ public class MainMenuManager : MonoBehaviour
         Debug.Log($"Ayy click {message}");
     }
 
+    public void SetDifficultyNormal()
+    {
+        SceneNavigationManager.Instance.difficulty = SceneNavigationManager.NORMAL;
+    }
+
+    public void SetDifficultyHard()
+    {
+        SceneNavigationManager.Instance.difficulty = SceneNavigationManager.HARD;
+    }
     public void GoToLevel1()
     {
         FindObjectOfType<InputSystemUIInputModule>().enabled = false;
