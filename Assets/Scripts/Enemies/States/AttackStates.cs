@@ -55,12 +55,12 @@ public class RangedAttack : IState
 
 public class FloatingAttack : IState
 {
-    private readonly PufferEnemy _enemy;
+    private readonly EnemyBase _enemy;
     private readonly MovementController _movement;
     private readonly Transform _playerTransform;
     private readonly float _puffDistance;
 
-    public FloatingAttack(PufferEnemy enemy, float puffDistance)
+    public FloatingAttack(EnemyBase enemy, float puffDistance)
     {
         _enemy = enemy;
         _puffDistance = puffDistance;
@@ -71,33 +71,22 @@ public class FloatingAttack : IState
 
     public void Tick()
     {
-        if (_playerTransform == null) return;
-        Vector2 distToPoint = _playerTransform.position - _enemy.transform.position;
-
-        if (distToPoint.sqrMagnitude < _puffDistance * _puffDistance && !_enemy.StartedAttack)
+        if (_playerTransform != null)
         {
-            _enemy.CanAttack = true;
-            _enemy.StartedAttack = true;
-            _movement.WalkingSpeed = _enemy.puffWalkSpeed;
+            Vector2 distToPoint = _playerTransform.position - _enemy.transform.position;
+            _enemy.CanAttack = distToPoint.sqrMagnitude < _puffDistance * _puffDistance;
+            var dir = distToPoint.normalized;
+            _movement.Move(dir * _movement.WalkingSpeed);
         }
-        else
-        {
-            _enemy.CanAttack = false;
-        }
-
-        var dir = distToPoint.normalized;
-        _movement.Move(dir * _movement.WalkingSpeed);
     }
 
     public void OnEnter()
     {
-        _enemy.StartedAttack = false;
     }
 
     public void OnExit()
     {
         _enemy.CanAttack = false;
-        _movement.WalkingSpeed = _enemy.walkingSpeed;
     }
 }
 

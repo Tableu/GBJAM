@@ -1,13 +1,13 @@
-using System;
+
 using System.Collections.Generic;
+using Enemies;
 using UnityEngine;
 
-public class PatrolPlatform : IState
+public class PatrolPlatform: IState
 {
     private readonly PlatformEnemy _enemy;
     private readonly MovementController _movement;
     private float _speed;
-
     public PatrolPlatform(PlatformEnemy enemy, MovementController movement)
     {
         _enemy = enemy;
@@ -16,7 +16,10 @@ public class PatrolPlatform : IState
 
     public void Tick()
     {
-        if (_enemy.AtPlatformEdge()) _speed *= -1;
+        if (_enemy.AtPlatformEdge())
+        {
+            _speed *= -1;
+        }
         _movement.MoveHorizontally(_speed);
     }
 
@@ -32,12 +35,12 @@ public class PatrolPlatform : IState
 
 public class FloatingPatrol : IState
 {
-    private readonly PufferEnemy _enemy;
+    private readonly EnemyBase _enemy;
     private readonly MovementController _movement;
-    private readonly List<Transform> _points;
-    private int _activePointIdx;
+    private List<Transform> _points;
+    private int _activePointIdx = 0;
 
-    public FloatingPatrol(PufferEnemy enemy, List<Transform> points)
+    public FloatingPatrol(EnemyBase enemy, List<Transform> points)
     {
         _enemy = enemy;
         _points = points;
@@ -47,7 +50,7 @@ public class FloatingPatrol : IState
     public void Tick()
     {
         Vector2 point = _points[_activePointIdx].position;
-        var distToPoint = point - (Vector2) _enemy.transform.position;
+        var distToPoint = point - (Vector2)_enemy.transform.position;
         // If at point go to next point
         if (distToPoint.sqrMagnitude < 0.25)
         {
@@ -55,58 +58,13 @@ public class FloatingPatrol : IState
             _activePointIdx %= _points.Count;
             return;
         }
-
         // Else move towards point
         var dir = distToPoint.normalized;
-        _movement.Move(dir * _movement.WalkingSpeed);
+        _movement.Move(dir*_movement.WalkingSpeed);
     }
 
     public void OnEnter()
     {
-    }
-
-    public void OnExit()
-    {
-    }
-}
-
-public class FloatingAvoid : IState
-{
-    private readonly PufferEnemy _enemy;
-    private readonly MovementController _movement;
-    private readonly Transform _playerTransform;
-    private readonly float _targetDistance = 10f;
-
-    public FloatingAvoid(PufferEnemy enemy)
-    {
-        _enemy = enemy;
-        _movement = enemy.MovementController;
-        _playerTransform = enemy.PlayerTransform;
-    }
-
-    public void Tick()
-    {
-        if (_playerTransform == null) return;
-        Vector2 toPlayer = _playerTransform.position - _enemy.transform.position;
-
-        var dir = toPlayer.normalized;
-        var distError = toPlayer.magnitude - _targetDistance;
-        var dirSign = Math.Sign(distError);
-
-        if (Mathf.Abs(distError) < 0.75f)
-        {
-            _movement.SetDirection(dirSign);
-            return;
-        }
-        _movement.Move(dirSign * dir * _movement.WalkingSpeed);
-    }
-
-    public void OnEnter()
-    {
-        Debug.Log("Evading");
-        _enemy.StartCooldown();
-        _enemy.CanAttack = false;
-        _movement.Stop();
     }
 
     public void OnExit()
