@@ -26,15 +26,15 @@ public class RangedAttack : IState
         var playerPosition = _playerTransform.position;
         var position = _movement.Position;
         var distance = playerPosition.x - _movement.Position.x;
-        var direction = Mathf.Sign(distance);
+        var direction = Math.Sign(distance);
         var error = Mathf.Abs(distance) - _targetDistance;
 
         _enemy.CanAttack = Mathf.Abs(playerPosition.y - position.y) < _verticalAttackRange &&
                            Math.Sign(distance) == _movement.GetDirection();
 
-        if (Mathf.Abs(error) < 0.5f || !_movement.FrontClear() || !_movement.BackClear())
+        if (Mathf.Abs(error) < 0.5f || !_movement.FrontClear() || (!_movement.BackClear() && direction == _movement.GetDirection()))
         {
-            _movement.SetDirection(Math.Sign(distance));
+            _movement.SetDirection(direction);
             return;
         }
 
