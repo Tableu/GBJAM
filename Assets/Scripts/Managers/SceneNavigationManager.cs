@@ -132,7 +132,7 @@ public class SceneNavigationManager : MonoBehaviour
     public void GoToNextLevel()
     {
         string currentScene = GetCurrentlyActiveScene().name;
-        switch (currentScene)
+        switch (currentScene.Substring(0,6))
         {
             case "Level1":
                 //GoToMainMenu();
