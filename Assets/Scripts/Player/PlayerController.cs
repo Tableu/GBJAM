@@ -132,6 +132,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             playerShellSpriteRenderer.sprite = damagedShell;
         }
         HUDManager.Instance.UpdateCoins(coins);
+        HUDManager.Instance.UpdateArmor(armor);
         CinemachineVirtualCamera virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
         if (virtualCamera)
         {

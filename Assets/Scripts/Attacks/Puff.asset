@@ -16,5 +16,5 @@ MonoBehaviour:
   puffRange: 3
   cooldown: 5
   damage: 1
-  knockback: 20
+  knockback: 10
   windup: 0.33
