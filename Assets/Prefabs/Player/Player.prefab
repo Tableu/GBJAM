@@ -4852,8 +4852,9 @@ MonoBehaviour:
   _attack: {fileID: 11400000, guid: 8af698b8cc4dc6b4bb444c8dd4fa46ac, type: 2}
   particleSystem: {fileID: 428552485}
   smearSprite: {fileID: 2016716592553080973}
-  health: 1
+  health: 2
   armor: 0
+  coins: 0
   speed: {x: 11, y: 5}
   shell: {fileID: 0}
   damagedShell: {fileID: 0}
@@ -4982,6 +4983,7 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 2048
+  Collider2D: {fileID: 0}
 --- !u!1001 &1958461991788847387
 PrefabInstance:
   m_ObjectHideFlags: 0

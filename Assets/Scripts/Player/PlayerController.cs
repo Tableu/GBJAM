@@ -4,6 +4,7 @@ using Attacks;
 using UnityEngine.InputSystem;
 using UnityEngine;
 using Cinemachine;
+using UnityEngine.PlayerLoop;
 using UnityEngine.SceneManagement;
 
 #if UNITY_EDITOR
