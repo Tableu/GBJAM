@@ -57,6 +57,24 @@ public class MovementController
         }
     }
 
+    public void Move(Vector2 targetVel)
+    {
+        var currentVel = _rigidbody.velocity;
+        var impulse = targetVel - currentVel;
+        var impulseMag = impulse.magnitude;
+        impulseMag = Mathf.Min(impulseMag, WalkingSpeed);
+
+        var impulseDir = Math.Sign(impulse.x);
+        if (impulseDir != _spriteForward * Math.Sign(_transform.localScale.x) && Mathf.Abs(impulseMag) > 0.1f)
+        {
+            var localScale = _transform.localScale;
+            localScale = new Vector3(-localScale.x, localScale.y, localScale.x);
+            _transform.localScale = localScale;
+        }
+
+        _rigidbody.AddForce(impulseMag*impulse.normalized, ForceMode2D.Impulse);
+    }
+
     public int GetDirection()
     {
         return (int) Mathf.Sign(_transform.localScale.x * _spriteForward);
