@@ -29,9 +29,9 @@ public class LoadingScreen : MonoBehaviour
     [SerializeField, Range(1f, 100f), Header("Credits Scrolling Speeds")]
     float creditsScrollSpeed = 15f;
     [SerializeField, Range(20f, 200f)]
-    float spedUpDreditsScrollSpeed = 100f;
-    [SerializeField, Range(50f, 400f)]
-    float skipCreditsScrollSpeed = 300f;
+    float spedUpCreditsScrollSpeed = 100f;
+    [SerializeField, Range(200f, 600f)]
+    float skipCreditsScrollSpeed = 500f;
 
     [SerializeField]
     LoadingScreenText textsToShow;
@@ -170,7 +170,8 @@ public class LoadingScreen : MonoBehaviour
         isShowing = true;
         yield return StartCoroutine(ShowBackground(true));
         isShowing = false;
-        if (SceneNavigationManager.Instance.GetCurrentlyActiveScene().name == "Scene3" || levelOverride == "Credits")
+        string currentScene = SceneNavigationManager.Instance.GetCurrentlyActiveScene().name.Substring(0, 6);
+        if (currentScene == "Level3" || levelOverride == "Credits")
         {
             yield return StartCoroutine(ScrollCreditsCoroutine());
         }
@@ -205,10 +206,16 @@ public class LoadingScreen : MonoBehaviour
             while (textRect.anchoredPosition.y < targetPos)
             {
                 //if (_playerInputActions.UI.Submit.)
-                if (_playerInputActions.UI.Submit.phase.ToString() == "Started" || _playerInputActions.UI.Cancel.phase.ToString() == "Started")
+                if (_playerInputActions.UI.Submit.phase.ToString() == "Started")
                 {
-                    finalSpeed = skipTextScrollSpeed;
+                    finalSpeed = spedUpCreditsScrollSpeed;
                     MusicManager.MusicInstance.SetAudioSourceSpeed(1.75f);
+                }
+                else if (_playerInputActions.UI.Cancel.phase.ToString() == "Started")
+                {
+
+                    finalSpeed = skipTextScrollSpeed;
+                    MusicManager.MusicInstance.SetAudioSourceSpeed(2f);
                 }
                 else
                 {
@@ -234,15 +241,39 @@ public class LoadingScreen : MonoBehaviour
         MusicManager.MusicInstance.PlayMusic(Music.Credits);
         creditsRect.anchoredPosition = new Vector2(0, -creditsRect.sizeDelta.y * 0.5f - 72f);
 
+        float startingVolume = MusicManager.MusicInstance.Volume;
         float targetPos = -creditsRect.anchoredPosition.y;
         float finalSpeed = creditsScrollSpeed;
         _playerInputActions.Enable();
         while (creditsRect.anchoredPosition.y < targetPos)
         {
+            //if (_playerInputActions.UI.Submit.)
+            if (_playerInputActions.UI.Submit.phase.ToString() == "Started")
+            {
+                finalSpeed = creditsScrollSpeed * 3f;
+                MusicManager.MusicInstance.SetAudioVolume(startingVolume * .5f);
+                MusicManager.MusicInstance.SetAudioSourceSpeed(3f);
+            }
+            else if (_playerInputActions.UI.Cancel.phase.ToString() == "Started")
+            {
+                finalSpeed = creditsScrollSpeed * 10f;
+                MusicManager.MusicInstance.SetAudioVolume(startingVolume * .25f);
+                MusicManager.MusicInstance.SetAudioSourceSpeed(10f);
+            }
+            else
+            {
+                finalSpeed = creditsScrollSpeed;
+                MusicManager.MusicInstance.SetAudioVolume(startingVolume);
+                MusicManager.MusicInstance.SetAudioSourceSpeed(1f);
+            }
+
             SetObjectVerticalAnchoredPosition(creditsRect, creditsRect.anchoredPosition.y + finalSpeed * Time.unscaledDeltaTime);
             yield return null;
         }
+        MusicManager.MusicInstance.SetAudioSourceSpeed(1f);
+        MusicManager.MusicInstance.SetAudioVolume(startingVolume);
         SetObjectVerticalAnchoredPosition(creditsRect, targetPos);
+        yield return new WaitForSeconds(2.5f);
         areCreditsRolling = false;
         EnableAllCreditAnimationTriggers(false);
         _playerInputActions.Disable();
@@ -303,7 +334,7 @@ public class LoadingScreen : MonoBehaviour
         }
         else
         {
-            switch (sceneName.Substring(0,6))
+            switch (sceneName.Substring(0, 6))
             {
                 case "Level1":
                     result = textsToShow.Level1Text;
