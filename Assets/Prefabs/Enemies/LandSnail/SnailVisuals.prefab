@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4949010571642796579}
-  - component: {fileID: 4949010571642796577}
   - component: {fileID: 4949010571642796604}
   - component: {fileID: 4949010571642796605}
+  - component: {fileID: 7712755209656336378}
   m_Layer: 0
   m_Name: SnailVisuals
   m_TagString: Untagged
@@ -33,18 +33,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4949010571642796577
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4949010571642796606}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88ead99bf4280ce409b2355559c54290, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!212 &4949010571642796604
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -116,3 +104,15 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &7712755209656336378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4949010571642796606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a354ff9d7d214fb2bf0b2ca0f8353fbf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

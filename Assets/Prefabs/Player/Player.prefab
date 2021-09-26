@@ -4851,6 +4851,7 @@ MonoBehaviour:
   playerShellSpriteRenderer: {fileID: 2663926567196102169}
   _attack: {fileID: 11400000, guid: 8af698b8cc4dc6b4bb444c8dd4fa46ac, type: 2}
   particleSystem: {fileID: 428552485}
+  smearSprite: {fileID: 2016716592553080973}
   health: 1
   armor: 0
   speed: {x: 11, y: 5}
@@ -4860,6 +4861,7 @@ MonoBehaviour:
   frontClear: 0
   inputLocked: 0
   hiding: 0
+  nearCeiling: 0
   snailShell: {fileID: 3537151017550152801, guid: 2d624e681e75bc341ba671881655c407, type: 3}
   spikyShell: {fileID: 3391332105126726130, guid: 154cc52a83849d2449a7ed2add4067e6, type: 3}
   conchShell: {fileID: 8426349346880946997, guid: 7a8bd38bd3813fc459446413ec94af3a, type: 3}
@@ -4931,11 +4933,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faa785cb054170f4fad430790183e001, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: {x: 11, y: 5}
+  speed: {x: 11, y: 5.5}
   armor: 0
   attackConfig: {fileID: 11400000, guid: 8af698b8cc4dc6b4bb444c8dd4fa46ac, type: 2}
-  shell: {fileID: 0}
+  shellSprite: {fileID: 0}
   damagedShell: {fileID: 0}
+  shell: 0
 --- !u!61 &6447664322975341343
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5109,5 +5112,10 @@ SpriteRenderer:
 --- !u!1 &8910281056685804987 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6956504135953542304, guid: 01f1f05f357a4ac47b893246c68b1ff9, type: 3}
+  m_PrefabInstance: {fileID: 1958461991788847387}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &2016716592553080973 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 58841190760356246, guid: 01f1f05f357a4ac47b893246c68b1ff9, type: 3}
   m_PrefabInstance: {fileID: 1958461991788847387}
   m_PrefabAsset: {fileID: 0}
