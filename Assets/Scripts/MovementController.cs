@@ -12,10 +12,11 @@ public class MovementController
         useLayerMask = true
     };
 
-    private bool _inputLocked;
     private readonly Rigidbody2D _rigidbody;
     private readonly int _spriteForward;
     private readonly Transform _transform;
+
+    private bool _inputLocked;
 
     /// <summary>
     ///     Movement controller constructor
@@ -72,7 +73,7 @@ public class MovementController
             _transform.localScale = localScale;
         }
 
-        _rigidbody.AddForce(impulseMag*impulse.normalized, ForceMode2D.Impulse);
+        _rigidbody.AddForce(impulseMag * impulse.normalized, ForceMode2D.Impulse);
     }
 
     public int GetDirection()
@@ -133,11 +134,16 @@ public class MovementController
         // todo: look for enemies/player as well. Add a layer mask parameter to the constructor?
         // (Needed for dash to work correctly)
         var hit = new RaycastHit2D[1];
-        if (_boxCollider.Raycast(new Vector2(_transform.localScale.x * -1, 0), hit, 1, LayerMask.GetMask("Ground")) >
-            0)
-            return false;
+        return _boxCollider.Raycast(new Vector2(_transform.localScale.x * -1, 0), hit, 1,
+            LayerMask.GetMask("Ground")) <= 0;
+    }
 
-        return true;
+    public bool BackClear()
+    {
+        // todo: look for enemies/player as well. Add a layer mask parameter to the constructor?
+        // (Needed for dash to work correctly)
+        var hit = new RaycastHit2D[1];
+        return _boxCollider.Raycast(new Vector2(_transform.localScale.x, 0), hit, 1, LayerMask.GetMask("Ground")) <= 0;
     }
 
     public bool NearCeiling()
@@ -159,6 +165,7 @@ public class MovementController
 
         return false;
     }
+
     public bool Grounded()
     {
         // todo: try to only update once per frame (use Time.frameCount)

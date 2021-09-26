@@ -54,14 +54,16 @@ public class RangedAttack : IState
     private readonly Transform _playerTransform;
     private readonly PlatformEnemy _enemy;
     private float _targetDistance;
+    private float _verticalAttackRange;
 
-    public RangedAttack(PlatformEnemy enemy, float targetDistance)
+    public RangedAttack(PlatformEnemy enemy, float targetDistance, float verticalAttackRange)
     {
         _enemy = enemy;
         _movement = enemy.MovementController;
         _playerTransform = enemy.PlayerTransform;
         _playerTransform.gameObject.GetComponent<Collider2D>();
         _targetDistance = targetDistance;
+        _verticalAttackRange = verticalAttackRange;
     }
 
     public void Tick()
@@ -73,14 +75,15 @@ public class RangedAttack : IState
         var direction = Mathf.Sign(distance);
         var error = Mathf.Abs(distance) - _targetDistance;
 
-        _enemy.CanAttack = Mathf.Abs(playerPosition.y - position.y) < 1f &&
+        _enemy.CanAttack = Mathf.Abs(playerPosition.y - position.y) < _verticalAttackRange &&
                            Math.Sign(distance) == _movement.GetDirection();
-        if (Mathf.Abs(error) < 0.5f)
+
+        if (Mathf.Abs(error) < 0.5f || !_movement.FrontClear() || !_movement.BackClear())
         {
             _movement.SetDirection(Math.Sign(distance));
             return;
         }
-        
+
         var speed = Mathf.Clamp(error * _movement.WalkingSpeed, -_movement.WalkingSpeed, _movement.WalkingSpeed);
         _movement.MoveHorizontally(direction * speed);
     }

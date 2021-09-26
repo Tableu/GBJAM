@@ -21,11 +21,11 @@ public class JumpAttack : AttackScriptableObject
     {
         private const string TargetTag = "Player";
         private readonly float _cooldown;
-        private readonly float _windup;
         private readonly int _damage;
         private readonly float _jumpAngle;
         private readonly float _jumpDistance;
         private readonly float _knockback;
+        private readonly float _windup;
 
         public Attack(float jumpAngle, float jumpDistance, float knockback, int damage, float windup, float cooldown)
         {
@@ -58,12 +58,17 @@ public class JumpAttack : AttackScriptableObject
             var rb = attacker.GetComponent<Rigidbody2D>();
             Vector2 attackerPos = attacker.transform.position;
             var theta = _jumpAngle * Mathf.Deg2Rad;
-            var distance = target.x - attackerPos.x;
+            var distance = target - attackerPos;
+            var dir = Mathf.Sign(distance.x);
+
+            var targetAngle = Mathf.Abs(Vector2.Angle(dir * Vector2.right, distance)) * Mathf.Deg2Rad;
+            if (targetAngle >= theta) theta = Mathf.Min(targetAngle * 1.25f, Mathf.PI);
+
             var g = -Physics2D.gravity.y * rb.gravityScale;
-            var dir = Mathf.Sign(distance);
-            distance = Mathf.Abs(distance);
-            distance = Mathf.Min(distance, _jumpDistance);
-            var velMag = Mathf.Sqrt(distance * g / Mathf.Sin(2 * theta));
+            distance.x = Mathf.Abs(distance.x);
+            distance.x = Mathf.Min(distance.x, _jumpDistance);
+            var velMag = Mathf.Sqrt(distance.x * distance.x * g /
+                                    (distance.x * Mathf.Sin(2 * theta) - distance.y * (1 + Mathf.Cos(2 * theta))));
             var vel = velMag * new Vector2(dir * Mathf.Cos(theta), Mathf.Sin(theta));
 
             // Jump
@@ -90,5 +95,10 @@ public class JumpAttack : AttackScriptableObject
 
         public bool IsRunning { get; private set; }
         public bool LockInput { get; private set; }
+
+        private static float SolveQuadratic(float a, float b, float c)
+        {
+            return 0;
+        }
     }
 }
