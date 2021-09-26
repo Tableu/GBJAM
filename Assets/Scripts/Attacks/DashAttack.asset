@@ -15,5 +15,6 @@ MonoBehaviour:
   distance: 4
   speed: 50
   damage: 1
+  knockback: 1
   windupTime: 0
   cooldownTime: 0
