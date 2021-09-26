@@ -94,15 +94,15 @@ MonoBehaviour:
   shell: {fileID: 2348990193637437997, guid: a4a538c8b733a95459d01528e2fa2b8e, type: 3}
   attackConfig: {fileID: 11400000, guid: 2a87756fd4db7154cb5b1ba3aee4f175, type: 2}
   fieldOfView: 25
-  visionRange: 50
-  detectionRange: 20
+  visionRange: 15
+  detectionRange: 5
   deaggroTime: 5
   sightBlockingLayers:
     serializedVersion: 2
     m_Bits: 192
   lookAheadDist: 1
-  targetDistance: 0
-  verticalAttackRange: 10
+  targetDistance: 0.2
+  verticalAttackRange: 5
 --- !u!50 &6643941203338914277
 Rigidbody2D:
   serializedVersion: 4
@@ -134,6 +134,18 @@ PrefabInstance:
     - target: {fileID: 3510386958246479586, guid: 4e56fb50465f55f4f879861e5f88977a, type: 3}
       propertyPath: m_Name
       value: CrabVisuals
+      objectReference: {fileID: 0}
+    - target: {fileID: 3510386958246479586, guid: 4e56fb50465f55f4f879861e5f88977a, type: 3}
+      propertyPath: m_Layer
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 3510386958246479588, guid: 4e56fb50465f55f4f879861e5f88977a, type: 3}
+      propertyPath: m_SortingLayer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3510386958246479588, guid: 4e56fb50465f55f4f879861e5f88977a, type: 3}
+      propertyPath: m_SortingLayerID
+      value: -1371730675
       objectReference: {fileID: 0}
     - target: {fileID: 3510386958246479591, guid: 4e56fb50465f55f4f879861e5f88977a, type: 3}
       propertyPath: m_RootOrder
