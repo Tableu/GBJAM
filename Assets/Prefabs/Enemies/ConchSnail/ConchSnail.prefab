@@ -72,7 +72,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c5cd8282ae54039b7af9de505ff8d3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkingSpeed: 3
+  walkingSpeed: 4
   knockbackFactor: 0.1
   knockbackDamage: 0
   collisionDamage: 1
@@ -80,10 +80,10 @@ MonoBehaviour:
   maxHealth: 3
   currentHealth: 0
   shell: {fileID: 8426349346880946997, guid: 7a8bd38bd3813fc459446413ec94af3a, type: 3}
-  attackConfig: {fileID: 11400000, guid: 76cba72a43bdf8f44b8a31b96c1d3a25, type: 2}
+  attackConfig: {fileID: 11400000, guid: a8f149397b2bbbc4eb8ee7a637754690, type: 2}
   fieldOfView: 25
-  visionRange: 50
-  detectionRange: 3
+  visionRange: 15
+  detectionRange: 8
   deaggroTime: 5
   sightBlockingLayers:
     serializedVersion: 2

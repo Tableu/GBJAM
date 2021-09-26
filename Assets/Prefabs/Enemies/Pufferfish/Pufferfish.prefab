@@ -105,7 +105,7 @@ MonoBehaviour:
   fieldOfView: 360
   visionRange: 10
   detectionRange: 4
-  attackTime: 5
+  deaggroTime: 5
   sightBlockingLayers:
     serializedVersion: 2
     m_Bits: 192
