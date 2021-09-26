@@ -3187,7 +3187,7 @@ MonoBehaviour:
   fieldOfView: 25
   visionRange: 50
   detectionRange: 20
-  attackTime: 5
+  deaggroTime: 5
   sightBlockingLayers:
     serializedVersion: 2
     m_Bits: 192

@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class RangedAttack : IState
 {
+    private readonly PlatformEnemy _enemy;
     private readonly MovementController _movement;
     private readonly Transform _playerTransform;
-    private readonly PlatformEnemy _enemy;
-    private float _targetDistance;
-    private float _verticalAttackRange;
+    private readonly float _targetDistance;
+    private readonly float _verticalAttackRange;
 
     public RangedAttack(PlatformEnemy enemy, float targetDistance, float verticalAttackRange)
     {
@@ -22,7 +22,6 @@ public class RangedAttack : IState
 
     public void Tick()
     {
-        // todo: stop enemy from running off edge of platform
         var playerPosition = _playerTransform.position;
         var position = _movement.Position;
         var distance = playerPosition.x - _movement.Position.x;
@@ -32,7 +31,8 @@ public class RangedAttack : IState
         _enemy.CanAttack = Mathf.Abs(playerPosition.y - position.y) < _verticalAttackRange &&
                            Math.Sign(distance) == _movement.GetDirection();
 
-        if (Mathf.Abs(error) < 0.5f || !_movement.FrontClear() || (!_movement.BackClear() && direction == _movement.GetDirection()))
+        if (Mathf.Abs(error) < 0.5f || !_movement.FrontClear() ||
+            !_movement.BackClear() && Math.Sign(error) == _movement.GetDirection())
         {
             _movement.SetDirection(direction);
             return;
@@ -55,11 +55,11 @@ public class RangedAttack : IState
 
 public class FloatingAttack : IState
 {
+    private readonly EnemyBase _enemy;
     private readonly MovementController _movement;
     private readonly Transform _playerTransform;
-    private readonly EnemyBase _enemy;
-    private float _puffDistance;
-    
+    private readonly float _puffDistance;
+
     public FloatingAttack(EnemyBase enemy, float puffDistance)
     {
         _enemy = enemy;
@@ -68,6 +68,7 @@ public class FloatingAttack : IState
         _playerTransform = enemy.PlayerTransform;
         _playerTransform.gameObject.GetComponent<Collider2D>();
     }
+
     public void Tick()
     {
         if (_playerTransform != null)

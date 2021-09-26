@@ -8,6 +8,7 @@ public class ShellAnimator : AnimationControllerBase
     public void SetIsDead()
     {
         animCont.SetBool("Dead", true);
+        pSoundManager.PlaySound(pSoundManager.Sound.shellDestroy);
     }
 
     public void SetIsDamaged()

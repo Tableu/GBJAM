@@ -20,6 +20,7 @@ public static class pSoundManager
         fireballEnd,
         puffUp,
         puffEnd,
+        shellDestroy,
     }
 
     public static void ClearNonexistentSources()
