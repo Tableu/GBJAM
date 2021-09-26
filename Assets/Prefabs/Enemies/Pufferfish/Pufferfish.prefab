@@ -95,7 +95,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkingSpeed: 4
   knockbackFactor: 0
-  knockbackDamage: 0
   collisionDamage: 0
   collisionKnockback: 20
   maxHealth: 2
@@ -114,6 +113,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   puffWalkSpeed: 1.5
+  alwaysAttack: 1
 --- !u!1001 &690465757655535610
 PrefabInstance:
   m_ObjectHideFlags: 0
