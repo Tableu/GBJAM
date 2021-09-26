@@ -10,6 +10,7 @@ public class PufferEnemy : EnemyBase
     [SerializeField] private List<Transform> patrolPoints;
     public float puffWalkSpeed;
     public bool alwaysAttack = false;
+    public AttackScriptableObject secondaryAttack;
     [NonSerialized] public bool StartedAttack;
 
     private bool _attackOnCooldown;

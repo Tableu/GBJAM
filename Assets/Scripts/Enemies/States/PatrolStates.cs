@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -107,9 +108,13 @@ public class FloatingAvoid : IState
         _enemy.StartCooldown();
         _enemy.CanAttack = false;
         _movement.Stop();
+        _enemy.Attack = _enemy.secondaryAttack?.MakeAttack();
+        _enemy.CanAttack = true;
     }
 
     public void OnExit()
     {
+        _enemy.Attack = _enemy.attackConfig.MakeAttack();
+        _enemy.CanAttack = false;
     }
 }

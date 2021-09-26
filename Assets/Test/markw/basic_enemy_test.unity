@@ -956,9 +956,21 @@ PrefabInstance:
       value: Pufferfish
       objectReference: {fileID: 0}
     - target: {fileID: 7683038307938417340, guid: cfbe313d1480f2b4bb4d61dc9db4b802, type: 3}
+      propertyPath: projectile
+      value: 
+      objectReference: {fileID: 2652267829570171499, guid: 2be836e25afdb094982bb828798bd51e, type: 3}
+    - target: {fileID: 7683038307938417340, guid: cfbe313d1480f2b4bb4d61dc9db4b802, type: 3}
       propertyPath: alwaysAttack
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7683038307938417340, guid: cfbe313d1480f2b4bb4d61dc9db4b802, type: 3}
+      propertyPath: walkingSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7683038307938417340, guid: cfbe313d1480f2b4bb4d61dc9db4b802, type: 3}
+      propertyPath: secondaryAttack
+      value: 
+      objectReference: {fileID: 11400000, guid: c60bddba05053154695a2f1a9290ff88, type: 2}
     - target: {fileID: 7683038307938417340, guid: cfbe313d1480f2b4bb4d61dc9db4b802, type: 3}
       propertyPath: patrolPoints.Array.data[0]
       value: 
@@ -1084,6 +1096,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5309410706653045697, guid: ef6c169d996483c4ab59851a33b232f7, type: 3}
+      propertyPath: m_Icon
+      value: 
+      objectReference: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
     - target: {fileID: 5309410706653045697, guid: ef6c169d996483c4ab59851a33b232f7, type: 3}
       propertyPath: m_Name
       value: Player (1)

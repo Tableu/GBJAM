@@ -30,7 +30,7 @@ namespace Enemies
 
         [SerializeField] protected LayerMask sightBlockingLayers;
 
-        public AttackCommand Attack { get; private set; }
+        public AttackCommand Attack { get; set; }
         public MovementController MovementController { get; private set; }
         private LayerMask _playerLayer;
 
