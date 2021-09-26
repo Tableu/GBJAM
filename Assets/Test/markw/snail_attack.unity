@@ -1026,6 +1026,10 @@ PrefabInstance:
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 5465068024183802643, guid: bd29092af89fd9749bbe97d761fa4568, type: 3}
+      propertyPath: targetDistance
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465068024183802643, guid: bd29092af89fd9749bbe97d761fa4568, type: 3}
       propertyPath: knockbackFactor
       value: 1
       objectReference: {fileID: 0}
@@ -7845,6 +7849,7 @@ MonoBehaviour:
   smearSprite: {fileID: 2016716592933488424}
   health: 100
   armor: 0
+  coins: 0
   speed: {x: 8, y: 15}
   shell: {fileID: 0}
   damagedShell: {fileID: 0}
