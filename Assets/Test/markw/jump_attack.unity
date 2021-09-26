@@ -3186,7 +3186,7 @@ MonoBehaviour:
   attackConfig: {fileID: 11400000, guid: 2a87756fd4db7154cb5b1ba3aee4f175, type: 2}
   fieldOfView: 25
   visionRange: 50
-  detectionRange: 20
+  detectionRange: 0
   deaggroTime: 5
   sightBlockingLayers:
     serializedVersion: 2

@@ -9,10 +9,9 @@ namespace Enemies
     {
         // todo: clean up interface
         [Header("Core Enemy Config")] [SerializeField]
-        private float walkingSpeed;
+        public float walkingSpeed;
 
         [SerializeField] private float knockbackFactor;
-        [SerializeField] private int knockbackDamage;
         [SerializeField] public int collisionDamage=1;
         [SerializeField] public int collisionKnockback=20;
         [SerializeField] private int maxHealth;
@@ -31,7 +30,7 @@ namespace Enemies
 
         [SerializeField] protected LayerMask sightBlockingLayers;
 
-        private AttackCommand _attack;
+        public AttackCommand Attack { get; private set; }
         public MovementController MovementController { get; private set; }
         private LayerMask _playerLayer;
 
@@ -57,7 +56,7 @@ namespace Enemies
 
             MovementController = new MovementController(gameObject, walkingSpeed);
             StateMachine = new FSM();
-            _attack = attackConfig?.MakeAttack();
+            Attack = attackConfig?.MakeAttack();
 
             currentHealth = maxHealth;
             PlayerTransform = playerGO.transform;
@@ -71,10 +70,10 @@ namespace Enemies
             }
 
             StateMachine.Tick();
-            if (_attack is {IsRunning: false} && CanAttack)
+            if (Attack is {IsRunning: false} && CanAttack)
             {
                 Animator.TriggerAttack();
-                StartCoroutine(_attack.DoAttack(gameObject));
+                StartCoroutine(Attack.DoAttack(gameObject));
             }
         }
 
