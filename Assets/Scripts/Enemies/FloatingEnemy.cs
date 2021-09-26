@@ -13,7 +13,7 @@ public class FloatingEnemy : EnemyBase
         var patrol = new FloatingPatrol(this, patrolPoints);
         var attack = new FloatingAttack(this, puffDistance);
         StateMachine.AddTransition(patrol, attack, PlayerVisible);
-        StateMachine.AddTransition(attack, patrol, () => timeSinceSawPlayer > attackTime);
+        StateMachine.AddTransition(attack, patrol, () => timeSinceSawPlayer > deaggroTime);
         StateMachine.SetState(patrol);
     }
 }

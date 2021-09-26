@@ -1,6 +1,7 @@
 using System;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Enemies
 {
@@ -25,7 +26,7 @@ namespace Enemies
 
         [SerializeField] private float visionRange;
         [SerializeField] private float detectionRange;
-        [SerializeField] protected float attackTime = 5;
+        [FormerlySerializedAs("attackTime")] [SerializeField] protected float deaggroTime = 5;
 
 
         [SerializeField] protected LayerMask sightBlockingLayers;

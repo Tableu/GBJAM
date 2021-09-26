@@ -67,10 +67,10 @@ namespace Attacks
                 var oldKnockback = meleeDmg.knockback;
                 meleeDmg.knockback = _knockback;
                 meleeDmg.Collider2D.enabled = true;
+                LockInput = false;
                 yield return new WaitForSeconds(0.25f);
                 meleeDmg.Collider2D.enabled = false;
                 meleeDmg.knockback = oldKnockback;
-                LockInput = false;
                 yield return new WaitForSeconds(_cooldownTime);
                 IsRunning = false;
             }

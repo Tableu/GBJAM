@@ -125,7 +125,7 @@ public class PlayerController : MonoBehaviour, IDamageable
                 break;
         }
         armor = PlayerPrefs.GetInt("armor", 0);
-        coins = PlayerPrefs.GetInt("coins", 0);
+        coins = PlayerPrefs.GetInt("Coins", 0);
         if (armor == 1)
         {
             playerShellSpriteRenderer.sprite = damagedShell;
@@ -489,7 +489,6 @@ public class PlayerController : MonoBehaviour, IDamageable
                 Destroy(other.gameObject);
                 coins++;
                 HUDManager.Instance.UpdateCoins(Mathf.Max(0, coins));
-                PlayerPrefs.SetInt("Coins", coins);
                 pSoundManager.PlaySound(pSoundManager.Sound.pCoin);
                 break;
         }
@@ -501,6 +500,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             SwitchShells(new InputAction.CallbackContext());
             other.gameObject.GetComponent<LevelEndTrigger>().OpenChest();
+            PlayerPrefs.SetInt("Coins", coins);
             _playerInputActions.Disable();
         }
     }

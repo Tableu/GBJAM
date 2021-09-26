@@ -95,10 +95,5 @@ public class JumpAttack : AttackScriptableObject
 
         public bool IsRunning { get; private set; }
         public bool LockInput { get; private set; }
-
-        private static float SolveQuadratic(float a, float b, float c)
-        {
-            return 0;
-        }
     }
 }
