@@ -105,14 +105,15 @@ MonoBehaviour:
   fieldOfView: 360
   visionRange: 10
   detectionRange: 4
-  attackTime: 5
+  deaggroTime: 5
   sightBlockingLayers:
     serializedVersion: 2
     m_Bits: 192
-  puffDistance: 4
+  puffDistance: 3.5
   patrolPoints:
   - {fileID: 0}
   - {fileID: 0}
+  puffWalkSpeed: 1.5
 --- !u!1001 &690465757655535610
 PrefabInstance:
   m_ObjectHideFlags: 0
