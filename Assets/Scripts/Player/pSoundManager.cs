@@ -14,6 +14,12 @@ public static class pSoundManager
         pCoin,
         pPickup,
         pHide,
+        eDie,
+        eHit,
+        eFireball,
+        fireballEnd,
+        puffUp,
+        puffEnd,
     }
 
     public static void ClearNonexistentSources()
