@@ -3229,6 +3229,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 762761514468210352, guid: 47e709e9ac126a846850abc6de25fd5f, type: 3}
+      propertyPath: m_Size.x
+      value: 0.96
+      objectReference: {fileID: 0}
+    - target: {fileID: 762761514468210352, guid: 47e709e9ac126a846850abc6de25fd5f, type: 3}
+      propertyPath: m_Size.y
+      value: 0.16
+      objectReference: {fileID: 0}
+    - target: {fileID: 762761514468210352, guid: 47e709e9ac126a846850abc6de25fd5f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 762761514468210352, guid: 47e709e9ac126a846850abc6de25fd5f, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5567244089734454946, guid: 47e709e9ac126a846850abc6de25fd5f, type: 3}
       propertyPath: m_Name
       value: Coin
