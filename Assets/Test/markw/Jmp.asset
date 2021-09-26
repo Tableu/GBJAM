@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b0bf7eacf9b458c8d10bf191852c9e0, type: 3}
   m_Name: Jmp
   m_EditorClassIdentifier: 
-  jumpAngle: 65
+  jumpAngle: 35
   attackRange: 10
   knockback: 1
   damage: 0
-  windup: 0.5
+  windup: 0
   cooldown: 2

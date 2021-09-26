@@ -46,12 +46,17 @@ public class MusicManager : MonoBehaviour
         musicSource = GetComponent<AudioSource>();
     }
 
+    public void SetAudioSourceSpeed(float newSpeed)
+    {
+        musicSource.pitch = newSpeed;
+    }
 
     public void PlayMusic(Music toChangeTo, bool loop = true, float delay = 0)
     {
         musicSource.Stop();
         musicSource.clip = musicTracks[(int)toChangeTo];
         musicSource.loop = loop;
+        musicSource.pitch = 1f;
         if (delay == 0)
         {
             musicSource.Play();
