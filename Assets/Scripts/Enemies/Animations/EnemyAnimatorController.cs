@@ -11,7 +11,7 @@ public abstract class EnemyAnimatorController : AnimationControllerBase
     public abstract void TriggerHurt();
     public abstract void TriggerAttack();
     public abstract void TriggerDeath();
-    public abstract void SetCanSeePlayer(bool canSee);
+    public abstract void IsAngry(bool angry);
 }
 
 #if UNITY_EDITOR
@@ -38,11 +38,11 @@ class EnemyAnimatorEditor : Editor
             EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("Set CanSee True"))
             {
-                anim.SetCanSeePlayer(true);
+                anim.IsAngry(true);
             }
             if (GUILayout.Button("Set CanSee False"))
             {
-                anim.SetCanSeePlayer(false);
+                anim.IsAngry(false);
             }
             EditorGUILayout.EndHorizontal();
 

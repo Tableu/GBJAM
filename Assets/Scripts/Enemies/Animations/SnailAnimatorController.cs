@@ -19,6 +19,6 @@ public class SnailAnimatorController : EnemyAnimatorController
         animCont.SetTrigger("Death");
     }
 
-    public override void SetCanSeePlayer(bool canSee)
+    public override void IsAngry(bool angry)
     { }
 }

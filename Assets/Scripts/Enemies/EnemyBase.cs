@@ -12,6 +12,8 @@ namespace Enemies
 
         [SerializeField] private float knockbackFactor;
         [SerializeField] private int knockbackDamage;
+        [SerializeField] public int collisionDamage=1;
+        [SerializeField] public int collisionKnockback=20;
         [SerializeField] private int maxHealth;
         [SerializeField] private int currentHealth;
         [SerializeField] private GameObject shell;
@@ -79,7 +81,7 @@ namespace Enemies
         {
             if (!other.gameObject.CompareTag("Player")) return;
             // todo: add variable for these properties
-            var dmg = new Damage(transform.position, 20, 1);
+            var dmg = new Damage(transform.position, collisionKnockback, collisionDamage);
             Player.TakeDamage(dmg);
         }
 

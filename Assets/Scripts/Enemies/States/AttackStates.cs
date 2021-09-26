@@ -88,13 +88,11 @@ public class RangedAttack : IState
     public void OnEnter()
     {
         _movement.Stop();
-        _enemy.Animator.SetCanSeePlayer(true);
     }
 
     public void OnExit()
     {
         _enemy.CanAttack = false;
-        _enemy.Animator.SetCanSeePlayer(false);
     }
 }
 
@@ -103,10 +101,12 @@ public class FloatingAttack : IState
     private readonly MovementController _movement;
     private readonly Transform _playerTransform;
     private readonly EnemyBase _enemy;
+    private float _puffDistance;
     
-    public FloatingAttack(EnemyBase enemy)
+    public FloatingAttack(EnemyBase enemy, float puffDistance)
     {
         _enemy = enemy;
+        _puffDistance = puffDistance;
         _movement = enemy.MovementController;
         _playerTransform = enemy.PlayerTransform;
         _playerTransform.gameObject.GetComponent<Collider2D>();
@@ -114,18 +114,18 @@ public class FloatingAttack : IState
     public void Tick()
     {
         Vector2 distToPoint = _playerTransform.position - _enemy.transform.position;
+        _enemy.CanAttack = distToPoint.sqrMagnitude < _puffDistance*_puffDistance;
         var dir = distToPoint.normalized;
         _movement.Move(dir*_movement.WalkingSpeed);
     }
 
     public void OnEnter()
     {
-        _enemy.Animator.SetCanSeePlayer(true);
     }
 
     public void OnExit()
     {
-        _enemy.Animator.SetCanSeePlayer(true);
+        _enemy.CanAttack = false;
     }
 }
 

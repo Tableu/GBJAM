@@ -22,8 +22,8 @@ public class PufferfishAnimatorController : EnemyAnimatorController
     {
     }
 
-    public override void SetCanSeePlayer(bool canSee)
+    public override void IsAngry(bool angry)
     {
-        animCont.SetBool("IsSmall", !canSee);
+        animCont.SetBool("IsSmall", !angry);
     }
 }

@@ -3184,10 +3184,12 @@ MonoBehaviour:
   walkingSpeed: 5
   knockbackFactor: 0
   knockbackDamage: 0
+  collisionDamage: 1
+  collisionKnockback: 20
   maxHealth: 10
   currentHealth: 0
   shell: {fileID: 0}
-  attackConfig: {fileID: 0}
+  attackConfig: {fileID: 11400000, guid: bb1adefa4d755a041b5218e04ac77c30, type: 2}
   fieldOfView: 360
   visionRange: 10
   detectionRange: 5
@@ -3195,6 +3197,7 @@ MonoBehaviour:
   sightBlockingLayers:
     serializedVersion: 2
     m_Bits: 192
+  puffDistance: 5
   patrolPoints:
   - {fileID: 708396673}
   - {fileID: 1472656883}
