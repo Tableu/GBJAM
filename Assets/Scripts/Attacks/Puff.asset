@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Puff
   m_EditorClassIdentifier: 
   attackDuration: 2
-  puffRange: 5
+  puffRange: 3
   cooldown: 5
-  damage: 2
+  damage: 1
   knockback: 20
   windup: 0.33

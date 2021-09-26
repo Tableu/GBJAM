@@ -113,10 +113,13 @@ public class FloatingAttack : IState
     }
     public void Tick()
     {
-        Vector2 distToPoint = _playerTransform.position - _enemy.transform.position;
-        _enemy.CanAttack = distToPoint.sqrMagnitude < _puffDistance*_puffDistance;
-        var dir = distToPoint.normalized;
-        _movement.Move(dir*_movement.WalkingSpeed);
+        if (_playerTransform != null)
+        {
+            Vector2 distToPoint = _playerTransform.position - _enemy.transform.position;
+            _enemy.CanAttack = distToPoint.sqrMagnitude < _puffDistance * _puffDistance;
+            var dir = distToPoint.normalized;
+            _movement.Move(dir * _movement.WalkingSpeed);
+        }
     }
 
     public void OnEnter()
