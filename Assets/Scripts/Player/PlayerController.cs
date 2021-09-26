@@ -259,23 +259,25 @@ public class PlayerController : MonoBehaviour, IDamageable
             layerMask = LayerMask.GetMask("Shells"),
             useLayerMask = true
         };
+
         Collider2D[] collider2D = new Collider2D[1];
-        if (grounded)
+        Type prevAttack = _attack.GetType();
+        
+        if (Physics2D.OverlapCollider(col, contactFilter2D, collider2D) == 1)
         {
-            if (Physics2D.OverlapCollider(col, contactFilter2D, collider2D) == 1)
-            {
-                var newShell = collider2D[0].gameObject;
-                DropShell();
-                SetStats(newShell.GetComponent<PlayerStats>());
-                PlayerPrefs.SetInt("armor", armor);
-                EquipShell(newShell);
-            }
-            else
-            {
-                DropShell();
-                playerShellSpriteRenderer.sprite = null;
-                SetStats(meleeStats);
-            }
+            var newShell = collider2D[0].gameObject;
+            DropShell();
+            SetStats(newShell.GetComponent<PlayerStats>());
+            PlayerPrefs.SetInt("armor", armor);
+            playerAnimatorController.TriggerShellSwap();
+            EquipShell(newShell);
+            pSoundManager.PlaySound(pSoundManager.Sound.pPickup);
+        }
+        else if(_attack.GetType() != typeof(Attacks.MeleeAttack))
+        { 
+            DropShell(); 
+            playerShellSpriteRenderer.sprite = null;
+            SetStats(meleeStats);
             pSoundManager.PlaySound(pSoundManager.Sound.pPickup);
         }
     }
@@ -295,9 +297,10 @@ public class PlayerController : MonoBehaviour, IDamageable
             var oldShell = transform.GetChild(1);
             oldShell.localPosition = Vector3.zero;
             oldShell.gameObject.SetActive(true);
-            oldShell.localScale = new Vector3(transform.localScale.x, oldShell.localScale.y, oldShell.localScale.z);
             oldShell.GetComponent<PlayerStats>().armor = armor;
             oldShell.SetParent(null);
+            oldShell.GetComponent<Rigidbody2D>().velocity = new Vector2(0,7f);
+            oldShell.localScale = new Vector3(transform.localScale.x, oldShell.localScale.y, oldShell.localScale.z);
         }
     }
     private void Hide(InputAction.CallbackContext context)
@@ -396,14 +399,17 @@ public class PlayerController : MonoBehaviour, IDamageable
         HUDManager.Instance.UpdateHealth(Mathf.Max(0, health));
         if (health <= 0)
         {
-            Death();
+            StartCoroutine(Death());
         }
         Debug.Log("Lose Health");
     }
 
-    private void Death()
+    private IEnumerator Death()
     {
         pSoundManager.PlaySound(pSoundManager.Sound.pDie);
+        playerAnimatorController.TriggerDeath();
+        gameObject.layer = LayerMask.NameToLayer("Invulnerable");
+        yield return new WaitForSeconds(1);
         //Tell MapManager the player died, it handles respawn and such.
         if (MapManager.Instance)
         {
