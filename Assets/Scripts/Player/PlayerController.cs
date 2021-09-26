@@ -4,6 +4,7 @@ using Attacks;
 using UnityEngine.InputSystem;
 using UnityEngine;
 using Cinemachine;
+using UnityEngine.PlayerLoop;
 using UnityEngine.SceneManagement;
 
 #if UNITY_EDITOR
@@ -13,7 +14,8 @@ using UnityEditor;
 public class PlayerController : MonoBehaviour, IDamageable
 {
     private PlayerInputActions _playerInputActions;
-    private ContactFilter2D _groundFilter2D; 
+    private ContactFilter2D _groundFilter2D;
+    private ContactFilter2D _enemyFilter2D;
     private AttackCommand _attackCommand;
     public MovementController MovementController { get; private set; }
 
@@ -39,6 +41,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] public bool inputLocked;
     [SerializeField] private bool hiding;
     [SerializeField] private bool nearCeiling;
+    private bool finish;
     [Header("Shell Prefabs")]
     [SerializeField] private GameObject snailShell;
     [SerializeField] private GameObject spikyShell;
@@ -100,7 +103,11 @@ public class PlayerController : MonoBehaviour, IDamageable
             layerMask = LayerMask.GetMask("Ground"),
             useLayerMask = true
         };
-        
+        _enemyFilter2D = new ContactFilter2D
+        {
+            layerMask = LayerMask.GetMask("Enemy"),
+            useLayerMask = true
+        };
         int savedShell = PlayerPrefs.GetInt("Shell", 0);
         GameObject shell;
         switch (savedShell)
@@ -131,11 +138,14 @@ public class PlayerController : MonoBehaviour, IDamageable
             playerShellSpriteRenderer.sprite = damagedShell;
         }
         HUDManager.Instance.UpdateCoins(coins);
+        HUDManager.Instance.UpdateArmor(armor);
         CinemachineVirtualCamera virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
         if (virtualCamera)
         {
             virtualCamera.Follow = transform;
         }
+
+        finish = false;
     }
 
     // Update is called once per frame
@@ -256,6 +266,10 @@ public class PlayerController : MonoBehaviour, IDamageable
     }
     private void SwitchShells(InputAction.CallbackContext context)
     {
+        if (finish)
+        {
+            return;
+        }
         ContactFilter2D contactFilter2D = new ContactFilter2D
         {
             layerMask = LayerMask.GetMask("Shells"),
@@ -357,7 +371,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             return;
         }
 
-        if (_attackCommand.IsRunning && _attack.GetType() == typeof(Attacks.MeleeAttack) && smearSprite.enabled)
+        if (_attackCommand.IsRunning && _attack.GetType() == typeof(Attacks.MeleeAttack) && !col.IsTouching(_enemyFilter2D))
         {
             return;
         }
@@ -492,13 +506,17 @@ public class PlayerController : MonoBehaviour, IDamageable
                 pSoundManager.PlaySound(pSoundManager.Sound.pCoin);
                 break;
         }
+
+        if (other.CompareTag("Finish"))
+        {
+            finish = true;
+        }
     }
     
     private void OnTriggerStay2D(Collider2D other)
     {
         if (other.CompareTag("Finish") && _playerInputActions.Player.PickUpShell.phase == InputActionPhase.Started)
         {
-            SwitchShells(new InputAction.CallbackContext());
             other.gameObject.GetComponent<LevelEndTrigger>().OpenChest();
             PlayerPrefs.SetInt("Coins", coins);
             _playerInputActions.Disable();
