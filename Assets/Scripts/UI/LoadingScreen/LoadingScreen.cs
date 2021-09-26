@@ -297,21 +297,26 @@ public class LoadingScreen : MonoBehaviour
             sceneName = SceneNavigationManager.Instance.GetCurrentlyActiveScene().name;
         }
         string result = "String not found\r\nBlame Iojioji lmao";
-        switch (sceneName)
+        if (sceneName.Equals("MainScene"))
         {
-            case "MainScene":
-                result = textsToShow.IntroText;
-                break;
-            case "Level1":
-                result = textsToShow.Level1Text;
-                break;
-            case "Level2":
-                result = textsToShow.Level2Text;
-                break;
-            case "Level3":
-                result = textsToShow.Level3Text;
-                break;
+            result = textsToShow.IntroText;
         }
+        else
+        {
+            switch (sceneName.Substring(0,6))
+            {
+                case "Level1":
+                    result = textsToShow.Level1Text;
+                    break;
+                case "Level2":
+                    result = textsToShow.Level2Text;
+                    break;
+                case "Level3":
+                    result = textsToShow.Level3Text;
+                    break;
+            }
+        }
+
         return result;
     }
 
