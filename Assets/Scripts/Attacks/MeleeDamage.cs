@@ -10,7 +10,7 @@ public class MeleeDamage : MonoBehaviour
     public LayerMask enemyLayer;
 
     public Collider2D Collider2D;
-
+    
     public void Awake()
     {
         Collider2D = GetComponent<Collider2D>();

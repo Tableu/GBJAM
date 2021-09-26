@@ -1021,6 +1021,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5465068024183802643, guid: bd29092af89fd9749bbe97d761fa4568, type: 3}
+      propertyPath: maxHealth
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 5465068024183802643, guid: bd29092af89fd9749bbe97d761fa4568, type: 3}
+      propertyPath: knockbackFactor
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5465068024183802645, guid: bd29092af89fd9749bbe97d761fa4568, type: 3}
       propertyPath: m_Name
       value: LandSnail

@@ -11,13 +11,14 @@ namespace Attacks
         // Start is called before the first frame update
 
         public float distance;
+        public float knockback;
         public float speed;
         public float windupTime;
         public float cooldownTime;
 
         public override AttackCommand MakeAttack()
         {
-            return new Attack(distance, speed, windupTime, cooldownTime);
+            return new Attack(distance, speed, windupTime, cooldownTime, knockback);
         }
 
         private class Attack : AttackCommand
@@ -27,13 +28,15 @@ namespace Attacks
             private readonly LayerMask _enemyLayer = LayerMask.GetMask("Enemy");
             private readonly float _speed;
             private readonly float _windupTime;
+            private readonly float _knockback;
 
-            public Attack(float distance, float speed, float windupTime, float cooldownTime)
+            public Attack(float distance, float speed, float windupTime, float cooldownTime, float knockback)
             {
                 _distance = distance;
                 _speed = speed;
                 _windupTime = windupTime;
                 _cooldownTime = cooldownTime;
+                _knockback = knockback;
             }
 
             public bool IsRunning { get; private set; }
@@ -61,9 +64,12 @@ namespace Attacks
                 }
                 rigidBody.velocity = Vector2.zero;
                 var meleeDmg = attacker.GetComponentInChildren<MeleeDamage>();
+                var oldKnockback = meleeDmg.knockback;
+                meleeDmg.knockback = _knockback;
                 meleeDmg.Collider2D.enabled = true;
                 yield return new WaitForSeconds(0.25f);
                 meleeDmg.Collider2D.enabled = false;
+                meleeDmg.knockback = oldKnockback;
                 LockInput = false;
                 yield return new WaitForSeconds(_cooldownTime);
                 IsRunning = false;
