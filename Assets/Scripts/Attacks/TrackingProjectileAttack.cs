@@ -51,7 +51,7 @@ public class TrackingProjectileAttack : AttackScriptableObject
 
             var playerTransform = attacker.GetComponent<EnemyBase>().PlayerTransform;
             var transform = attacker.transform;
-            var distance = playerTransform.position - transform.position + new Vector3(0, 1, 0);
+            var distance = playerTransform.position - transform.position;
             Vector2 dir = distance.normalized;
             
             
