@@ -62,29 +62,32 @@ public class JumpAttack : AttackScriptableObject
             var dir = Mathf.Sign(distance.x);
 
             var targetAngle = Mathf.Abs(Vector2.Angle(dir * Vector2.right, distance)) * Mathf.Deg2Rad;
-            if (targetAngle >= theta) theta = Mathf.Min(targetAngle * 1.25f, Mathf.PI);
+            if (targetAngle >= theta) theta = Mathf.Min(targetAngle * 1.25f, Mathf.PI / 2);
 
             var g = -Physics2D.gravity.y * rb.gravityScale;
-            distance.x = Mathf.Abs(distance.x);
+            distance.x = Mathf.Abs(distance.x) + 0.25f;
             distance.x = Mathf.Min(distance.x, _jumpDistance);
             var velMag = Mathf.Sqrt(distance.x * distance.x * g /
                                     (distance.x * Mathf.Sin(2 * theta) - distance.y * (1 + Mathf.Cos(2 * theta))));
-            var vel = velMag * new Vector2(dir * Mathf.Cos(theta), Mathf.Sin(theta));
-
-            // Jump
-            rb.velocity = vel;
-
-            yield return new WaitForSeconds(0.1f);
-            var collider = attacker.GetComponent<Collider2D>();
-            while (!collider.IsTouchingLayers()) yield return null;
-
-            var targetCollider = targetGO.GetComponent<Collider2D>();
-            if (collider.IsTouching(targetCollider))
+            if (!float.IsNaN(velMag))
             {
-                var damageable = targetGO.GetComponent<IDamageable>();
-                damageable.TakeDamage(new Damage(attacker.transform.position, _knockback, _damage));
-                var attackerDmg = attacker.GetComponent<IDamageable>();
-                attackerDmg.TakeDamage(new Damage(targetTransform.position, _knockback, 0));
+                var vel = velMag * new Vector2(dir * Mathf.Cos(theta), Mathf.Sin(theta));
+
+                // Jump
+                rb.velocity = vel;
+
+                yield return new WaitForSeconds(0.1f);
+                var collider = attacker.GetComponent<Collider2D>();
+                while (!collider.IsTouchingLayers()) yield return null;
+
+                var targetCollider = targetGO.GetComponent<Collider2D>();
+                if (collider.IsTouching(targetCollider))
+                {
+                    var damageable = targetGO.GetComponent<IDamageable>();
+                    damageable.TakeDamage(new Damage(attacker.transform.position, _knockback, _damage));
+                    var attackerDmg = attacker.GetComponent<IDamageable>();
+                    attackerDmg.TakeDamage(new Damage(targetTransform.position, _knockback, 0));
+                }
             }
 
             LockInput = false;
