@@ -1,25 +1,25 @@
 fileFormatVersion: 2
-guid: 8a7461c74a7f1464a9924701e8bc02eb
+guid: 0cf62181e2c84ef41bcdea902ebc72de
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1755936407440854122
-    second: crabDie_0
+      213: -3807676682627647657
+    second: coinSpin_0
   - first:
-      213: 769993142532230318
-    second: crabDie_1
+      213: -825031263153393812
+    second: coinSpin_1
   - first:
-      213: -2953897263153898228
-    second: crabDie_3
+      213: -1168214142377249600
+    second: coinSpin_2
   - first:
-      213: 3575655032423648906
-    second: crabDie_4
+      213: -4148028153593694596
+    second: coinSpin_3
   - first:
-      213: -4104990411605981792
-    second: crabDie_6
+      213: 7058019579809242340
+    second: coinSpin_4
   - first:
-      213: -4435110035359368336
-    second: crabDie_7
+      213: 5084439670868407540
+    second: coinSpin_5
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -121,127 +121,127 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: crabDie_0
+      name: coinSpin_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 26
-        height: 24
+        width: 16
+        height: 16
       alignment: 9
-      pivot: {x: 0.5, y: 0.2}
+      pivot: {x: 0.5, y: 0.0625}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 693ff4a0429a1a7e0800000000000000
-      internalID: -1755936407440854122
+      spriteID: 757f0782b3a682bc0800000000000000
+      internalID: -3807676682627647657
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: crabDie_1
+      name: coinSpin_1
       rect:
         serializedVersion: 2
-        x: 26
+        x: 16
         y: 0
-        width: 26
-        height: 24
+        width: 16
+        height: 16
       alignment: 9
-      pivot: {x: 0.5, y: 0.2}
+      pivot: {x: 0.5, y: 0.0625}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: eacce1cfea09faa00800000000000000
-      internalID: 769993142532230318
+      spriteID: c6f6627ff66ec84f0800000000000000
+      internalID: -825031263153393812
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: crabDie_3
+      name: coinSpin_2
       rect:
         serializedVersion: 2
-        x: 52
+        x: 32
         y: 0
-        width: 26
-        height: 24
+        width: 16
+        height: 16
       alignment: 9
-      pivot: {x: 0.5, y: 0.2}
+      pivot: {x: 0.5, y: 0.0625}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c0d96bee616a107d0800000000000000
-      internalID: -2953897263153898228
+      spriteID: 0c4340e4d6ba9cfe0800000000000000
+      internalID: -1168214142377249600
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: crabDie_4
+      name: coinSpin_3
       rect:
         serializedVersion: 2
-        x: 78
+        x: 64
         y: 0
-        width: 26
-        height: 24
+        width: 16
+        height: 16
       alignment: 9
-      pivot: {x: 0.5, y: 0.2}
+      pivot: {x: 0.5, y: 0.0625}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a8e03feae474f9130800000000000000
-      internalID: 3575655032423648906
+      spriteID: c767aba1f5e3f66c0800000000000000
+      internalID: -4148028153593694596
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: crabDie_6
+      name: coinSpin_4
       rect:
         serializedVersion: 2
-        x: 104
+        x: 80
         y: 0
-        width: 26
-        height: 24
+        width: 16
+        height: 16
       alignment: 9
-      pivot: {x: 0.5, y: 0.2}
+      pivot: {x: 0.5, y: 0.0625}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0a547d548f42807c0800000000000000
-      internalID: -4104990411605981792
+      spriteID: 4ec1840b96f13f160800000000000000
+      internalID: 7058019579809242340
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: crabDie_7
+      name: coinSpin_5
       rect:
         serializedVersion: 2
-        x: 130
+        x: 48
         y: 0
-        width: 26
-        height: 24
+        width: 16
+        height: 16
       alignment: 9
-      pivot: {x: 0.5, y: 0.2}
+      pivot: {x: 0.5, y: 0.0625}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 07b72aacbe25372c0800000000000000
-      internalID: -4435110035359368336
+      spriteID: 4f4f30031fe8f8640800000000000000
+      internalID: 5084439670868407540
       vertices: []
       indices: 
       edges: []

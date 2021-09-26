@@ -33,7 +33,11 @@ namespace Attacks
             public IEnumerator DoAttack(GameObject attacker)
             {
                 IsRunning = true;
+                var meleeDmg = attacker.GetComponentInChildren<MeleeDamage>();
                 yield return new WaitForSeconds(_windupTime);
+                meleeDmg.Collider2D.enabled = true;
+                yield return new WaitForSeconds(0.25f);
+                meleeDmg.Collider2D.enabled = false;
                 yield return new WaitForSeconds(_cooldownTime);
                 IsRunning = false;
             }

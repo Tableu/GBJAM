@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     private PlayerInputActions _playerInputActions;
     private ContactFilter2D _groundFilter2D; 
     private AttackCommand _attackCommand;
-    private MovementController _movementController;
+    public MovementController MovementController { get; private set; }
 
     [SerializeField] private PlayerStats meleeStats;
     [SerializeField] private PlayerStats currentStats;
@@ -29,6 +29,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     [SerializeField] private int health;
     [SerializeField] private int armor;
+    [SerializeField] private int coins;
     [SerializeField] private Vector2 speed;
     [SerializeField] private Sprite shell;
     [SerializeField] private Sprite damagedShell;
@@ -61,7 +62,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     private void Awake()
     {
         _playerInputActions = new PlayerInputActions();
-        _movementController = new MovementController(gameObject, speed.x);
+        MovementController = new MovementController(gameObject, speed.x);
     }
 
     private void OnEnable()
@@ -77,7 +78,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         _playerInputActions.Player.Jump.started += (context =>
         {
-            if (_movementController.Jump(speed.y))
+            if (MovementController.Jump(speed.y))
             {
                 pSoundManager.PlaySound(pSoundManager.Sound.pJump);
                 if (hiding)
@@ -123,7 +124,8 @@ public class PlayerController : MonoBehaviour, IDamageable
                 SetStats(shell.GetComponent<PlayerStats>());
                 break;
         }
-        armor = PlayerPrefs.GetInt("armor");
+        armor = PlayerPrefs.GetInt("armor", 0);
+        coins = PlayerPrefs.GetInt("coins", 0);
         if (armor == 1)
         {
             playerShellSpriteRenderer.sprite = damagedShell;
@@ -139,8 +141,8 @@ public class PlayerController : MonoBehaviour, IDamageable
     // Update is called once per frame
     void Update()
     {
-        grounded = _movementController.Grounded();
-        nearCeiling = _movementController.NearCeiling();
+        grounded = MovementController.Grounded();
+        nearCeiling = MovementController.NearCeiling();
         if (grounded)
         {
             playerAnimatorController.SetIsGrounded(true);
@@ -151,7 +153,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             playerAnimatorController.SetIsGrounded(false);
             //_playerInputActions.Player.Hide.Disable();
         }
-        frontClear = _movementController.FrontClear();
+        frontClear = MovementController.FrontClear();
         Move();
         if (_attackCommand != null)
         {
@@ -182,10 +184,10 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         armor = shellStats.armor;
         speed = shellStats.speed;
-        _movementController.WalkingSpeed = shellStats.speed.x;
+        MovementController.WalkingSpeed = shellStats.speed.x;
         if (hiding)
         {
-            _movementController.WalkingSpeed *= 0.4f;
+            MovementController.WalkingSpeed *= 0.4f;
         }
         _attack = shellStats.attackConfig;
         if (_attack != null)
@@ -207,7 +209,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         var horizontalVelocity = horizontal * speed.x;
         if (!inputLocked)
         {
-            _movementController.MoveHorizontally(horizontalVelocity);
+            MovementController.MoveHorizontally(horizontalVelocity);
             if (horizontalVelocity != 0)
             {
                 playerAnimatorController.SetIsMoving(true);
@@ -259,23 +261,25 @@ public class PlayerController : MonoBehaviour, IDamageable
             layerMask = LayerMask.GetMask("Shells"),
             useLayerMask = true
         };
+
         Collider2D[] collider2D = new Collider2D[1];
-        if (grounded)
+        Type prevAttack = _attack.GetType();
+        
+        if (Physics2D.OverlapCollider(col, contactFilter2D, collider2D) == 1)
         {
-            if (Physics2D.OverlapCollider(col, contactFilter2D, collider2D) == 1)
-            {
-                var newShell = collider2D[0].gameObject;
-                DropShell();
-                SetStats(newShell.GetComponent<PlayerStats>());
-                PlayerPrefs.SetInt("armor", armor);
-                EquipShell(newShell);
-            }
-            else
-            {
-                DropShell();
-                playerShellSpriteRenderer.sprite = null;
-                SetStats(meleeStats);
-            }
+            var newShell = collider2D[0].gameObject;
+            DropShell();
+            SetStats(newShell.GetComponent<PlayerStats>());
+            PlayerPrefs.SetInt("armor", armor);
+            playerAnimatorController.TriggerShellSwap();
+            EquipShell(newShell);
+            pSoundManager.PlaySound(pSoundManager.Sound.pPickup);
+        }
+        else if(_attack.GetType() != typeof(Attacks.MeleeAttack))
+        { 
+            DropShell(); 
+            playerShellSpriteRenderer.sprite = null;
+            SetStats(meleeStats);
             pSoundManager.PlaySound(pSoundManager.Sound.pPickup);
         }
     }
@@ -295,9 +299,10 @@ public class PlayerController : MonoBehaviour, IDamageable
             var oldShell = transform.GetChild(1);
             oldShell.localPosition = Vector3.zero;
             oldShell.gameObject.SetActive(true);
-            oldShell.localScale = new Vector3(transform.localScale.x, oldShell.localScale.y, oldShell.localScale.z);
             oldShell.GetComponent<PlayerStats>().armor = armor;
             oldShell.SetParent(null);
+            oldShell.GetComponent<Rigidbody2D>().velocity = new Vector2(0,7f);
+            oldShell.localScale = new Vector3(transform.localScale.x, oldShell.localScale.y, oldShell.localScale.z);
         }
     }
     private void Hide(InputAction.CallbackContext context)
@@ -305,8 +310,8 @@ public class PlayerController : MonoBehaviour, IDamageable
         if ((context.started || context.performed) && !hiding && grounded)
         {
             hiding = true;
-            _movementController.WalkingSpeed *= 0.4f;
-            _movementController.Stop();
+            MovementController.WalkingSpeed *= 0.4f;
+            MovementController.Stop();
             playerAnimatorController.SetIsHiding(true);
             pSoundManager.PlaySound(pSoundManager.Sound.pHide);
             BoxCollider2D box = (BoxCollider2D)col;
@@ -339,7 +344,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     private void StopHiding()
     {
         hiding = false;
-        _movementController.WalkingSpeed = currentStats.speed.x;
+        MovementController.WalkingSpeed = currentStats.speed.x;
         playerAnimatorController.SetIsHiding(false);
         BoxCollider2D box = (BoxCollider2D)col;
         box.offset = new Vector2(box.offset.x, box.offset.y*2f);
@@ -365,11 +370,15 @@ public class PlayerController : MonoBehaviour, IDamageable
             LoseHealth(dmg);
         }
         pSoundManager.PlaySound(pSoundManager.Sound.pHit);
-        StartCoroutine(Invulnerable());
+        if (health > 0)
+        {
+            StartCoroutine(Invulnerable());
+        }
+
         //Only do the Knockback coroutine if knockback on dmg isn't 0, so player doesn't come to a full stop for a moment if knockback is 0.
         if (dmg.Knockback != 0)
         {
-            StartCoroutine(_movementController.Knockback(dmg));
+            StartCoroutine(MovementController.Knockback(dmg));
         }
     }
 
@@ -396,14 +405,17 @@ public class PlayerController : MonoBehaviour, IDamageable
         HUDManager.Instance.UpdateHealth(Mathf.Max(0, health));
         if (health <= 0)
         {
-            Death();
+            StartCoroutine(Death());
         }
         Debug.Log("Lose Health");
     }
 
-    private void Death()
+    private IEnumerator Death()
     {
         pSoundManager.PlaySound(pSoundManager.Sound.pDie);
+        playerAnimatorController.TriggerDeath();
+        gameObject.layer = LayerMask.NameToLayer("Invulnerable");
+        yield return new WaitForSeconds(1);
         //Tell MapManager the player died, it handles respawn and such.
         if (MapManager.Instance)
         {
@@ -442,6 +454,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         gameObject.layer = LayerMask.NameToLayer("Player");
         playerAnimatorController.SetIsInvulnerable(false);
     }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
         switch (LayerMask.LayerToName(other.transform.gameObject.layer))
@@ -461,12 +474,23 @@ public class PlayerController : MonoBehaviour, IDamageable
                     LoseHealth(dmg);
                 }
                 pSoundManager.PlaySound(pSoundManager.Sound.pHit);
-                StartCoroutine(Invulnerable());
+                if (health > 0)
+                {
+                    StartCoroutine(Invulnerable());
+                }
+
                 //Only do the Knockback coroutine if knockback on dmg isn't 0, so player doesn't come to a full stop for a moment if knockback is 0.
                 if (dmg.Knockback != 0)
                 {
-                    StartCoroutine(_movementController.Knockback(dmg));
+                    StartCoroutine(MovementController.Knockback(dmg));
                 }
+                break;
+            case "Coins":
+                Destroy(other.gameObject);
+                coins++;
+                HUDManager.Instance.UpdateCoins(Mathf.Max(0, coins));
+                PlayerPrefs.SetInt("Coins", coins);
+                pSoundManager.PlaySound(pSoundManager.Sound.pCoin);
                 break;
         }
     }
