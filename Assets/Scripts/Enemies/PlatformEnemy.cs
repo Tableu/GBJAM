@@ -9,6 +9,7 @@ public class PlatformEnemy : EnemyBase
     /// The distance the enemy will try to maintain from the target
     /// </summary>
     public float targetDistance = 5f;
+    public float verticalAttackRange = 1f;
 
     private BoxCollider2D _collider;
 
@@ -19,7 +20,7 @@ public class PlatformEnemy : EnemyBase
         StateMachine = new FSM();
         var falling = new FallState(this);
         var patrol = new PatrolPlatform(this, MovementController);
-        var attack = new RangedAttack(this, targetDistance);
+        var attack = new RangedAttack(this, targetDistance, verticalAttackRange);
 
         StateMachine.AddTransition(falling, patrol,
             () => MovementController.Grounded());
