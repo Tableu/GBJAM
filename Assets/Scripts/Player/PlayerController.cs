@@ -294,6 +294,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             DropShell(); 
             playerShellSpriteRenderer.sprite = null;
             SetStats(meleeStats);
+            playerAnimatorController.TriggerShellSwap();
             pSoundManager.PlaySound(pSoundManager.Sound.pPickup);
         }
     }
