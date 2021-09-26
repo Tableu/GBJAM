@@ -23,6 +23,8 @@ public class MainMenuManager : MonoBehaviour
         {
             panels[0].Show(true);
         }
+
+        LoadingScreen.Instance.HideLoadingScreen();
         MusicManager.MusicInstance.PlayMusic(Music.MainMenu);
     }
 

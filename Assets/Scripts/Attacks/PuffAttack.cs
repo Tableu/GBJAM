@@ -46,6 +46,7 @@ public class PuffAttack : AttackScriptableObject
             animator.IsAngry(true);
             yield return new WaitForSeconds(_windup);
             // Puff
+            pSoundManager.PlaySound(pSoundManager.Sound.puffUp);
             var oldKnock = enemy.collisionKnockback;
             var oldDmg = enemy.collisionDamage;
             enemy.collisionDamage = _damage;
@@ -64,6 +65,7 @@ public class PuffAttack : AttackScriptableObject
             animator.IsAngry(false);
             enemy.collisionDamage = oldDmg;
             enemy.collisionKnockback = oldKnock;
+            pSoundManager.PlaySound(pSoundManager.Sound.puffEnd);
             // De-puff
             yield return new WaitForSeconds(_cooldown);
             IsRunning = false;
