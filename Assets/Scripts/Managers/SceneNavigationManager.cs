@@ -83,11 +83,22 @@ public class SceneNavigationManager : MonoBehaviour
     {
         if (delay == 0)
         {
-            SwitchScene("Level2", true, Music.Level1);
+            SwitchScene("Level2", true, Music.Level2);
         }
         else
         {
-            StartCoroutine(SwitchSceneAfterTime("Level2", true, Music.Level1));
+            StartCoroutine(SwitchSceneAfterTime("Level2", true, Music.Level2));
+        }
+    }
+    public void GoToLevel3(float delay = 0)
+    {
+        if (delay == 0)
+        {
+            SwitchScene("Level3", true, Music.Level3);
+        }
+        else
+        {
+            StartCoroutine(SwitchSceneAfterTime("Level3", true, Music.Level3));
         }
     }
 
@@ -119,11 +130,11 @@ public class SceneNavigationManager : MonoBehaviour
                 GoToLevel2();
                 break;
             case "Level2":
-                //Go to level 3 and so on and so forth
-                GoToMainMenu();
+                GoToLevel3();
                 break;
             default:
-                Debug.Log($"Uuuh what? How did you manage to trigger a level change if you're not on one of the levels? o:");
+                Debug.Log($"Uuuh what? How did you manage to trigger a level change if you're not on one of the levels? o:\r\nFrom: '{currentScene}'");
+                GoToMainMenu();
                 break;
         }
     }

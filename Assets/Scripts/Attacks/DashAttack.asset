@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cce846b10404a384aa8ba1d708548c42, type: 3}
   m_Name: DashAttack
   m_EditorClassIdentifier: 
-  distance: 6
+  distance: 4
   speed: 50
   damage: 1
   windupTime: 0

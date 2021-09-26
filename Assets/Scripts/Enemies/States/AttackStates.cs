@@ -1,4 +1,5 @@
 using System;
+using Enemies;
 using UnityEngine;
 
 /// <summary>
@@ -52,16 +53,14 @@ public class RangedAttack : IState
     private readonly MovementController _movement;
     private readonly Transform _playerTransform;
     private readonly PlatformEnemy _enemy;
-    private readonly Collider2D _collider;
-    private readonly LayerMask _playerLayer = LayerMask.GetMask("Player");
     private float _targetDistance;
 
-    public RangedAttack(PlatformEnemy enemy, MovementController movement, Transform playerTransform, float targetDistance)
+    public RangedAttack(PlatformEnemy enemy, float targetDistance)
     {
         _enemy = enemy;
-        _movement = movement;
-        _playerTransform = playerTransform;
-        _collider = playerTransform.gameObject.GetComponent<Collider2D>();
+        _movement = enemy.MovementController;
+        _playerTransform = enemy.PlayerTransform;
+        _playerTransform.gameObject.GetComponent<Collider2D>();
         _targetDistance = targetDistance;
     }
 
@@ -89,6 +88,42 @@ public class RangedAttack : IState
     public void OnEnter()
     {
         _movement.Stop();
+    }
+
+    public void OnExit()
+    {
+        _enemy.CanAttack = false;
+    }
+}
+
+public class FloatingAttack : IState
+{
+    private readonly MovementController _movement;
+    private readonly Transform _playerTransform;
+    private readonly EnemyBase _enemy;
+    private float _puffDistance;
+    
+    public FloatingAttack(EnemyBase enemy, float puffDistance)
+    {
+        _enemy = enemy;
+        _puffDistance = puffDistance;
+        _movement = enemy.MovementController;
+        _playerTransform = enemy.PlayerTransform;
+        _playerTransform.gameObject.GetComponent<Collider2D>();
+    }
+    public void Tick()
+    {
+        if (_playerTransform != null)
+        {
+            Vector2 distToPoint = _playerTransform.position - _enemy.transform.position;
+            _enemy.CanAttack = distToPoint.sqrMagnitude < _puffDistance * _puffDistance;
+            var dir = distToPoint.normalized;
+            _movement.Move(dir * _movement.WalkingSpeed);
+        }
+    }
+
+    public void OnEnter()
+    {
     }
 
     public void OnExit()

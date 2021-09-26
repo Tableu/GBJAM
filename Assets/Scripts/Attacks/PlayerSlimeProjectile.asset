@@ -15,5 +15,5 @@ MonoBehaviour:
   projectileSpeed: 10
   projectilePrefab: {fileID: 6077207994914079605, guid: d4b0c9ae837b84a488dc51ee56b39715, type: 3}
   windupTime: 0.1
-  cooldownTime: 1
+  cooldownTime: 0.5
   offset: {x: 1.5, y: 0.5}

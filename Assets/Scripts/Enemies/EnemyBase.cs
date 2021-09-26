@@ -12,6 +12,8 @@ namespace Enemies
 
         [SerializeField] private float knockbackFactor;
         [SerializeField] private int knockbackDamage;
+        [SerializeField] public int collisionDamage=1;
+        [SerializeField] public int collisionKnockback=20;
         [SerializeField] private int maxHealth;
         [SerializeField] private int currentHealth;
         [SerializeField] private GameObject shell;
@@ -37,7 +39,7 @@ namespace Enemies
         protected LayerMask groundLayer;
 
         protected PlayerController Player;
-        protected Transform PlayerTransform;
+        public Transform PlayerTransform { get; private set; }
         protected FSM StateMachine;
         protected float timeSinceSawPlayer;
 
@@ -54,7 +56,7 @@ namespace Enemies
 
             MovementController = new MovementController(gameObject, walkingSpeed);
             StateMachine = new FSM();
-            _attack = attackConfig.MakeAttack();
+            _attack = attackConfig?.MakeAttack();
 
             currentHealth = maxHealth;
             PlayerTransform = playerGO.transform;
@@ -68,7 +70,7 @@ namespace Enemies
             }
 
             StateMachine.Tick();
-            if (!_attack.IsRunning && CanAttack)
+            if (_attack is {IsRunning: false} && CanAttack)
             {
                 Animator.TriggerAttack();
                 StartCoroutine(_attack.DoAttack(gameObject));
@@ -79,7 +81,7 @@ namespace Enemies
         {
             if (!other.gameObject.CompareTag("Player")) return;
             // todo: add variable for these properties
-            var dmg = new Damage(transform.position, 20, 1);
+            var dmg = new Damage(transform.position, collisionKnockback, collisionDamage);
             Player.TakeDamage(dmg);
         }
 

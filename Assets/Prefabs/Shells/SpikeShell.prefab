@@ -126,11 +126,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faa785cb054170f4fad430790183e001, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: {x: 10, y: 5}
+  speed: {x: 10, y: 5.5}
   armor: 2
   attackConfig: {fileID: 11400000, guid: 0231fe1ce13574f4696e3d579bd4e855, type: 2}
-  shell: {fileID: 21300000, guid: 5e4a2af37d7f6bd42b2cf4bae7bb1097, type: 3}
+  shellSprite: {fileID: 0}
   damagedShell: {fileID: 21300000, guid: 1c5dd6741345a0649be927b5036a489e, type: 3}
+  shell: 2
 --- !u!50 &1238895095237273255
 Rigidbody2D:
   serializedVersion: 4

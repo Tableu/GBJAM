@@ -51,7 +51,8 @@ namespace Attacks
                 // todo: use movement controller
                 var controller = attacker.GetComponent<PlayerController>();
                 var start = transform.position.x;
-                
+
+                rigidBody.velocity = new Vector2(_speed*(-1) * transform.localScale.x, rigidBody.velocity.y);
                 while (Mathf.Abs(transform.position.x - start) <= _distance &&
                        controller.frontClear)
                 {
@@ -60,9 +61,10 @@ namespace Attacks
                 }
                 
                 rigidBody.velocity = Vector2.zero;
+                LockInput = false;
                 yield return new WaitForSeconds(_cooldownTime);
                 IsRunning = false;
-                LockInput = false;
+                
                 
             }
         }

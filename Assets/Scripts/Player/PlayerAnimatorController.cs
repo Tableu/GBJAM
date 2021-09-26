@@ -21,6 +21,10 @@ public class PlayerAnimatorController : AnimationControllerBase
     {
         animCont.SetBool("IsHiding", hiding);
     }
+    public void SetIsDancing(bool dancing)
+    {
+        animCont.SetBool("IsDancing", dancing);
+    }
 
     public void SetIsInvulnerable(bool invulnerable)
     {

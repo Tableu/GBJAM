@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,16 +11,13 @@ public class LevelEndTrigger : MonoBehaviour
     {
         animCont = GetComponent<Animator>();
     }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
-        {
-            animCont.SetTrigger("Open");
-            if (MapManager.Instance && !MapManager.Instance.IsEndingLevel)
-            {
-                MapManager.Instance.EndLevel();
-            }
-        }
 
+    public void OpenChest()
+    {
+        animCont.SetTrigger("Open");
+        if (MapManager.Instance && !MapManager.Instance.IsEndingLevel)
+        {
+            MapManager.Instance.EndLevel();
+        }
     }
 }

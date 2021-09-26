@@ -1,0 +1,177 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7683038307938417338
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7683038307938417342}
+  - component: {fileID: 7683038307938417341}
+  - component: {fileID: 7683038307938417339}
+  - component: {fileID: 7683038307938417340}
+  m_Layer: 11
+  m_Name: Pufferfish
+  m_TagString: Untagged
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7683038307938417342
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7683038307938417338}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -15.71, y: 7.81, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 6652775823245423268}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!61 &7683038307938417341
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7683038307938417338}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 1.0365586}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 1.75, y: 1.1714554}
+  m_EdgeRadius: 0
+--- !u!50 &7683038307938417339
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7683038307938417338}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 2
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 1
+  m_Constraints: 4
+--- !u!114 &7683038307938417340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7683038307938417338}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82ada64d353847a78dd64251d4d168c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  walkingSpeed: 5
+  knockbackFactor: 0
+  knockbackDamage: 0
+  collisionDamage: 1
+  collisionKnockback: 20
+  maxHealth: 2
+  currentHealth: 0
+  shell: {fileID: 2348990193637437997, guid: a4a538c8b733a95459d01528e2fa2b8e, type: 3}
+  attackConfig: {fileID: 11400000, guid: bb1adefa4d755a041b5218e04ac77c30, type: 2}
+  fieldOfView: 360
+  visionRange: 10
+  detectionRange: 5
+  attackTime: 5
+  sightBlockingLayers:
+    serializedVersion: 2
+    m_Bits: 192
+  puffDistance: 5
+  patrolPoints:
+  - {fileID: 0}
+  - {fileID: 0}
+--- !u!1001 &690465757655535610
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 7683038307938417342}
+    m_Modifications:
+    - target: {fileID: 6180749239807163715, guid: 72f74f9cc8388a541843255625c69eea, type: 3}
+      propertyPath: m_Name
+      value: PufferfishVisuals
+      objectReference: {fileID: 0}
+    - target: {fileID: 6180749239807163742, guid: 72f74f9cc8388a541843255625c69eea, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6180749239807163742, guid: 72f74f9cc8388a541843255625c69eea, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6180749239807163742, guid: 72f74f9cc8388a541843255625c69eea, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6180749239807163742, guid: 72f74f9cc8388a541843255625c69eea, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6180749239807163742, guid: 72f74f9cc8388a541843255625c69eea, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6180749239807163742, guid: 72f74f9cc8388a541843255625c69eea, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6180749239807163742, guid: 72f74f9cc8388a541843255625c69eea, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6180749239807163742, guid: 72f74f9cc8388a541843255625c69eea, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6180749239807163742, guid: 72f74f9cc8388a541843255625c69eea, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6180749239807163742, guid: 72f74f9cc8388a541843255625c69eea, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6180749239807163742, guid: 72f74f9cc8388a541843255625c69eea, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 72f74f9cc8388a541843255625c69eea, type: 3}
+--- !u!4 &6652775823245423268 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6180749239807163742, guid: 72f74f9cc8388a541843255625c69eea, type: 3}
+  m_PrefabInstance: {fileID: 690465757655535610}
+  m_PrefabAsset: {fileID: 0}
