@@ -217,6 +217,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1719900769}
     m_Modifications:
     - target: {fileID: 6493138287961469401, guid: e6409fdc5168f7b489be58e18cfd5aa9, type: 3}
+      propertyPath: paletteIndex
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6493138287961469401, guid: e6409fdc5168f7b489be58e18cfd5aa9, type: 3}
       propertyPath: startingBGColor
       value: 2
       objectReference: {fileID: 0}
