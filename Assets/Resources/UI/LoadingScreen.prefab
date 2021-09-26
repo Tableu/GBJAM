@@ -205,6 +205,8 @@ MonoBehaviour:
   transitionTime: 0.5
   fullBackgroundWidth: 224
   textScrollSpeed: 12
+  spedUpTextScrollSpeed: 100
+  skipTextScrollSpeed: 300
   textsToShow: {fileID: 11400000, guid: 4621a6b3a90e749469c4d9f710edf49d, type: 2}
   _isScreenShown: 0
 --- !u!223 &6690663469377164110

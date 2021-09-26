@@ -11,6 +11,8 @@ public class LoadingScreen : MonoBehaviour
 {
     public delegate void showCallbackEvent();
     RectTransform backgroundImage;
+    TextMeshProUGUI textThing;
+    RectTransform textRect;
 
     [SerializeField, Range(0, 5f)]
     internal float transitionTime = 1f;
@@ -18,6 +20,10 @@ public class LoadingScreen : MonoBehaviour
     float fullBackgroundWidth = 480;
     [SerializeField, Range(1f, 100f)]
     float textScrollSpeed = 5f;
+    [SerializeField, Range(20f, 200f)]
+    float spedUpTextScrollSpeed = 100f;
+    [SerializeField, Range(50f, 400f)]
+    float skipTextScrollSpeed = 300f;
 
     [SerializeField]
     LoadingScreenText textsToShow;
@@ -32,8 +38,7 @@ public class LoadingScreen : MonoBehaviour
     showCallbackEvent savedCallbackEvents;
     showCallbackEvent backupCallbackEvents;
 
-    TextMeshProUGUI textThing;
-    RectTransform textRect;
+    private PlayerInputActions _playerInputActions;
 
     [SerializeField]
     bool _isScreenShown;
@@ -87,6 +92,7 @@ public class LoadingScreen : MonoBehaviour
         _instance = this;
         DontDestroyOnLoad(gameObject);
 
+        _playerInputActions = new PlayerInputActions();
         backgroundImage = transform.Find("Background").GetComponent<RectTransform>();
         textThing = transform.Find("LevelText").GetComponent<TextMeshProUGUI>();
         textRect = textThing.GetComponent<RectTransform>();
@@ -171,14 +177,32 @@ public class LoadingScreen : MonoBehaviour
             textRect.anchoredPosition = new Vector2(0, -textRect.sizeDelta.y * 0.5f - 72f);
 
             float targetPos = -textRect.anchoredPosition.y;
+            float finalSpeed = textScrollSpeed;
+            _playerInputActions.Enable();
             while (textRect.anchoredPosition.y < targetPos)
             {
-                SetTextPosition(textRect.anchoredPosition.y + textScrollSpeed * Time.unscaledDeltaTime);
+                //if (_playerInputActions.UI.Submit.)
+                if (_playerInputActions.UI.Submit.phase.ToString() == "Started" || _playerInputActions.UI.Cancel.phase.ToString() == "Started")
+                {
+                    finalSpeed = skipTextScrollSpeed;
+                    MusicManager.MusicInstance.SetAudioSourceSpeed(1.75f);
+                }
+                else
+                {
+                    finalSpeed = textScrollSpeed;
+                    MusicManager.MusicInstance.SetAudioSourceSpeed(1f);
+                }
+                //Debug.Log($"InputActionPhase: {_playerInputActions.UI.Submit.phase}\r\nTriggered: {_playerInputActions.UI.Submit.triggered}");
+
+                //finalSpeed += textScrollSpeed;
+
+                SetTextPosition(textRect.anchoredPosition.y + finalSpeed * Time.unscaledDeltaTime);
                 yield return null;
             }
             SetTextPosition(targetPos);
         }
         isScrollingText = false;
+        _playerInputActions.Disable();
     }
     IEnumerator ShowBackground(bool show)
     {
