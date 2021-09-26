@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     private PlayerInputActions _playerInputActions;
     private ContactFilter2D _groundFilter2D; 
     private AttackCommand _attackCommand;
-    private MovementController _movementController;
+    public MovementController MovementController { get; private set; }
 
     [SerializeField] private PlayerStats meleeStats;
     [SerializeField] private PlayerStats currentStats;
@@ -61,7 +61,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     private void Awake()
     {
         _playerInputActions = new PlayerInputActions();
-        _movementController = new MovementController(gameObject, speed.x);
+        MovementController = new MovementController(gameObject, speed.x);
     }
 
     private void OnEnable()
@@ -77,7 +77,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         _playerInputActions.Player.Jump.started += (context =>
         {
-            if (_movementController.Jump(speed.y))
+            if (MovementController.Jump(speed.y))
             {
                 pSoundManager.PlaySound(pSoundManager.Sound.pJump);
                 if (hiding)
@@ -139,8 +139,8 @@ public class PlayerController : MonoBehaviour, IDamageable
     // Update is called once per frame
     void Update()
     {
-        grounded = _movementController.Grounded();
-        nearCeiling = _movementController.NearCeiling();
+        grounded = MovementController.Grounded();
+        nearCeiling = MovementController.NearCeiling();
         if (grounded)
         {
             playerAnimatorController.SetIsGrounded(true);
@@ -151,7 +151,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             playerAnimatorController.SetIsGrounded(false);
             //_playerInputActions.Player.Hide.Disable();
         }
-        frontClear = _movementController.FrontClear();
+        frontClear = MovementController.FrontClear();
         Move();
         if (_attackCommand != null)
         {
@@ -182,10 +182,10 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         armor = shellStats.armor;
         speed = shellStats.speed;
-        _movementController.WalkingSpeed = shellStats.speed.x;
+        MovementController.WalkingSpeed = shellStats.speed.x;
         if (hiding)
         {
-            _movementController.WalkingSpeed *= 0.4f;
+            MovementController.WalkingSpeed *= 0.4f;
         }
         _attack = shellStats.attackConfig;
         if (_attack != null)
@@ -207,7 +207,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         var horizontalVelocity = horizontal * speed.x;
         if (!inputLocked)
         {
-            _movementController.MoveHorizontally(horizontalVelocity);
+            MovementController.MoveHorizontally(horizontalVelocity);
             if (horizontalVelocity != 0)
             {
                 playerAnimatorController.SetIsMoving(true);
@@ -308,8 +308,8 @@ public class PlayerController : MonoBehaviour, IDamageable
         if ((context.started || context.performed) && !hiding && grounded)
         {
             hiding = true;
-            _movementController.WalkingSpeed *= 0.4f;
-            _movementController.Stop();
+            MovementController.WalkingSpeed *= 0.4f;
+            MovementController.Stop();
             playerAnimatorController.SetIsHiding(true);
             pSoundManager.PlaySound(pSoundManager.Sound.pHide);
             BoxCollider2D box = (BoxCollider2D)col;
@@ -342,7 +342,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     private void StopHiding()
     {
         hiding = false;
-        _movementController.WalkingSpeed = currentStats.speed.x;
+        MovementController.WalkingSpeed = currentStats.speed.x;
         playerAnimatorController.SetIsHiding(false);
         BoxCollider2D box = (BoxCollider2D)col;
         box.offset = new Vector2(box.offset.x, box.offset.y*2f);
@@ -372,7 +372,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         //Only do the Knockback coroutine if knockback on dmg isn't 0, so player doesn't come to a full stop for a moment if knockback is 0.
         if (dmg.Knockback != 0)
         {
-            StartCoroutine(_movementController.Knockback(dmg));
+            StartCoroutine(MovementController.Knockback(dmg));
         }
     }
 
@@ -471,7 +471,7 @@ public class PlayerController : MonoBehaviour, IDamageable
                 //Only do the Knockback coroutine if knockback on dmg isn't 0, so player doesn't come to a full stop for a moment if knockback is 0.
                 if (dmg.Knockback != 0)
                 {
-                    StartCoroutine(_movementController.Knockback(dmg));
+                    StartCoroutine(MovementController.Knockback(dmg));
                 }
                 break;
         }
