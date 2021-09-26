@@ -22,24 +22,27 @@ public class RangedAttack : IState
 
     public void Tick()
     {
-        var playerPosition = _playerTransform.position;
-        var position = _movement.Position;
-        var distance = playerPosition.x - _movement.Position.x;
-        var direction = Math.Sign(distance);
-        var error = Mathf.Abs(distance) - _targetDistance;
-
-        _enemy.CanAttack = Mathf.Abs(playerPosition.y - position.y) < _verticalAttackRange &&
-                           Math.Sign(distance) == _movement.GetDirection();
-
-        if (Mathf.Abs(error) < 0.5f || !_movement.FrontClear() ||
-            !_movement.BackClear() && Math.Sign(error) == _movement.GetDirection())
+        if (_playerTransform != null)
         {
-            _movement.SetDirection(direction);
-            return;
-        }
+            var playerPosition = _playerTransform.position;
+            var position = _movement.Position;
+            var distance = playerPosition.x - _movement.Position.x;
+            var direction = Math.Sign(distance);
+            var error = Mathf.Abs(distance) - _targetDistance;
 
-        var speed = Mathf.Clamp(error * _movement.WalkingSpeed, -_movement.WalkingSpeed, _movement.WalkingSpeed);
-        _movement.MoveHorizontally(direction * speed);
+            _enemy.CanAttack = Mathf.Abs(playerPosition.y - position.y) < _verticalAttackRange &&
+                               Math.Sign(distance) == _movement.GetDirection();
+
+            if (Mathf.Abs(error) < 0.5f || !_movement.FrontClear() ||
+                !_movement.BackClear() && Math.Sign(error) == _movement.GetDirection())
+            {
+                _movement.SetDirection(direction);
+                return;
+            }
+
+            var speed = Mathf.Clamp(error * _movement.WalkingSpeed, -_movement.WalkingSpeed, _movement.WalkingSpeed);
+            _movement.MoveHorizontally(direction * speed);
+        }
     }
 
     public void OnEnter()
