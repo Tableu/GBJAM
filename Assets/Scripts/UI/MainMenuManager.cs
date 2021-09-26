@@ -23,7 +23,9 @@ public class MainMenuManager : MonoBehaviour
         {
             panels[0].Show(true);
         }
-
+        PlayerPrefs.SetInt("Coins", 0);
+        PlayerPrefs.SetInt("armor", 0);
+        PlayerPrefs.SetInt("Shell", 0);
         LoadingScreen.Instance.HideLoadingScreen();
         MusicManager.MusicInstance.PlayMusic(Music.MainMenu);
     }
