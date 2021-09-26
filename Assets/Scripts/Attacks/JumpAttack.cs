@@ -65,13 +65,15 @@ public class JumpAttack : AttackScriptableObject
             if (targetAngle >= theta) theta = Mathf.Min(targetAngle * 1.25f, Mathf.PI / 2);
 
             var g = -Physics2D.gravity.y * rb.gravityScale;
-            distance.x = Mathf.Abs(distance.x) + 0.25f;
+            distance.x = Mathf.Abs(distance.x) + 1.25f;
             distance.x = Mathf.Min(distance.x, _jumpDistance);
             var velMag = Mathf.Sqrt(distance.x * distance.x * g /
                                     (distance.x * Mathf.Sin(2 * theta) - distance.y * (1 + Mathf.Cos(2 * theta))));
             if (!float.IsNaN(velMag))
             {
                 var vel = velMag * new Vector2(dir * Mathf.Cos(theta), Mathf.Sin(theta));
+                var playerVel = targetTransform.GetComponent<Rigidbody2D>().velocity;
+                vel += playerVel;
 
                 // Jump
                 rb.velocity = vel;
