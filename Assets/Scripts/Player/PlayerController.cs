@@ -428,6 +428,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         pSoundManager.PlaySound(pSoundManager.Sound.pDie);
         playerAnimatorController.TriggerDeath();
+        _playerInputActions.Disable();
         gameObject.layer = LayerMask.NameToLayer("Invulnerable");
         yield return new WaitForSeconds(1);
         //Tell MapManager the player died, it handles respawn and such.
