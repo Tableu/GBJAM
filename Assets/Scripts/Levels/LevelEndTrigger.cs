@@ -6,7 +6,7 @@ using UnityEngine;
 public class LevelEndTrigger : MonoBehaviour
 {
     Animator animCont;
-
+    [SerializeField] private GameObject Enemies;
     private void Awake()
     {
         animCont = GetComponent<Animator>();
@@ -18,6 +18,7 @@ public class LevelEndTrigger : MonoBehaviour
         if (MapManager.Instance && !MapManager.Instance.IsEndingLevel)
         {
             MapManager.Instance.EndLevel();
+            Destroy(Enemies);
         }
     }
 }
