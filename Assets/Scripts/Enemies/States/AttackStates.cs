@@ -82,7 +82,7 @@ public class FloatingAttack : IState
         {
             _enemy.CanAttack = true;
             _enemy.StartedAttack = true;
-            _movement.WalkingSpeed = _enemy.puffWalkSpeed;
+            _enemy.StartAttack();
         }
         else
         {
@@ -101,7 +101,6 @@ public class FloatingAttack : IState
     public void OnExit()
     {
         _enemy.CanAttack = false;
-        _movement.WalkingSpeed = _enemy.walkingSpeed;
     }
 }
 

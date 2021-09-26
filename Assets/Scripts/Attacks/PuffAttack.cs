@@ -42,7 +42,7 @@ public class PuffAttack : AttackScriptableObject
             // Wind up
             IsRunning = true;
             var animator = attacker.GetComponentInChildren<EnemyAnimatorController>();
-            var enemy = attacker.GetComponent<EnemyBase>();
+            var enemy = attacker.GetComponent<PufferEnemy>();
             animator.IsAngry(true);
             yield return new WaitForSeconds(_windup);
             // Puff
@@ -55,6 +55,7 @@ public class PuffAttack : AttackScriptableObject
             var player = GameObject.FindWithTag("Player");
             Vector2 playerPos = player.transform.position;
             Vector2 enemyPos = enemy.transform.position;
+            enemy.MovementController.WalkingSpeed = enemy.puffWalkSpeed;
             var dist = (playerPos-enemyPos).magnitude;
             if (dist <= _puffRange)
             {
@@ -67,7 +68,8 @@ public class PuffAttack : AttackScriptableObject
             enemy.collisionDamage = oldDmg;
             enemy.collisionKnockback = oldKnock;
             pSoundManager.PlaySound(pSoundManager.Sound.puffEnd);
-            // yield return new WaitForSeconds(_cooldown);
+            enemy.MovementController.WalkingSpeed = enemy.walkingSpeed;
+            yield return new WaitForSeconds(_cooldown);
             IsRunning = false;
         }
 
