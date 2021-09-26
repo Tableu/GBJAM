@@ -47,6 +47,7 @@ public class RangedAttack : IState
 
     public void OnEnter()
     {
+        Debug.Log("Attacking");
         _movement.Stop();
     }
 
