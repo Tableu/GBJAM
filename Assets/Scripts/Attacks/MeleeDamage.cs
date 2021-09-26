@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,13 @@ public class MeleeDamage : MonoBehaviour
     public int damage;
     public float knockback;
     public LayerMask enemyLayer;
+
+    public Collider2D Collider2D;
+    
+    public void Awake()
+    {
+        Collider2D = GetComponent<Collider2D>();
+    }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
@@ -19,7 +27,7 @@ public class MeleeDamage : MonoBehaviour
                 RawDamage = damage,
                 Source = transform.position
             };
-            enemy.TakeDamage(dmg);
+            enemy?.TakeDamage(dmg);
         }
     }
 }

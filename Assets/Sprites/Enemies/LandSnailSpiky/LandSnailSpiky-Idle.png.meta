@@ -1,25 +1,16 @@
 fileFormatVersion: 2
-guid: 8a7461c74a7f1464a9924701e8bc02eb
+guid: 9f48da51f7a06704c97c1b1d681c48a3
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1755936407440854122
-    second: crabDie_0
+      213: 8800906879976132466
+    second: LandSnailSpiky-Idle_0
   - first:
-      213: 769993142532230318
-    second: crabDie_1
+      213: 8746113842254190597
+    second: LandSnailSpiky-Idle_1
   - first:
-      213: -2953897263153898228
-    second: crabDie_3
-  - first:
-      213: 3575655032423648906
-    second: crabDie_4
-  - first:
-      213: -4104990411605981792
-    second: crabDie_6
-  - first:
-      213: -4435110035359368336
-    second: crabDie_7
+      213: 9035219648546183472
+    second: LandSnailSpiky-Idle_2
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -121,127 +112,64 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: crabDie_0
+      name: LandSnailSpiky-Idle_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 26
+        width: 32
         height: 24
       alignment: 9
-      pivot: {x: 0.5, y: 0.2}
+      pivot: {x: 0.5, y: 0.375}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 693ff4a0429a1a7e0800000000000000
-      internalID: -1755936407440854122
+      spriteID: 27fc44a9d2a132a70800000000000000
+      internalID: 8800906879976132466
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: crabDie_1
+      name: LandSnailSpiky-Idle_1
       rect:
         serializedVersion: 2
-        x: 26
+        x: 32
         y: 0
-        width: 26
+        width: 32
         height: 24
       alignment: 9
-      pivot: {x: 0.5, y: 0.2}
+      pivot: {x: 0.5, y: 0.375}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: eacce1cfea09faa00800000000000000
-      internalID: 769993142532230318
+      spriteID: 50810bc5330706970800000000000000
+      internalID: 8746113842254190597
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: crabDie_3
+      name: LandSnailSpiky-Idle_2
       rect:
         serializedVersion: 2
-        x: 52
+        x: 64
         y: 0
-        width: 26
+        width: 32
         height: 24
       alignment: 9
-      pivot: {x: 0.5, y: 0.2}
+      pivot: {x: 0.5, y: 0.375}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c0d96bee616a107d0800000000000000
-      internalID: -2953897263153898228
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: crabDie_4
-      rect:
-        serializedVersion: 2
-        x: 78
-        y: 0
-        width: 26
-        height: 24
-      alignment: 9
-      pivot: {x: 0.5, y: 0.2}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a8e03feae474f9130800000000000000
-      internalID: 3575655032423648906
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: crabDie_6
-      rect:
-        serializedVersion: 2
-        x: 104
-        y: 0
-        width: 26
-        height: 24
-      alignment: 9
-      pivot: {x: 0.5, y: 0.2}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0a547d548f42807c0800000000000000
-      internalID: -4104990411605981792
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: crabDie_7
-      rect:
-        serializedVersion: 2
-        x: 130
-        y: 0
-        width: 26
-        height: 24
-      alignment: 9
-      pivot: {x: 0.5, y: 0.2}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 07b72aacbe25372c0800000000000000
-      internalID: -4435110035359368336
+      spriteID: 0399933566c836d70800000000000000
+      internalID: 9035219648546183472
       vertices: []
       indices: 
       edges: []

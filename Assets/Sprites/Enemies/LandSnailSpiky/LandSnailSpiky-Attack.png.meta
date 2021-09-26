@@ -1,25 +1,19 @@
 fileFormatVersion: 2
-guid: 8a7461c74a7f1464a9924701e8bc02eb
+guid: 56188fe9341637e4caafce7a70c8e3f9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1755936407440854122
-    second: crabDie_0
+      213: -5918623223905047326
+    second: LandSnailSpiky-Attack_0
   - first:
-      213: 769993142532230318
-    second: crabDie_1
+      213: -2532116532004610041
+    second: LandSnailSpiky-Attack_1
   - first:
-      213: -2953897263153898228
-    second: crabDie_3
+      213: -8200196281136184605
+    second: LandSnailSpiky-Attack_2
   - first:
-      213: 3575655032423648906
-    second: crabDie_4
-  - first:
-      213: -4104990411605981792
-    second: crabDie_6
-  - first:
-      213: -4435110035359368336
-    second: crabDie_7
+      213: -3315320261381878074
+    second: LandSnailSpiky-Attack_3
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -121,127 +115,85 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: crabDie_0
+      name: LandSnailSpiky-Attack_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 26
+        width: 32
         height: 24
       alignment: 9
-      pivot: {x: 0.5, y: 0.2}
+      pivot: {x: 0.5, y: 0.375}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 693ff4a0429a1a7e0800000000000000
-      internalID: -1755936407440854122
+      spriteID: 2ec23cb3983dcdda0800000000000000
+      internalID: -5918623223905047326
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: crabDie_1
+      name: LandSnailSpiky-Attack_1
       rect:
         serializedVersion: 2
-        x: 26
+        x: 32
         y: 0
-        width: 26
+        width: 32
         height: 24
       alignment: 9
-      pivot: {x: 0.5, y: 0.2}
+      pivot: {x: 0.5, y: 0.375}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: eacce1cfea09faa00800000000000000
-      internalID: 769993142532230318
+      spriteID: 700a8fb0e6d1cdcd0800000000000000
+      internalID: -2532116532004610041
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: crabDie_3
+      name: LandSnailSpiky-Attack_2
       rect:
         serializedVersion: 2
-        x: 52
+        x: 64
         y: 0
-        width: 26
+        width: 32
         height: 24
       alignment: 9
-      pivot: {x: 0.5, y: 0.2}
+      pivot: {x: 0.5, y: 0.375}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c0d96bee616a107d0800000000000000
-      internalID: -2953897263153898228
+      spriteID: 3e20666cdec033e80800000000000000
+      internalID: -8200196281136184605
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: crabDie_4
+      name: LandSnailSpiky-Attack_3
       rect:
         serializedVersion: 2
-        x: 78
+        x: 96
         y: 0
-        width: 26
+        width: 32
         height: 24
       alignment: 9
-      pivot: {x: 0.5, y: 0.2}
+      pivot: {x: 0.5, y: 0.375}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a8e03feae474f9130800000000000000
-      internalID: 3575655032423648906
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: crabDie_6
-      rect:
-        serializedVersion: 2
-        x: 104
-        y: 0
-        width: 26
-        height: 24
-      alignment: 9
-      pivot: {x: 0.5, y: 0.2}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 0a547d548f42807c0800000000000000
-      internalID: -4104990411605981792
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: crabDie_7
-      rect:
-        serializedVersion: 2
-        x: 130
-        y: 0
-        width: 26
-        height: 24
-      alignment: 9
-      pivot: {x: 0.5, y: 0.2}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 07b72aacbe25372c0800000000000000
-      internalID: -4435110035359368336
+      spriteID: 6ce8daf99cd9df1d0800000000000000
+      internalID: -3315320261381878074
       vertices: []
       indices: 
       edges: []

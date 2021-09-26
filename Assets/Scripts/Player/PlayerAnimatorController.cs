@@ -39,6 +39,16 @@ public class PlayerAnimatorController : AnimationControllerBase
     {
         animCont.SetTrigger("AttackTrigger");
     }
+
+    public void TriggerDeath()
+    {
+        animCont.SetTrigger(("DeathTrigger"));
+    }
+
+    public void TriggerShellSwap()
+    {
+        animCont.SetTrigger("SwapShellTrigger");
+    }
 }
 
 
