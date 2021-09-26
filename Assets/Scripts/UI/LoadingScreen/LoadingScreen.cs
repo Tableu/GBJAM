@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using TMPro;
+using System.Collections.Generic;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -13,17 +14,24 @@ public class LoadingScreen : MonoBehaviour
     RectTransform backgroundImage;
     TextMeshProUGUI textThing;
     RectTransform textRect;
+    RectTransform creditsRect;
 
     [SerializeField, Range(0, 5f)]
     internal float transitionTime = 1f;
     [SerializeField]
     float fullBackgroundWidth = 480;
-    [SerializeField, Range(1f, 100f)]
+    [SerializeField, Range(1f, 100f), Header("Text Scrolling Speeds")]
     float textScrollSpeed = 5f;
     [SerializeField, Range(20f, 200f)]
     float spedUpTextScrollSpeed = 100f;
     [SerializeField, Range(50f, 400f)]
     float skipTextScrollSpeed = 300f;
+    [SerializeField, Range(1f, 100f), Header("Credits Scrolling Speeds")]
+    float creditsScrollSpeed = 15f;
+    [SerializeField, Range(20f, 200f)]
+    float spedUpDreditsScrollSpeed = 100f;
+    [SerializeField, Range(50f, 400f)]
+    float skipCreditsScrollSpeed = 300f;
 
     [SerializeField]
     LoadingScreenText textsToShow;
@@ -32,6 +40,8 @@ public class LoadingScreen : MonoBehaviour
     bool isHiding = false;
 
     bool isScrollingText = false;
+
+    bool areCreditsRolling = false;
 
     bool hideWhenShowFinish = false;
 
@@ -58,12 +68,16 @@ public class LoadingScreen : MonoBehaviour
     {
         get { return isScrollingText; }
     }
+    public bool AreCreditsRolling
+    {
+        get { return areCreditsRolling; }
+    }
     /// <summary>
     /// If it should be blocking other behaviour because you're in a loading screen silly, why would you be able to move stuff around.
     /// </summary>
     public bool ShouldBlockStuff
     {
-        get { return _isScreenShown || isShowing || isScrollingText; }
+        get { return _isScreenShown || isShowing || isScrollingText || areCreditsRolling; }
     }
 
     static LoadingScreen _instance;
@@ -96,6 +110,7 @@ public class LoadingScreen : MonoBehaviour
         backgroundImage = transform.Find("Background").GetComponent<RectTransform>();
         textThing = transform.Find("LevelText").GetComponent<TextMeshProUGUI>();
         textRect = textThing.GetComponent<RectTransform>();
+        creditsRect = transform.Find("CreditsContainer").GetComponent<RectTransform>();
 
         Reset();
     }
@@ -109,6 +124,7 @@ public class LoadingScreen : MonoBehaviour
         isScrollingText = true;
         backgroundImage.sizeDelta = new Vector2(32f, backgroundImage.sizeDelta.y);
         textThing.text = "";
+        EnableAllCreditAnimationTriggers(false);
         GetComponent<GraphicRaycaster>().enabled = false;
     }
 
@@ -118,13 +134,13 @@ public class LoadingScreen : MonoBehaviour
         canvas.worldCamera = FindObjectOfType<Camera>();
     }
 
-    public void ShowLoadingScreen(showCallbackEvent callbackEvent = null)
+    public void ShowLoadingScreen(showCallbackEvent callbackEvent = null, string levelOverride = "")
     {
         if (!_isScreenShown && !isShowing)
         {
             SetCamera();
             savedCallbackEvents = callbackEvent;
-            StartCoroutine(ShowLoadingScreenCoroutine());
+            StartCoroutine(ShowLoadingScreenCoroutine(levelOverride));
         }
     }
     public void HideLoadingScreen(showCallbackEvent callbackEvent = null)
@@ -149,12 +165,19 @@ public class LoadingScreen : MonoBehaviour
     }
 
 
-    IEnumerator ShowLoadingScreenCoroutine()
+    IEnumerator ShowLoadingScreenCoroutine(string levelOverride)
     {
         isShowing = true;
         yield return StartCoroutine(ShowBackground(true));
         isShowing = false;
-        yield return StartCoroutine(ScrollTextCoroutine());
+        if (SceneNavigationManager.Instance.GetCurrentlyActiveScene().name == "Scene3" || levelOverride == "Credits")
+        {
+            yield return StartCoroutine(ScrollCreditsCoroutine());
+        }
+        else
+        {
+            yield return StartCoroutine(ScrollTextCoroutine(levelOverride));
+        }
 
         HandleCallbacks();
     }
@@ -166,10 +189,10 @@ public class LoadingScreen : MonoBehaviour
         isHiding = false;
     }
 
-    IEnumerator ScrollTextCoroutine()
+    IEnumerator ScrollTextCoroutine(string levelOverride)
     {
         textThing.enabled = true;
-        textThing.text = GetLevelText();
+        textThing.text = GetLevelText(levelOverride);
         if (textThing.text != "")
         {
             MusicManager.MusicInstance.PlayMusic(Music.TransitionJingle);
@@ -196,12 +219,32 @@ public class LoadingScreen : MonoBehaviour
 
                 //finalSpeed += textScrollSpeed;
 
-                SetTextPosition(textRect.anchoredPosition.y + finalSpeed * Time.unscaledDeltaTime);
+                SetObjectVerticalAnchoredPosition(textRect, textRect.anchoredPosition.y + finalSpeed * Time.unscaledDeltaTime);
                 yield return null;
             }
-            SetTextPosition(targetPos);
+            SetObjectVerticalAnchoredPosition(textRect, targetPos);
         }
         isScrollingText = false;
+        _playerInputActions.Disable();
+    }
+    IEnumerator ScrollCreditsCoroutine()
+    {
+        areCreditsRolling = true;
+        EnableAllCreditAnimationTriggers(true);
+        MusicManager.MusicInstance.PlayMusic(Music.Credits);
+        creditsRect.anchoredPosition = new Vector2(0, -creditsRect.sizeDelta.y * 0.5f - 72f);
+
+        float targetPos = -creditsRect.anchoredPosition.y;
+        float finalSpeed = creditsScrollSpeed;
+        _playerInputActions.Enable();
+        while (creditsRect.anchoredPosition.y < targetPos)
+        {
+            SetObjectVerticalAnchoredPosition(creditsRect, creditsRect.anchoredPosition.y + finalSpeed * Time.unscaledDeltaTime);
+            yield return null;
+        }
+        SetObjectVerticalAnchoredPosition(creditsRect, targetPos);
+        areCreditsRolling = false;
+        EnableAllCreditAnimationTriggers(false);
         _playerInputActions.Disable();
     }
     IEnumerator ShowBackground(bool show)
@@ -236,9 +279,23 @@ public class LoadingScreen : MonoBehaviour
         }
     }
 
-    string GetLevelText()
+    void EnableAllCreditAnimationTriggers(bool enable)
     {
-        string sceneName = SceneNavigationManager.Instance.GetCurrentlyActiveScene().name;
+        List<CreditAnimationTrigger> triggers = new List<CreditAnimationTrigger>();
+        triggers.AddRange(FindObjectsOfType<CreditAnimationTrigger>());
+        foreach (CreditAnimationTrigger trigger in triggers)
+        {
+            trigger.EnableBehaviour = enable;
+        }
+    }
+
+    string GetLevelText(string overrideSceneName)
+    {
+        string sceneName = overrideSceneName;
+        if (sceneName == "")
+        {
+            sceneName = SceneNavigationManager.Instance.GetCurrentlyActiveScene().name;
+        }
         string result = "String not found\r\nBlame Iojioji lmao";
         switch (sceneName)
         {
@@ -258,9 +315,9 @@ public class LoadingScreen : MonoBehaviour
         return result;
     }
 
-    void SetTextPosition(float yPos)
+    void SetObjectVerticalAnchoredPosition(RectTransform transformToSet, float yPos)
     {
-        textRect.anchoredPosition = new Vector2(textRect.anchoredPosition.x, yPos);
+        transformToSet.anchoredPosition = new Vector2(transformToSet.anchoredPosition.x, yPos);
     }
     float GetEquivalentProgress(float minLimit, float maxLimit, float currentValue)
     {
@@ -290,14 +347,27 @@ public class LoadingScreenEditor : Editor
         if (Application.isPlaying)
         {
             EditorExtensionMethods.DrawSeparator(Color.gray);
-
-            if (GUILayout.Button("Show loading screen"))
+            if (loadScreen.IsScreenShown)
             {
-                loadScreen.ShowLoadingScreen();
+                if (GUILayout.Button("Hide loading screen"))
+                {
+                    loadScreen.HideLoadingScreen();
+                }
             }
-            if (GUILayout.Button("Hide loading screen"))
+            else
             {
-                loadScreen.HideLoadingScreen();
+                if (GUILayout.Button("Show loading screen"))
+                {
+                    loadScreen.ShowLoadingScreen();
+                }
+            }
+            EditorExtensionMethods.DrawSeparator(Color.gray);
+            if (!loadScreen.IsScreenShown)
+            {
+                if (GUILayout.Button("Show loading screen (Credits)"))
+                {
+                    loadScreen.ShowLoadingScreen(null, "Credits");
+                }
             }
         }
     }
