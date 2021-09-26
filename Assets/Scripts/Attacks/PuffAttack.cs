@@ -62,12 +62,12 @@ public class PuffAttack : AttackScriptableObject
             }
             
             yield return new WaitForSeconds(_attackDuration);
+            // De-puff
             animator.IsAngry(false);
             enemy.collisionDamage = oldDmg;
             enemy.collisionKnockback = oldKnock;
             pSoundManager.PlaySound(pSoundManager.Sound.puffEnd);
-            // De-puff
-            yield return new WaitForSeconds(_cooldown);
+            // yield return new WaitForSeconds(_cooldown);
             IsRunning = false;
         }
 
