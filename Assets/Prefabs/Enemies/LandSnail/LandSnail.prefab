@@ -72,9 +72,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c5cd8282ae54039b7af9de505ff8d3c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkingSpeed: 5
+  walkingSpeed: 4
   knockbackFactor: 0.1
-  knockbackDamage: 0
   collisionDamage: 1
   collisionKnockback: 20
   maxHealth: 2
@@ -82,7 +81,7 @@ MonoBehaviour:
   shell: {fileID: 3537151017550152801, guid: 2d624e681e75bc341ba671881655c407, type: 3}
   attackConfig: {fileID: 11400000, guid: 76cba72a43bdf8f44b8a31b96c1d3a25, type: 2}
   fieldOfView: 25
-  visionRange: 15
+  visionRange: 10
   detectionRange: 5
   deaggroTime: 5
   sightBlockingLayers:
@@ -170,6 +169,10 @@ PrefabInstance:
     - target: {fileID: 4949010571642796606, guid: 661db6ca572277946a970f68de0b2bee, type: 3}
       propertyPath: m_Name
       value: SnailVisuals
+      objectReference: {fileID: 0}
+    - target: {fileID: 4949010571642796606, guid: 661db6ca572277946a970f68de0b2bee, type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 661db6ca572277946a970f68de0b2bee, type: 3}

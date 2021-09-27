@@ -7,33 +7,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1115125299134811917, guid: bd29092af89fd9749bbe97d761fa4568, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.89
-      objectReference: {fileID: 0}
-    - target: {fileID: 1115125299134811917, guid: bd29092af89fd9749bbe97d761fa4568, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1115125299134811920, guid: bd29092af89fd9749bbe97d761fa4568, type: 3}
-      propertyPath: m_Layer
-      value: 11
-      objectReference: {fileID: 0}
     - target: {fileID: 5465068024183802641, guid: bd29092af89fd9749bbe97d761fa4568, type: 3}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5465068024183802641, guid: bd29092af89fd9749bbe97d761fa4568, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -50.57
+      value: -122.983406
       objectReference: {fileID: 0}
     - target: {fileID: 5465068024183802641, guid: bd29092af89fd9749bbe97d761fa4568, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6.46
+      value: -5.5296474
       objectReference: {fileID: 0}
     - target: {fileID: 5465068024183802641, guid: bd29092af89fd9749bbe97d761fa4568, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 149
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5465068024183802641, guid: bd29092af89fd9749bbe97d761fa4568, type: 3}
       propertyPath: m_LocalRotation.w
@@ -63,17 +51,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5465068024183802643, guid: bd29092af89fd9749bbe97d761fa4568, type: 3}
-      propertyPath: visionRange
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 5465068024183802643, guid: bd29092af89fd9749bbe97d761fa4568, type: 3}
-      propertyPath: walkingSpeed
-      value: 4
-      objectReference: {fileID: 0}
     - target: {fileID: 5465068024183802645, guid: bd29092af89fd9749bbe97d761fa4568, type: 3}
       propertyPath: m_Name
-      value: LandSnail Normal (6)
+      value: LandSnail Normal
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bd29092af89fd9749bbe97d761fa4568, type: 3}
