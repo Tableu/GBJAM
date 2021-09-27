@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b38f3915d0691294f931f8b7d5da0994, type: 3}
   m_Name: DefaultLoadingTexts
   m_EditorClassIdentifier: 
-  _introText: "It is a tale that my father, Ashita Dick - the lengedary treasure
+  _introText: "It is a tale that my father, Ashita Dick - the legedary treasure
     hunter, told me about when I was just three years old.\r\n\r\nAccording to him,
     once there lived a fearsome pirate by the name of Captain Bone Herr...\r\n\r\n\r\n\r\nHe
     is said to have amass a lot of wealth from his pirate hunting adventures on places
