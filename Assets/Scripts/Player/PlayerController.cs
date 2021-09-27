@@ -488,6 +488,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             {
                 health++;
                 coins = 0;
+                pSoundManager.PlaySound(pSoundManager.Sound.hpIncrease);
                 HUDManager.Instance.UpdateHealth(Mathf.Max(0, health));
             }
             else
