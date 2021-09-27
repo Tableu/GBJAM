@@ -31,6 +31,11 @@ public class MusicManager : MonoBehaviour
             return _musicInstance;
         }
     }
+    
+    public float Volume
+    {
+        get { return musicSource.volume; }
+    }
 
     private void Awake()
     {
@@ -50,6 +55,10 @@ public class MusicManager : MonoBehaviour
     public void SetAudioSourceSpeed(float newSpeed)
     {
         musicSource.pitch = newSpeed;
+    }
+    public void SetAudioVolume(float volume)
+    {
+        musicSource.volume = volume;
     }
 
     public void PlayMusic(Music toChangeTo, bool loop = true, float delay = 0)

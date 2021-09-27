@@ -9,8 +9,9 @@ public class SnailCreditAnimationTrigger : CreditAnimationTrigger
     SnailAnimation startState;
     [SerializeField]
     SnailAnimation triggerState;
-    private void Start()
+    public override void Start()
     {
+        base.Start();
         UpdateAnimator(startState);
     }
     public override void TriggerAnimation()

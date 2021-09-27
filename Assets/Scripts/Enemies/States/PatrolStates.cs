@@ -90,7 +90,9 @@ public class FloatingAvoid : IState
         if (_playerTransform == null) return;
         Vector2 toPlayer = _playerTransform.position - _enemy.transform.position;
 
-        var dir = toPlayer.normalized;
+        var dir = toPlayer;
+        dir.y = Mathf.Min(dir.y, 0.2f);
+        dir = dir.normalized;
         var distError = toPlayer.magnitude - _targetDistance;
         var dirSign = Math.Sign(distError);
 

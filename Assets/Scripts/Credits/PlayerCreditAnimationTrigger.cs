@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class PlayerCreditAnimationTrigger : CreditAnimationTrigger
 {
-    enum PlayerAnimation { Idle, Crouching, Moving, Dancing }
+    enum PlayerAnimation { Idle, Crouching, Moving, Dancing, CrouchMoving, Dying }
     [SerializeField]
     PlayerAnimation startState;
     [SerializeField]
     PlayerAnimation triggerState;
     // Start is called before the first frame update
-    void Start()
+    public override void Start()
     {
+        base.Start();
         UpdateAnimator(startState);
     }
 
@@ -39,6 +40,13 @@ public class PlayerCreditAnimationTrigger : CreditAnimationTrigger
                 animCont.SetBool("IsDancing", false);
                 animCont.Play("PlayerHide");
                 break;
+            case PlayerAnimation.CrouchMoving:
+                animCont.SetBool("IsGrounded", true);
+                animCont.SetBool("IsMoving", true);
+                animCont.SetBool("IsHiding", true);
+                animCont.SetBool("IsDancing", false);
+                animCont.Play("PlayerHideWalk");
+                break;
             case PlayerAnimation.Moving:
                 animCont.SetBool("IsGrounded", true);
                 animCont.SetBool("IsMoving", true);
@@ -52,6 +60,9 @@ public class PlayerCreditAnimationTrigger : CreditAnimationTrigger
                 animCont.SetBool("IsHiding", false);
                 animCont.SetBool("IsDancing", true);
                 animCont.Play("PlayerDance");
+                break;
+            case PlayerAnimation.Dying:
+                animCont.SetTrigger("DeathTrigger");
                 break;
         }
     }

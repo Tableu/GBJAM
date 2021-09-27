@@ -8,8 +8,9 @@ public class PufferfishCreditAnimationTrigger : CreditAnimationTrigger
     bool startPuffed = false;
     [SerializeField]
     bool isSmall = false;
-    void Start()
+    public override void Start()
     {
+        base.Start();
         isSmall = !startPuffed;
         animCont.SetBool("IsSmall", isSmall);
     }
