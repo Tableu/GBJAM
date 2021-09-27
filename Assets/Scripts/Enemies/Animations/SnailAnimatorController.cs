@@ -8,7 +8,7 @@ public class SnailAnimatorController : EnemyAnimatorController
     }
     public override void TriggerHurt()
     {
-        pSoundManager.PlaySound(pSoundManager.Sound.eHit);
+        //pSoundManager.PlaySound(pSoundManager.Sound.eHit);
         animCont.SetTrigger("Hit");
     }
     public override void TriggerAttack()

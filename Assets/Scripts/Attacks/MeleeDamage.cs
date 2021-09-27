@@ -27,6 +27,7 @@ public class MeleeDamage : MonoBehaviour
                 RawDamage = damage,
                 Source = transform.position
             };
+            pSoundManager.PlaySound(pSoundManager.Sound.eHit);
             enemy?.TakeDamage(dmg);
         }
     }
