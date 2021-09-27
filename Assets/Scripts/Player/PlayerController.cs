@@ -46,7 +46,9 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] private GameObject snailShell;
     [SerializeField] private GameObject spikyShell;
     [SerializeField] private GameObject conchShell;
-
+    private GameObject[] shells;
+    private int nextShell;
+    
     private const int NO_SHELL = 0;
     private const int SNAIL_SHELL = 1;
     private const int SPIKY_SHELL = 2;
@@ -133,6 +135,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
         armor = PlayerPrefs.GetInt("armor", 0);
         coins = PlayerPrefs.GetInt("Coins", 0);
+        health = PlayerPrefs.GetInt("Health", 2);
         if (armor == 1)
         {
             playerShellSpriteRenderer.sprite = damagedShell;
@@ -145,6 +148,8 @@ public class PlayerController : MonoBehaviour, IDamageable
             virtualCamera.Follow = transform;
         }
 
+        nextShell = 0;
+        shells = new[] {snailShell, conchShell, spikyShell};
         finish = false;
     }
 
@@ -461,7 +466,43 @@ public class PlayerController : MonoBehaviour, IDamageable
         SetStats(meleeStats);
         //switch to melee
     }
-    
+
+    private void RedeemCoins()
+    {
+        if (coins > PlayerPrefs.GetInt("RedeemAmount")-1)
+        {
+            if (_attack.GetType() == typeof(Attacks.MeleeAttack))
+            {
+                GameObject newShell = Instantiate(shells[nextShell], transform.position, Quaternion.identity);
+                newShell.GetComponent<PlayerStats>().armor = 1;
+                EquipShell(newShell);
+                SetStats(newShell.GetComponent<PlayerStats>());
+                playerShellSpriteRenderer.sprite = damagedShell;
+                nextShell++;
+                if (nextShell > 2)
+                {
+                    nextShell = 0;
+                }
+                coins = 0;
+            }else if(health < PlayerPrefs.GetInt("Health"))
+            {
+                health++;
+                coins = 0;
+                HUDManager.Instance.UpdateHealth(Mathf.Max(0, health));
+            }
+            else
+            {
+                armor++;
+                HUDManager.Instance.UpdateArmor(Mathf.Max(0, armor));
+                if (armor > 1)
+                {
+                    playerShellSpriteRenderer.sprite = shell;
+                }
+                coins = 0;
+            }
+            pSoundManager.PlaySound(pSoundManager.Sound.hpIncrease);
+        }
+    }
     private IEnumerator Invulnerable()
     {
         gameObject.layer = LayerMask.NameToLayer("Invulnerable");
@@ -504,6 +545,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             case "Coins":
                 Destroy(other.gameObject);
                 coins++;
+                RedeemCoins();                
                 HUDManager.Instance.UpdateCoins(Mathf.Max(0, coins));
                 pSoundManager.PlaySound(pSoundManager.Sound.pCoin);
                 break;
