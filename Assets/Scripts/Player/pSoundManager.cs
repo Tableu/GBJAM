@@ -21,6 +21,7 @@ public static class pSoundManager
         puffUp,
         puffEnd,
         shellDestroy,
+        hpIncrease,
     }
 
     public static void ClearNonexistentSources()
