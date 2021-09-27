@@ -48,7 +48,7 @@ MonoBehaviour:
   musicTracks:
   - {fileID: 8300000, guid: 3e7728e0499082e459bb95534f3d8ab1, type: 3}
   - {fileID: 8300000, guid: 0bbd9b2274bbc5c498f153e4e238a930, type: 3}
-  - {fileID: 8300000, guid: 65ca8c7eb4afaf545a3f324c4b67d738, type: 3}
+  - {fileID: 8300000, guid: 589dafc06cd02c64babf34284e3d9563, type: 3}
   - {fileID: 8300000, guid: 93f15214a455efb489b4c6e5a477db33, type: 3}
   - {fileID: 8300000, guid: 3b793ac37fd96a5488f62265c8be87c7, type: 3}
   - {fileID: 8300000, guid: 511ae2352f727fb41aef989fd7fedb2d, type: 3}

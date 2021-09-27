@@ -31,7 +31,7 @@ public class MusicManager : MonoBehaviour
             return _musicInstance;
         }
     }
-    
+
     public float Volume
     {
         get { return musicSource.volume; }
@@ -54,11 +54,17 @@ public class MusicManager : MonoBehaviour
 
     public void SetAudioSourceSpeed(float newSpeed)
     {
-        musicSource.pitch = newSpeed;
+        if (musicSource.pitch != newSpeed)
+        {
+            musicSource.pitch = newSpeed;
+        }
     }
     public void SetAudioVolume(float volume)
     {
-        musicSource.volume = volume;
+        if (musicSource.volume != volume)
+        {
+            musicSource.volume = volume;
+        }
     }
 
     public void PlayMusic(Music toChangeTo, bool loop = true, float delay = 0)
