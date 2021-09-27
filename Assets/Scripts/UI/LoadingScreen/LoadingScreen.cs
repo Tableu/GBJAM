@@ -123,9 +123,31 @@ public class LoadingScreen : MonoBehaviour
         isHiding = false;
         isScrollingText = true;
         backgroundImage.sizeDelta = new Vector2(32f, backgroundImage.sizeDelta.y);
+        ResetCredits();
         textThing.text = "";
         EnableAllCreditAnimationTriggers(false);
         GetComponent<GraphicRaycaster>().enabled = false;
+    }
+
+    private void ResetCredits()
+    {
+        creditsRect.anchoredPosition = new Vector2(-200, -creditsRect.sizeDelta.y * 0.5f - 72f);
+        foreach (PufferfishCreditAnimationTrigger trigger in FindObjectsOfType<PufferfishCreditAnimationTrigger>())
+        {
+            trigger.Start();
+        }
+        foreach (PlayerCreditAnimationTrigger trigger in FindObjectsOfType<PlayerCreditAnimationTrigger>())
+        {
+            trigger.Start();
+        }
+        foreach (CrabCreditAnimationTrigger trigger in FindObjectsOfType<CrabCreditAnimationTrigger>())
+        {
+            trigger.Start();
+        }
+        foreach (SnailCreditAnimationTrigger trigger in FindObjectsOfType<SnailCreditAnimationTrigger>())
+        {
+            trigger.Start();
+        }
     }
 
     private void SetCamera()
@@ -238,13 +260,13 @@ public class LoadingScreen : MonoBehaviour
     {
         areCreditsRolling = true;
         EnableAllCreditAnimationTriggers(true);
-        MusicManager.MusicInstance.PlayMusic(Music.Credits);
         creditsRect.anchoredPosition = new Vector2(0, -creditsRect.sizeDelta.y * 0.5f - 72f);
 
         float startingVolume = MusicManager.MusicInstance.Volume;
         float targetPos = -creditsRect.anchoredPosition.y;
         float finalSpeed = creditsScrollSpeed;
         _playerInputActions.Enable();
+        MusicManager.MusicInstance.PlayMusic(Music.Credits);
         while (creditsRect.anchoredPosition.y < targetPos)
         {
             //if (_playerInputActions.UI.Submit.)
@@ -275,6 +297,7 @@ public class LoadingScreen : MonoBehaviour
         SetObjectVerticalAnchoredPosition(creditsRect, targetPos);
         yield return new WaitForSeconds(2.5f);
         areCreditsRolling = false;
+        ResetCredits();
         EnableAllCreditAnimationTriggers(false);
         _playerInputActions.Disable();
     }

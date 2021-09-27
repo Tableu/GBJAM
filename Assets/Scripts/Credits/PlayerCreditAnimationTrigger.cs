@@ -66,4 +66,8 @@ public class PlayerCreditAnimationTrigger : CreditAnimationTrigger
                 break;
         }
     }
+    public void Reset()
+    {
+        UpdateAnimator(startState);
+    }
 }
