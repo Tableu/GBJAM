@@ -20883,7 +20883,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1949601602151727642, guid: 97551bef421cd9945ae3a3ed34e73c56, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 149
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6890519212815566338, guid: 97551bef421cd9945ae3a3ed34e73c56, type: 3}
       propertyPath: m_Name
@@ -20895,11 +20895,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6890519212815566342, guid: 97551bef421cd9945ae3a3ed34e73c56, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -50.57
+      value: -66.64
       objectReference: {fileID: 0}
     - target: {fileID: 6890519212815566342, guid: 97551bef421cd9945ae3a3ed34e73c56, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6.46
+      value: 12.52
       objectReference: {fileID: 0}
     - target: {fileID: 6890519212815566342, guid: 97551bef421cd9945ae3a3ed34e73c56, type: 3}
       propertyPath: m_LocalPosition.z
@@ -22476,10 +22476,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 480851370}
     m_Modifications:
-    - target: {fileID: 1949601602151727623, guid: 97551bef421cd9945ae3a3ed34e73c56, type: 3}
-      propertyPath: m_Layer
-      value: 11
-      objectReference: {fileID: 0}
     - target: {fileID: 6890519212815566338, guid: 97551bef421cd9945ae3a3ed34e73c56, type: 3}
       propertyPath: m_Name
       value: LandSnail Normal
@@ -24013,11 +24009,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6890519212815566342, guid: 97551bef421cd9945ae3a3ed34e73c56, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -74.88
+      value: -75.11
       objectReference: {fileID: 0}
     - target: {fileID: 6890519212815566342, guid: 97551bef421cd9945ae3a3ed34e73c56, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 15.53
+      value: 15.3
       objectReference: {fileID: 0}
     - target: {fileID: 6890519212815566342, guid: 97551bef421cd9945ae3a3ed34e73c56, type: 3}
       propertyPath: m_LocalPosition.z
@@ -24606,10 +24602,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 480851370}
     m_Modifications:
-    - target: {fileID: 1949601602151727623, guid: 97551bef421cd9945ae3a3ed34e73c56, type: 3}
-      propertyPath: m_Layer
-      value: 11
-      objectReference: {fileID: 0}
     - target: {fileID: 6890519212815566338, guid: 97551bef421cd9945ae3a3ed34e73c56, type: 3}
       propertyPath: m_Name
       value: LandSnail Normal
@@ -24628,7 +24620,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6890519212815566342, guid: 97551bef421cd9945ae3a3ed34e73c56, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 149
+      value: 149.1396
       objectReference: {fileID: 0}
     - target: {fileID: 6890519212815566342, guid: 97551bef421cd9945ae3a3ed34e73c56, type: 3}
       propertyPath: m_LocalRotation.w

@@ -39,4 +39,8 @@ public class CrabCreditAnimationTrigger : CreditAnimationTrigger
                 break;
         }
     }
+    public void Reset()
+    {
+        UpdateAnimator(startState);
+    }
 }

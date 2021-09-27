@@ -39,4 +39,8 @@ public class SnailCreditAnimationTrigger : CreditAnimationTrigger
                 break;
         }
     }
+    public void Reset()
+    {
+        UpdateAnimator(startState);
+    }
 }

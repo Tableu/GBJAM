@@ -19,4 +19,9 @@ public class PufferfishCreditAnimationTrigger : CreditAnimationTrigger
         base.TriggerAnimation();
         animCont.SetBool("IsSmall", !isSmall);
     }
+    public void Reset()
+    {
+        isSmall = !startPuffed;
+        animCont.SetBool("IsSmall", isSmall);
+    }
 }

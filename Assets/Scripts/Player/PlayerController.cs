@@ -469,26 +469,9 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     private void RedeemCoins()
     {
-        if (coins > PlayerPrefs.GetInt("RedeemAmount"))
+        if (coins > PlayerPrefs.GetInt("RedeemAmount")-1)
         {
-            if (health < PlayerPrefs.GetInt("Health"))
-            {
-                health++;
-                coins = 0;
-                pSoundManager.PlaySound(pSoundManager.Sound.hpIncrease);
-                HUDManager.Instance.UpdateHealth(Mathf.Max(0, health));
-            }
-            else if(_attack.GetType() != typeof(Attacks.MeleeAttack))
-            {
-                armor++;
-                HUDManager.Instance.UpdateArmor(Mathf.Max(0, armor));
-                if (armor > 1)
-                {
-                    playerShellSpriteRenderer.sprite = shell;
-                }
-                coins = 0;
-            }
-            else
+            if (_attack.GetType() == typeof(Attacks.MeleeAttack))
             {
                 GameObject newShell = Instantiate(shells[nextShell], transform.position, Quaternion.identity);
                 newShell.GetComponent<PlayerStats>().armor = 1;
@@ -500,7 +483,24 @@ public class PlayerController : MonoBehaviour, IDamageable
                 {
                     nextShell = 0;
                 }
+                coins = 0;
+            }else if(health < PlayerPrefs.GetInt("Health"))
+            {
+                health++;
+                coins = 0;
+                HUDManager.Instance.UpdateHealth(Mathf.Max(0, health));
             }
+            else
+            {
+                armor++;
+                HUDManager.Instance.UpdateArmor(Mathf.Max(0, armor));
+                if (armor > 1)
+                {
+                    playerShellSpriteRenderer.sprite = shell;
+                }
+                coins = 0;
+            }
+            pSoundManager.PlaySound(pSoundManager.Sound.hpIncrease);
         }
     }
     private IEnumerator Invulnerable()

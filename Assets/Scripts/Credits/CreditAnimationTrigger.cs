@@ -13,6 +13,10 @@ public class CreditAnimationTrigger : MonoBehaviour
     protected float startSpeed = 1f;
     [SerializeField]
     protected float triggerSpeed = 1f;
+
+    [SerializeField]
+    protected RectTransform loadingScreenPosition;
+
     public bool EnableBehaviour
     {
         get { return enableBehaviour; }
@@ -25,13 +29,14 @@ public class CreditAnimationTrigger : MonoBehaviour
     }
     public virtual void Start()
     {
+        loadingScreenPosition = LoadingScreen.Instance.GetComponent<RectTransform>();
         animCont.speed = startSpeed;
     }
     public virtual void Update()
     {
         if (enableBehaviour)
         {
-            if (transform.position.y >= triggerHeight)
+            if (transform.position.y >= triggerHeight + loadingScreenPosition.position.y)
             {
                 TriggerAnimation();
             }
