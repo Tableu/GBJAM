@@ -65,11 +65,15 @@ public class MainMenuManager : MonoBehaviour
     public void SetDifficultyNormal()
     {
         SceneNavigationManager.Instance.difficulty = SceneNavigationManager.NORMAL;
+        PlayerPrefs.SetInt("Health", 3);
+        PlayerPrefs.SetInt("RedeemAmount", 20);
     }
 
     public void SetDifficultyHard()
     {
         SceneNavigationManager.Instance.difficulty = SceneNavigationManager.HARD;
+        PlayerPrefs.SetInt("Health", 2);
+        PlayerPrefs.SetInt("RedeemAmount", 30);
     }
     public void GoToLevel1()
     {
