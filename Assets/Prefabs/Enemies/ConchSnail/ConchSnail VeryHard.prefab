@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &7611435374056530895
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4217128674485987752, guid: d41cb105a8c4ace42b6629b2ce5ea20f, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217128674485987752, guid: d41cb105a8c4ace42b6629b2ce5ea20f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -65.9962
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217128674485987752, guid: d41cb105a8c4ace42b6629b2ce5ea20f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -13.607885
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217128674485987752, guid: d41cb105a8c4ace42b6629b2ce5ea20f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 149.13965
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217128674485987752, guid: d41cb105a8c4ace42b6629b2ce5ea20f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217128674485987752, guid: d41cb105a8c4ace42b6629b2ce5ea20f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217128674485987752, guid: d41cb105a8c4ace42b6629b2ce5ea20f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217128674485987752, guid: d41cb105a8c4ace42b6629b2ce5ea20f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217128674485987752, guid: d41cb105a8c4ace42b6629b2ce5ea20f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217128674485987752, guid: d41cb105a8c4ace42b6629b2ce5ea20f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217128674485987752, guid: d41cb105a8c4ace42b6629b2ce5ea20f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217128674485987754, guid: d41cb105a8c4ace42b6629b2ce5ea20f, type: 3}
+      propertyPath: attackConfig
+      value: 
+      objectReference: {fileID: 11400000, guid: e94402c29e0ee844c899ba4ce73846ea, type: 2}
+    - target: {fileID: 4217128674485987754, guid: d41cb105a8c4ace42b6629b2ce5ea20f, type: 3}
+      propertyPath: walkingSpeed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217128674485987754, guid: d41cb105a8c4ace42b6629b2ce5ea20f, type: 3}
+      propertyPath: detectionRange
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217128674485987754, guid: d41cb105a8c4ace42b6629b2ce5ea20f, type: 3}
+      propertyPath: targetDistance
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4217128674485987756, guid: d41cb105a8c4ace42b6629b2ce5ea20f, type: 3}
+      propertyPath: m_Name
+      value: ConchSnail (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d41cb105a8c4ace42b6629b2ce5ea20f, type: 3}

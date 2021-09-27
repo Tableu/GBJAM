@@ -75,6 +75,13 @@ public class MainMenuManager : MonoBehaviour
         PlayerPrefs.SetInt("Health", 2);
         PlayerPrefs.SetInt("RedeemAmount", 30);
     }
+
+    public void SetDifficultyVeryHard()
+    {
+        SceneNavigationManager.Instance.difficulty = SceneNavigationManager.VERYHARD;
+        PlayerPrefs.SetInt("Health", 1);
+        PlayerPrefs.SetInt("RedeemAmount", 30);
+    }
     public void GoToLevel1()
     {
         FindObjectOfType<InputSystemUIInputModule>().enabled = false;
