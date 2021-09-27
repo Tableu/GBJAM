@@ -469,7 +469,7 @@ public class PlayerController : MonoBehaviour, IDamageable
 
     private void RedeemCoins()
     {
-        if (coins > PlayerPrefs.GetInt("RedeemAmount")-1)
+        if (coins > PlayerPrefs.GetInt("RedeemAmount",20)-1)
         {
             if (_attack.GetType() == typeof(Attacks.MeleeAttack))
             {
