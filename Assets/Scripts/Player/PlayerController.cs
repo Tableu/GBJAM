@@ -484,11 +484,13 @@ public class PlayerController : MonoBehaviour, IDamageable
                     nextShell = 0;
                 }
                 coins = 0;
+                pSoundManager.PlaySound((pSoundManager.Sound.shellRedeem));
             }else if(health < PlayerPrefs.GetInt("Health"))
             {
                 health++;
                 coins = 0;
                 HUDManager.Instance.UpdateHealth(Mathf.Max(0, health));
+                pSoundManager.PlaySound(pSoundManager.Sound.hpIncrease);
             }
             else
             {
@@ -499,8 +501,8 @@ public class PlayerController : MonoBehaviour, IDamageable
                     playerShellSpriteRenderer.sprite = shell;
                 }
                 coins = 0;
+                pSoundManager.PlaySound((pSoundManager.Sound.hpIncrease));
             }
-            pSoundManager.PlaySound(pSoundManager.Sound.hpIncrease);
         }
     }
     private IEnumerator Invulnerable()
