@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b38f3915d0691294f931f8b7d5da0994, type: 3}
   m_Name: DefaultLoadingTexts
   m_EditorClassIdentifier: 
-  _introText: "It is a tale that my father, Ashita Dick - the legedary treasure
+  _introText: "It is a tale that my father, Ashita Dick - the lengedary treasure
     hunter, told me about when I was just three years old.\r\n\r\nAccording to him,
     once there lived a fearsome pirate by the name of Captain Bone Herr...\r\n\r\n\r\n\r\nHe
     is said to have amass a lot of wealth from his pirate hunting adventures on places
@@ -40,7 +40,7 @@ MonoBehaviour:
     they are bloody strong and... and...\r\n\r\nThey look lifeless to me in their
     eyes, as if they have no soul.\r\n\r\n\r\nBut....\r\n\r\n\r\n...I am the same
     way when I see my ever piling student debt.\r\n\r\nWHY DID I THINK CREATIVE WRITING
-    WOULD BE A GREAT DEGREE!\r\n\r\nAnyway, I am very close to my goal.\r\n\r\n\r\n\r\nAnd
+    WOULD BE A GREAT DEGREE\r\n\r\nAnyway, I am very close to my goal.\r\n\r\n\r\n\r\nAnd
     nobody can stop me from reaching it."
   _level1Text: "What I found was not the treasure but a fake chest made to fool many
     people... but it couldn't fool me. I knew, thanks to my father's research, that
@@ -57,7 +57,7 @@ MonoBehaviour:
     may present to me, but still...\r\n\r\nI. SHOULD. MOVE. FORWARD.\r\n\r\nFor not
     matter how strong he maybe, he is not stronger than my student loan. Upon whose
     name, I still lose sanity and feel my body fall into the darkening and spiraling
-    nothingness.\r"
+    nothingness."
   _level2Text: "ANOTHER FAKE TREASURE.\r\n\r\nIt was as if I was in a badly made
     Game Jam game, where the developers didn't have enough time to finish a smoother
     level transition that they had initially planned and so they planted these shitty
@@ -83,22 +83,52 @@ MonoBehaviour:
     into the underwater area and saw an opening.\r\n\r\nI swam up this opening to
     find a rocky place.\r\n\r\nThough, it was dripping with water trinklets here
     and there, it was devoid of any drowning water.\r\n\r\nI was back into dry rocky
-    land or more clearly...\r\n\r\nIn a cave!\r\n\r\nHa. Ha. Ha. Ha. Ha. Ha. Ha.
-    Ha. Ha. Ha. Ha. Ha.\r\n  Ha. Ha. Ha. Ha. Ha. Ha. Ha. Ha. Ha. Ha. Ha. Ha.\r\nHa.
-    Ha. Ha. Ha. Ha. Ha. Ha. Ha. Ha. Ha. Ha. Ha.\r\n  Ha. Ha. Ha. Ha. Ha. Ha. Ha.
-    Ha. Ha. Ha. Ha. Ha.\r\nHa. Ha. Ha. Ha. Ha. Ha. Ha. Ha. Ha. Ha. Ha. Ha.\r\n  Ha.
-    Ha. Ha. Ha. Ha. Ha. Ha. Ha. Ha. Ha. Ha. Ha.\r\n  \r\nAs I write this on Blackberry
+    land or more clearly...\r\n\r\nIn a cave\r\n\r\nHa. Ha. Ha. Ha. Ha. Ha. Ha. Ha.
+    Ha. Ha. Ha. Ha.\r\n  Ha. Ha. Ha. Ha. Ha. Ha. Ha. Ha. Ha. Ha. Ha. Ha.\r\nHa. Ha.
+    Ha. Ha. Ha. Ha. Ha. Ha. Ha. Ha. Ha. Ha.\r\n  Ha. Ha. Ha. Ha. Ha. Ha. Ha. Ha.
+    Ha. Ha. Ha. Ha.\r\nHa. Ha. Ha. Ha. Ha. Ha. Ha. Ha. Ha. Ha. Ha. Ha.\r\n  Ha. Ha.
+    Ha. Ha. Ha. Ha. Ha. Ha. Ha. Ha. Ha. Ha.\r\n  \r\nAs I write this on Blackberry
     mobile, I realize that I have finally reached the cave where Bone Herr hid his
     treasure.\r\n\r\nHis dripping booty cave, if you may.\r\n\r\nDripping with water
     trinklets.\r\n\r\nDripping with gold.\r\n\r\nDripping with maddening rocky structure.\r\n\r\nDripping
-    as it may mould.\r\n\r\nI AM HERE!\r\n\r\nI AM HERE!\r\n\r\nAnd though temporarily,
+    as it may mould.\r\n\r\nI AM HERE\r\n\r\nI AM HERE\r\n\r\nAnd though temporarily,
     I seem to have lost sanity and embraced insanity by grabbing on to it with tightening
     pincers that pierce through the skin of the weak, I know that soon enough...\r\n\r\nI
     will be whole again...\r\n\r\nI will be sane again...\r\n\r\nI will be back to
     being a normal crab...\r\n\r\nBut that would only happen...\r\n\r\nIf I defeat
-    that legendary Octopus and taken the shiny treasure of Bone Herr.\r\n\r\nOh!
-    I can smell the real treasure...the treasure that will abolish my student loan.\r\n\r\nOh!
-    Oh! Oh!\r\n\r\nTableu...Tableu....I feel Blue,\r\n\r\nThe treasure is somewhere
-    close, \r\n\r\nThe octopus named Clee-torus, will wish that he knew.\r"
-  _level3Text: 
+    that legendary Octopus and taken the shiny treasure of Bone Herr.\r\n\r\nOh I
+    can smell the real treasure...the treasure that will abolish my student loan.\r\n\r\nOh
+    Oh Oh\r\n\r\nTableu...Tableu....I feel Blue,\r\n\r\nThe treasure is somewhere
+    close, \r\n\r\nThe octopus named Clee-torus, will wish that he knew."
+  _level3Text: "The treasure was shiny... really, really, shiny. And I stood there,
+    laughing at my victory on the great mighty octopus upon the fact that my student
+    loan, after a long painful journey, was finally repayed.\r\n\r\nCarrying the
+    treasure one by one, I managed to escape with the gold.\r\n\r\nSoon I became
+    a celebrity.\r\n\r\nI Partied.\r\n\r\nI drank.\r\n\r\nI partied.\r\n\r\nI drank.\r\n\r\nI
+    even had a three-way wrestling match with a female Pufferfish and a male Mantis
+    Shrimp.\r\n\r\nKind of...\r\n\r\nYou see...\r\n\r\n\r\nThe experience was so
+    explosive that the Pufferfish exploded upon her first scream in the first four
+    seconds.\r\n\r\nAfter which the male Mantis Shrimp only lasted sixty-eight seconds
+    after that. He was soon branded a disappointment by his species for missing a
+    great, GREAT, opportunity by not lasting one more second.\r\n\r\nHe was hanged
+    in the middle of the street and his dead body was stoned brutally.\r\n\r\nWith
+    that said...\r\n\r\nMy success didn't last long.\r\n\r\nAfter I used my money
+    to pay off my student loan, I came to a realization that...\r\n\r\nADVENTURES
+    ARE EXPENSIVE MAN\r\n\r\nLike, you have to pay for\r\n\r\nTravel Cost\r\n\r\nEquipment
+    Cost\r\n\r\nMedical Cost\r\n\r\nWeapon Cost\r\n\r\nBribery Cost (to get information)\r\n\r\nCarrying
+    Cost (to bring back the treasure)\r\n\r\nSecurity Cost (To secure the treasure)\r\n\r\n\r\n\r\n\r\nAND
+    SO...I found myself in debt again.\r\n\r\nIn depression of said 'new' debt, I
+    ended up drinking too much...\r\n\r\nWait...\r\n\r\nBEVERAGE AND FOOD COST\r\n\r\nHOW
+    COULD I HAVE FORGOTTEN BEVERAGE AND FOOD COST\r\n\r\nHOLY CRAB WAS I AN IDIOT
+    TO EMBARK ON THIS CRABBY EXPLORATION\r\n\r\nAnyway, so yeah, I ended up drinking
+    too much and accidentally got into a bar fight with a poorly drawn panda. \r\n\r\n\r\n\r\n\r\n\r\nNow,
+    I am in jail. \r\n\r\n\r\n\r\n\r\n\r\nAnd it seems like that...\r\n\r\n...escaping
+    from this jail, would be an adventure of its own.\r\n\r\nHOPEFULLY A LESS COSTLY
+    ONE.\r\n\r\nSo till we meet again...\r\n\r\nWhen I hopefully escape this prison
+    called by many inmates as \"The Devil's Hole\".\r\n\r\nThis is Anita Dick...
+    \r\nmother's name - Agreta Dick,\r\ngrandmother's name - Amovin Dick...\r\ndaughter
+    of famous explorer Ashita Dick and famous milkman Alita Dick...\r\n\r\nsigning
+    off....\r\n\r\n\r\n\r\nTHE END\r\n\r\n\r\n\r\n\r\n\r\n\r\nCOMING SOON...\r\n\r\n\r\n\r\n\r\nAnita
+    Dick In\r\n\r\n\r\nThe Devil's Hole, A Crabby Escape\r\n\r\n\r\nBecause to get
+    out... \r\n\r\nYOU HAVE TO GO IN FIRST"
   _endGameText: 

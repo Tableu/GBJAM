@@ -193,13 +193,18 @@ public class LoadingScreen : MonoBehaviour
         yield return StartCoroutine(ShowBackground(true));
         isShowing = false;
         string currentScene = SceneNavigationManager.Instance.GetCurrentlyActiveScene().name.Substring(0, 6);
-        if (currentScene == "Level3" || levelOverride == "Credits")
+
+        yield return StartCoroutine(ScrollTextCoroutine(levelOverride));
+
+        if (currentScene == "Level3")
         {
+            float currentVolume = MusicManager.MusicInstance.Volume;
+            yield return new WaitForSeconds(2f);
+            MusicManager.MusicInstance.StopMusic(2.5f);
+            yield return new WaitForSeconds(2.8f);
+            MusicManager.MusicInstance.SetAudioVolume(currentVolume);
+
             yield return StartCoroutine(ScrollCreditsCoroutine());
-        }
-        else
-        {
-            yield return StartCoroutine(ScrollTextCoroutine(levelOverride));
         }
 
         HandleCallbacks();

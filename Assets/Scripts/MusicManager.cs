@@ -82,6 +82,29 @@ public class MusicManager : MonoBehaviour
             StartCoroutine(PlayMusicAfterTime(delay));
         }
     }
+    public void StopMusic(float time)
+    {
+        StartCoroutine(FadeOut(time));
+    }
+
+    IEnumerator FadeOut(float time)
+    {
+        if (time == 0)
+            time = 0.02f;
+
+        float timeLapsed = 0;
+        float currentProgress = 0;
+        float startingVolume = musicSource.volume;
+        while (currentProgress < 1)
+        {
+            currentProgress = Mathf.Clamp(timeLapsed / time, 0, 1f);
+            musicSource.volume = startingVolume * (1f - currentProgress);
+
+            yield return null;
+            timeLapsed += Time.unscaledDeltaTime;
+        }
+        musicSource.Stop();
+    }
 
     IEnumerator PlayMusicAfterTime(float delay)
     {

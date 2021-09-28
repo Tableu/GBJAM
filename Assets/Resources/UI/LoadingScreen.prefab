@@ -127,6 +127,7 @@ MonoBehaviour:
   triggerHeight: 0
   startSpeed: 1
   triggerSpeed: 1
+  loadingScreenPosition: {fileID: 0}
   startState: 3
   triggerState: 0
 --- !u!1 &189381745929155118
@@ -256,6 +257,7 @@ MonoBehaviour:
   triggerHeight: -3
   startSpeed: 1
   triggerSpeed: 3
+  loadingScreenPosition: {fileID: 0}
   startState: 2
   triggerState: 5
 --- !u!1 &193371708575755672
@@ -383,6 +385,7 @@ MonoBehaviour:
   triggerHeight: 0
   startSpeed: 0.5
   triggerSpeed: 0.5
+  loadingScreenPosition: {fileID: 0}
   startState: 1
   triggerState: 1
 --- !u!1 &198416181233714067
@@ -510,6 +513,7 @@ MonoBehaviour:
   triggerHeight: -1.25
   startSpeed: 1
   triggerSpeed: 3
+  loadingScreenPosition: {fileID: 0}
   startState: 0
   triggerState: 1
 --- !u!1 &281042315073012312
@@ -1189,6 +1193,7 @@ MonoBehaviour:
   triggerHeight: 0
   startSpeed: 0.5
   triggerSpeed: 0.5
+  loadingScreenPosition: {fileID: 0}
   startState: 1
   triggerState: 1
 --- !u!1 &1056202871341349270
@@ -2024,6 +2029,7 @@ MonoBehaviour:
   triggerHeight: -1.5
   startSpeed: 1
   triggerSpeed: 1
+  loadingScreenPosition: {fileID: 0}
   startPuffed: 1
   isSmall: 0
 --- !u!1 &1452267633561804171
@@ -2355,6 +2361,7 @@ MonoBehaviour:
   triggerHeight: 1
   startSpeed: 1
   triggerSpeed: 1
+  loadingScreenPosition: {fileID: 0}
   startState: 1
   triggerState: 2
 --- !u!1 &1524646163889193228
@@ -3255,6 +3262,7 @@ MonoBehaviour:
   triggerHeight: -0.5
   startSpeed: 1
   triggerSpeed: 1
+  loadingScreenPosition: {fileID: 0}
   startPuffed: 0
   isSmall: 0
 --- !u!1 &2315409188763458254
@@ -4261,6 +4269,7 @@ MonoBehaviour:
   triggerHeight: 0
   startSpeed: 0.5
   triggerSpeed: 0.5
+  loadingScreenPosition: {fileID: 0}
   startState: 1
   triggerState: 1
 --- !u!1 &3042803491262096497
@@ -4739,6 +4748,7 @@ MonoBehaviour:
   triggerHeight: 0
   startSpeed: 1
   triggerSpeed: 1
+  loadingScreenPosition: {fileID: 0}
   startPuffed: 0
   isSmall: 0
 --- !u!1 &3421060119103074649
@@ -4943,6 +4953,7 @@ MonoBehaviour:
   triggerHeight: 0
   startSpeed: 0.5
   triggerSpeed: 0.5
+  loadingScreenPosition: {fileID: 0}
   startState: 0
   triggerState: 3
 --- !u!1 &3860337632191595281
@@ -5171,6 +5182,7 @@ MonoBehaviour:
   triggerHeight: -3.5
   startSpeed: 1
   triggerSpeed: 4
+  loadingScreenPosition: {fileID: 0}
   startState: 0
   triggerState: 1
 --- !u!1 &4555446866495371437
@@ -5300,6 +5312,7 @@ MonoBehaviour:
   triggerHeight: -4
   startSpeed: 1
   triggerSpeed: 1
+  loadingScreenPosition: {fileID: 0}
   startState: 0
   triggerState: 3
 --- !u!1 &4555446867372738380
@@ -6173,6 +6186,7 @@ MonoBehaviour:
   triggerHeight: -4
   startSpeed: 1
   triggerSpeed: 1
+  loadingScreenPosition: {fileID: 0}
   startPuffed: 0
   isSmall: 0
 --- !u!1 &5521339057469331002
@@ -6300,6 +6314,7 @@ MonoBehaviour:
   triggerHeight: -3.5
   startSpeed: 1
   triggerSpeed: 4
+  loadingScreenPosition: {fileID: 0}
   startState: 0
   triggerState: 2
 --- !u!1 &5640445005365420029
@@ -6512,6 +6527,7 @@ MonoBehaviour:
   triggerHeight: 3
   startSpeed: 1
   triggerSpeed: 1
+  loadingScreenPosition: {fileID: 0}
   startState: 0
   triggerState: 3
 --- !u!1 &5666619961593288511
@@ -6722,6 +6738,7 @@ MonoBehaviour:
   triggerHeight: -1.25
   startSpeed: 1
   triggerSpeed: 3
+  loadingScreenPosition: {fileID: 0}
   startState: 0
   triggerState: 1
 --- !u!1 &5735551484375067065
@@ -6849,6 +6866,7 @@ MonoBehaviour:
   triggerHeight: 1
   startSpeed: 1
   triggerSpeed: 1
+  loadingScreenPosition: {fileID: 0}
   startState: 0
   triggerState: 1
 --- !u!1 &5743012037258142787
@@ -7188,6 +7206,7 @@ MonoBehaviour:
   triggerHeight: -1
   startSpeed: 1
   triggerSpeed: 1
+  loadingScreenPosition: {fileID: 0}
   startPuffed: 0
   isSmall: 0
 --- !u!1 &6064860442387335415
@@ -7833,9 +7852,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   transitionTime: 0.5
   fullBackgroundWidth: 224
-  textScrollSpeed: 12
-  spedUpTextScrollSpeed: 100
-  skipTextScrollSpeed: 300
+  textScrollSpeed: 10
+  spedUpTextScrollSpeed: 150
+  skipTextScrollSpeed: 400
   creditsScrollSpeed: 15
   spedUpCreditsScrollSpeed: 100
   skipCreditsScrollSpeed: 500
@@ -8322,6 +8341,7 @@ MonoBehaviour:
   triggerHeight: -7
   startSpeed: 1
   triggerSpeed: 1
+  loadingScreenPosition: {fileID: 0}
   startPuffed: 0
   isSmall: 0
 --- !u!1 &7099133671755992035
@@ -9176,6 +9196,7 @@ MonoBehaviour:
   triggerHeight: 0
   startSpeed: 0.5
   triggerSpeed: 0.5
+  loadingScreenPosition: {fileID: 0}
   startState: 0
   triggerState: 3
 --- !u!1 &7794890711183837158
@@ -10265,6 +10286,7 @@ MonoBehaviour:
   triggerHeight: 0
   startSpeed: 1
   triggerSpeed: 1
+  loadingScreenPosition: {fileID: 0}
   startState: 1
   triggerState: 3
 --- !u!1 &8787315304631020659
@@ -10475,6 +10497,7 @@ MonoBehaviour:
   triggerHeight: 0
   startSpeed: 1
   triggerSpeed: 1
+  loadingScreenPosition: {fileID: 0}
   startState: 1
   triggerState: 2
 --- !u!1 &9166072111050467149
@@ -10822,5 +10845,6 @@ MonoBehaviour:
   triggerHeight: 0
   startSpeed: 1
   triggerSpeed: 1
+  loadingScreenPosition: {fileID: 0}
   startState: 1
   triggerState: 3
