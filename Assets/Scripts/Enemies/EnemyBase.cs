@@ -18,7 +18,7 @@ namespace Enemies
         [SerializeField] private int currentHealth;
         [SerializeField] private GameObject shell;
         [SerializeField] public AttackScriptableObject attackConfig;
-
+        [SerializeField] private ParticleSystem _particleSystem;
 
         [Header("Player Detection Config")] [Range(10, 360)] [SerializeField]
         private float fieldOfView;
@@ -98,6 +98,7 @@ namespace Enemies
             }
 
             Animator.TriggerHurt();
+            _particleSystem.Emit(12);
             // apply knockback
             dmg.Knockback *= knockbackFactor;
             StartCoroutine(MovementController.Knockback(dmg));
