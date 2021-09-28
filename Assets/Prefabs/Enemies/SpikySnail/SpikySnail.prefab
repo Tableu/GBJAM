@@ -74,9 +74,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkingSpeed: 8
   knockbackFactor: 0.1
-  knockbackDamage: 0
   collisionDamage: 1
-  collisionKnockback: 20
+  collisionKnockback: 10
   maxHealth: 1
   currentHealth: 0
   shell: {fileID: 3391332105126726130, guid: 154cc52a83849d2449a7ed2add4067e6, type: 3}

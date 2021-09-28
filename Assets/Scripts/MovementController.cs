@@ -113,7 +113,7 @@ public class MovementController
         float timoutTimer = 0;
 
         // Wait at least 0.5s
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.2f);
 
         // Stop the actor once they land
         while (!_boxCollider.IsTouching(_groundFilter2D))
