@@ -15,6 +15,10 @@ PrefabInstance:
       propertyPath: alwaysAttack
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7683038307938417340, guid: cfbe313d1480f2b4bb4d61dc9db4b802, type: 3}
+      propertyPath: collisionKnockback
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7683038307938417342, guid: cfbe313d1480f2b4bb4d61dc9db4b802, type: 3}
       propertyPath: m_RootOrder
       value: 0

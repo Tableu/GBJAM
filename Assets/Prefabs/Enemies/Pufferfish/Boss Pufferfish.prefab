@@ -97,7 +97,7 @@ MonoBehaviour:
   walkingSpeed: 7
   knockbackFactor: 0
   collisionDamage: 0
-  collisionKnockback: 20
+  collisionKnockback: 10
   maxHealth: 5
   currentHealth: 0
   shell: {fileID: 2348990193637437997, guid: a4a538c8b733a95459d01528e2fa2b8e, type: 3}
