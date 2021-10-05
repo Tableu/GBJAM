@@ -16,6 +16,7 @@ public class MovementController
     private readonly int _spriteForward;
     private readonly Transform _transform;
 
+    private float groundedTime;
     private bool _inputLocked;
 
     /// <summary>
@@ -90,7 +91,7 @@ public class MovementController
 
     public bool Jump(float height)
     {
-        if (!Grounded()) return false;
+        if (!Grounded() && Time.time-groundedTime > 0.125f) return false;
         var a = -Physics2D.gravity.y * _rigidbody.gravityScale;
         var speed = Mathf.Sqrt(2 * a * height);
         _rigidbody.AddForce(new Vector2(0, speed * _rigidbody.mass), ForceMode2D.Impulse);
@@ -181,7 +182,11 @@ public class MovementController
         {
             hit = Physics2D.Raycast(posArray[x], Vector2.down, 0.3f, LayerMask.GetMask("Ground"));
             Debug.DrawRay(posArray[x], new Vector2(0, -0.3f), Color.red);
-            if (hit.collider != null) return _boxCollider.IsTouching(_groundFilter2D);
+            if (hit.collider != null)
+            {
+                groundedTime = Time.time;
+                return _boxCollider.IsTouching(_groundFilter2D);
+            }
         }
 
         return false;

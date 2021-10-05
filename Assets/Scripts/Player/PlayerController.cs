@@ -1,11 +1,8 @@
-using System;
 using System.Collections;
 using Attacks;
 using UnityEngine.InputSystem;
 using UnityEngine;
 using Cinemachine;
-using UnityEngine.PlayerLoop;
-using UnityEngine.SceneManagement;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -46,6 +43,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] private GameObject conchShell;
     private GameObject[] shells;
     private int nextShell;
+    private float hideStartTime;
     
     private const int NO_SHELL = 0;
     private const int SNAIL_SHELL = 1;
@@ -85,9 +83,14 @@ public class PlayerController : MonoBehaviour, IDamageable
     }
     void Start()
     {
-        _playerInputActions.Player.Jump.started += (context =>
+        _playerInputActions.Player.Jump.started += context =>
         {
-            if (MovementController.Jump(speed.y))
+            float height = speed.y;
+            if (Time.time - hideStartTime > 1f && hiding)
+            {
+                height += 2.5f;
+            }
+            if (MovementController.Jump(height))
             {
                 pSoundManager.PlaySound(pSoundManager.Sound.pJump);
                 if (hiding)
@@ -96,7 +99,11 @@ public class PlayerController : MonoBehaviour, IDamageable
                     _playerInputActions.Player.Hide.Enable();
                 }
             }
-        });
+        };
+        _playerInputActions.Player.Jump.canceled += context =>
+        {
+            rigidBody.gravityScale = 4f;
+        };
         _playerInputActions.Player.Move.canceled += Idle;
         _playerInputActions.Player.PickUpShell.started += SwitchShells;
 
@@ -159,6 +166,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         if (grounded)
         {
             playerAnimatorController.SetIsGrounded(true);
+            rigidBody.gravityScale = 3f;
         }
         else
         {
@@ -328,6 +336,11 @@ public class PlayerController : MonoBehaviour, IDamageable
         else if(context.canceled && hiding && nearCeiling)
         {
             StartCoroutine(AutoStopHide());
+        }
+
+        if (context.started)
+        {
+            hideStartTime = Time.time;
         }
         
     }
