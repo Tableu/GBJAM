@@ -14,13 +14,12 @@ using UnityEditor;
 public class PlayerController : MonoBehaviour, IDamageable
 {
     private PlayerInputActions _playerInputActions;
-    private ContactFilter2D _groundFilter2D;
     private ContactFilter2D _enemyFilter2D;
     private AttackCommand _attackCommand;
     public MovementController MovementController { get; private set; }
 
-    [SerializeField] private PlayerStats meleeStats;
-    [SerializeField] private PlayerStats currentStats;
+    [SerializeField] private ShellStats meleeStats;
+    [SerializeField] private ShellStats playerStats;
     [SerializeField] private Rigidbody2D rigidBody;
     [SerializeField] private Collider2D col;
     [SerializeField] private PlayerAnimatorController playerAnimatorController;
@@ -28,13 +27,12 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] private AttackScriptableObject _attack;
     [SerializeField] private ParticleSystem particleSystem;
     [SerializeField] private SpriteRenderer smearSprite;
+    [SerializeField] private ShellStats shell;
 
     [SerializeField] private int health;
     [SerializeField] private int armor;
     [SerializeField] private int coins;
     [SerializeField] private Vector2 speed;
-    [SerializeField] private Sprite shell;
-    [SerializeField] private Sprite damagedShell;
     [Header("Bools")]
     [SerializeField] private bool grounded;
     [SerializeField] public bool frontClear;
@@ -53,6 +51,12 @@ public class PlayerController : MonoBehaviour, IDamageable
     private const int SNAIL_SHELL = 1;
     private const int SPIKY_SHELL = 2;
     private const int CONCH_SHELL = 3;
+
+    public const string ARMOR = "Armor";
+    public const string COINS = "Coins";
+    public const string HEALTH = "Health";
+    public const string SHELL = "Shell";
+    public const string REDEEM_AMOUNT = "RedeemAmount";
     public int Health
     {
         get { return health; }
@@ -100,45 +104,39 @@ public class PlayerController : MonoBehaviour, IDamageable
         _playerInputActions.Player.Hide.canceled += Hide;
 
         _playerInputActions.Player.Attack.started += Attack;
-        _groundFilter2D = new ContactFilter2D
-        {
-            layerMask = LayerMask.GetMask("Ground"),
-            useLayerMask = true
-        };
         _enemyFilter2D = new ContactFilter2D
         {
             layerMask = LayerMask.GetMask("Enemy"),
             useLayerMask = true
         };
-        int savedShell = PlayerPrefs.GetInt("Shell", 0);
-        GameObject shell;
+        int savedShell = PlayerPrefs.GetInt(SHELL, NO_SHELL);
         switch (savedShell)
         {
             case NO_SHELL:
-                SetStats(gameObject.GetComponent<PlayerStats>());
+                SetStats(gameObject.GetComponent<ShellStats>());
                 break;
             case SNAIL_SHELL: 
-                shell = Instantiate(snailShell, transform.position, Quaternion.identity);
-                EquipShell(shell);
-                SetStats(shell.GetComponent<PlayerStats>());
+                shell = Instantiate(snailShell, transform.position, Quaternion.identity).GetComponent<ShellStats>();
+                EquipShell();
+                SetStats(shell);
                 break;
             case SPIKY_SHELL: 
-                shell = Instantiate(spikyShell, transform.position, Quaternion.identity);
-                EquipShell(shell);
-                SetStats(shell.GetComponent<PlayerStats>());
+                shell = Instantiate(spikyShell, transform.position, Quaternion.identity).GetComponent<ShellStats>();
+                EquipShell();
+                SetStats(shell);
                 break;
             case CONCH_SHELL: 
-                shell = Instantiate(conchShell, transform.position, Quaternion.identity);
-                EquipShell(shell);
-                SetStats(shell.GetComponent<PlayerStats>());
+                shell = Instantiate(conchShell, transform.position, Quaternion.identity).GetComponent<ShellStats>();
+                EquipShell();
+                SetStats(shell);
                 break;
         }
-        armor = PlayerPrefs.GetInt("armor", 0);
-        coins = PlayerPrefs.GetInt("Coins", 0);
-        health = PlayerPrefs.GetInt("Health", 2);
+        armor = PlayerPrefs.GetInt(ARMOR, 0);
+        coins = PlayerPrefs.GetInt(COINS, 0);
+        health = PlayerPrefs.GetInt(HEALTH, 2);
         if (armor == 1)
         {
-            playerShellSpriteRenderer.sprite = damagedShell;
+            playerShellSpriteRenderer.sprite = shell.SwitchSprite(playerShellSpriteRenderer);
         }
         HUDManager.Instance.UpdateCoins(coins);
         HUDManager.Instance.UpdateArmor(armor);
@@ -161,12 +159,10 @@ public class PlayerController : MonoBehaviour, IDamageable
         if (grounded)
         {
             playerAnimatorController.SetIsGrounded(true);
-            //_playerInputActions.Player.Hide.Enable();
         }
         else
         {
             playerAnimatorController.SetIsGrounded(false);
-            //_playerInputActions.Player.Hide.Disable();
         }
         frontClear = MovementController.FrontClear();
         Move();
@@ -195,7 +191,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
     }
 
-    public void SetStats(PlayerStats shellStats)
+    public void SetStats(ShellStats shellStats)
     {
         armor = shellStats.armor;
         speed = shellStats.speed;
@@ -209,10 +205,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             _attackCommand = _attack.MakeAttack();
         }
-        shell = shellStats.shellSprite;
-        damagedShell = shellStats.damagedShell;
-        currentStats = shellStats;
-        PlayerPrefs.SetInt("Shell", currentStats.shell);
+        playerStats = shellStats;
         _playerInputActions.Player.Attack.Enable();
         //Update UI each time stats are changed.
         HUDManager.Instance.UpdateHealth(health);
@@ -282,19 +275,17 @@ public class PlayerController : MonoBehaviour, IDamageable
         };
 
         Collider2D[] collider2D = new Collider2D[1];
-        Type prevAttack = _attack.GetType();
-        
+
         if (Physics2D.OverlapCollider(col, contactFilter2D, collider2D) == 1)
         {
-            var newShell = collider2D[0].gameObject;
             DropShell();
-            SetStats(newShell.GetComponent<PlayerStats>());
-            PlayerPrefs.SetInt("armor", armor);
+            shell = collider2D[0].gameObject.GetComponent<ShellStats>();
+            SetStats(shell);
             playerAnimatorController.TriggerShellSwap();
-            EquipShell(newShell);
+            EquipShell();
             pSoundManager.PlaySound(pSoundManager.Sound.pPickup);
         }
-        else if(_attack.GetType() != typeof(Attacks.MeleeAttack))
+        else if(_attack.GetType() != typeof(MeleeAttack))
         { 
             DropShell(); 
             playerShellSpriteRenderer.sprite = null;
@@ -304,25 +295,17 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
     }
 
-    private void EquipShell(GameObject newShell)
+    private void EquipShell()
     {
-        shell = newShell.GetComponent<PlayerStats>().shellSprite;
-        damagedShell = newShell.GetComponent<PlayerStats>().damagedShell;
-        playerShellSpriteRenderer.sprite = newShell.GetComponent<SpriteRenderer>().sprite;
-        newShell.transform.parent = gameObject.transform;
-        newShell.SetActive(false);
+        playerShellSpriteRenderer.sprite = shell.GetComponent<SpriteRenderer>().sprite;
+        shell.Equipped(gameObject.transform);
     }
     private void DropShell()
     {
-        if (transform.childCount > 1)
+        if (shell != null)
         {
-            var oldShell = transform.GetChild(1);
-            oldShell.localPosition = Vector3.zero;
-            oldShell.gameObject.SetActive(true);
-            oldShell.GetComponent<PlayerStats>().armor = armor;
-            oldShell.SetParent(null);
-            oldShell.GetComponent<Rigidbody2D>().velocity = new Vector2(0,7f);
-            oldShell.localScale = new Vector3(transform.localScale.x, oldShell.localScale.y, oldShell.localScale.z);
+            shell.Dropped(armor, transform.localScale.x);
+            shell = null;
         }
     }
     private void Hide(InputAction.CallbackContext context)
@@ -344,12 +327,12 @@ public class PlayerController : MonoBehaviour, IDamageable
         }
         else if(context.canceled && hiding && nearCeiling)
         {
-            StartCoroutine(autoStopHide());
+            StartCoroutine(AutoStopHide());
         }
         
     }
 
-    private IEnumerator autoStopHide()
+    private IEnumerator AutoStopHide()
     {
         while (hiding)
         {
@@ -364,7 +347,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     private void StopHiding()
     {
         hiding = false;
-        MovementController.WalkingSpeed = currentStats.speed.x;
+        MovementController.WalkingSpeed = playerStats.speed.x;
         playerAnimatorController.SetIsHiding(false);
         BoxCollider2D box = (BoxCollider2D)col;
         box.offset = new Vector2(box.offset.x, box.offset.y*2f);
@@ -372,12 +355,12 @@ public class PlayerController : MonoBehaviour, IDamageable
     }
     public void TakeDamage(Damage dmg)
     {
-        if (_attackCommand.IsRunning && _attack.GetType() == typeof(Attacks.DashAttack))
+        if (_attackCommand.IsRunning && _attack.GetType() == typeof(DashAttack))
         {
             return;
         }
 
-        if (_attackCommand.IsRunning && _attack.GetType() == typeof(Attacks.MeleeAttack) && !col.IsTouching(_enemyFilter2D))
+        if (_attackCommand.IsRunning && _attack.GetType() == typeof(MeleeAttack) && !col.IsTouching(_enemyFilter2D))
         {
             return;
         }
@@ -406,17 +389,14 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         armor -= dmg.RawDamage;
         HUDManager.Instance.UpdateArmor(Mathf.Max(0, armor));
-        PlayerPrefs.SetInt("armor", armor);
         if (armor <= 0)
         {
             BreakShell();
-
         }
         else if (armor == 1)
         {
-            playerShellSpriteRenderer.sprite = damagedShell;
+            playerShellSpriteRenderer.sprite = shell.SwitchSprite(playerShellSpriteRenderer);
         }
-        if (armor <= 0) { BreakShell(); }
         Debug.Log("Lose Armor");
     }
     private void LoseHealth(Damage dmg)
@@ -442,8 +422,8 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             MapManager.Instance.PlayerDied();
         }
-        PlayerPrefs.SetInt("Shell", NO_SHELL);
-        PlayerPrefs.SetInt("armor", 0);
+        PlayerPrefs.SetInt(SHELL, NO_SHELL);
+        PlayerPrefs.SetInt(ARMOR, 0);
         //Perform other death tasks
         Destroy(gameObject);
     }
@@ -451,33 +431,26 @@ public class PlayerController : MonoBehaviour, IDamageable
     private void BreakShell()
     {
         playerShellSpriteRenderer.sprite = null;
-        shell = null;
-        damagedShell = null;
         if (transform.childCount > 1)
         {
-            var shell = transform.GetChild(1);
-            shell.transform.position = transform.position;
-            shell.transform.localScale = transform.localScale;
-            shell.parent = null;
-            shell.gameObject.SetActive(true);
-            shell.gameObject.GetComponent<ShellAnimator>().SetIsDead();
-            Destroy(shell.gameObject, 0.5f);
+            shell.BreakShell(gameObject.transform);
         }
+        shell = null;
         SetStats(meleeStats);
         //switch to melee
     }
 
     private void RedeemCoins()
     {
-        if (coins > PlayerPrefs.GetInt("RedeemAmount",20)-1)
+        if (coins > PlayerPrefs.GetInt(REDEEM_AMOUNT,20)-1)
         {
             if (_attack.GetType() == typeof(Attacks.MeleeAttack))
             {
-                GameObject newShell = Instantiate(shells[nextShell], transform.position, Quaternion.identity);
-                newShell.GetComponent<PlayerStats>().armor = 1;
-                EquipShell(newShell);
-                SetStats(newShell.GetComponent<PlayerStats>());
-                playerShellSpriteRenderer.sprite = damagedShell;
+                shell = Instantiate(shells[nextShell], transform.position, Quaternion.identity).GetComponent<ShellStats>();
+                shell.armor = 1;
+                EquipShell();
+                SetStats(shell);
+                playerShellSpriteRenderer.sprite = shell.SwitchSprite(playerShellSpriteRenderer);
                 nextShell++;
                 if (nextShell > 2)
                 {
@@ -485,7 +458,7 @@ public class PlayerController : MonoBehaviour, IDamageable
                 }
                 coins = 0;
                 pSoundManager.PlaySound((pSoundManager.Sound.shellRedeem));
-            }else if(health < PlayerPrefs.GetInt("Health"))
+            }else if(health < PlayerPrefs.GetInt(HEALTH))
             {
                 health++;
                 coins = 0;
@@ -498,7 +471,7 @@ public class PlayerController : MonoBehaviour, IDamageable
                 HUDManager.Instance.UpdateArmor(Mathf.Max(0, armor));
                 if (armor > 1)
                 {
-                    playerShellSpriteRenderer.sprite = shell;
+                    playerShellSpriteRenderer.sprite = shell.SwitchSprite(playerShellSpriteRenderer);
                 }
                 coins = 0;
                 pSoundManager.PlaySound((pSoundManager.Sound.hpIncrease));
@@ -564,7 +537,10 @@ public class PlayerController : MonoBehaviour, IDamageable
         if (other.CompareTag("Finish") && _playerInputActions.Player.PickUpShell.phase == InputActionPhase.Started)
         {
             other.gameObject.GetComponent<LevelEndTrigger>().OpenChest();
-            PlayerPrefs.SetInt("Coins", coins);
+            PlayerPrefs.SetInt(SHELL, shell.shell);
+            PlayerPrefs.SetInt(HEALTH, health);
+            PlayerPrefs.SetInt(ARMOR, armor);
+            PlayerPrefs.SetInt(COINS, coins);
             _playerInputActions.Disable();
         }
     }

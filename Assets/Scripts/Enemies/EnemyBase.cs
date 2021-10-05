@@ -10,7 +10,6 @@ namespace Enemies
         // todo: clean up interface
         [Header("Core Enemy Config")] [SerializeField]
         public float walkingSpeed;
-
         [SerializeField] private float knockbackFactor;
         [SerializeField] public int collisionDamage=1;
         [SerializeField] public int collisionKnockback=20;

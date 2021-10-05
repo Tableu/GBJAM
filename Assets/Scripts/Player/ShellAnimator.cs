@@ -18,7 +18,7 @@ public class ShellAnimator : AnimationControllerBase
 
     private void Update()
     {
-        if (gameObject.GetComponent<PlayerStats>().armor == 1)
+        if (gameObject.GetComponent<ShellStats>().armor == 1)
         {
             gameObject.GetComponent<ShellAnimator>().SetIsDamaged();
         }
