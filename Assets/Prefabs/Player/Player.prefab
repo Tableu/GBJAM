@@ -4788,6 +4788,7 @@ GameObject:
   - component: {fileID: 5916625166058093823}
   - component: {fileID: 887794956}
   - component: {fileID: 2902957441605840076}
+  - component: {fileID: 7630611886344214103}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -4844,7 +4845,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meleeStats: {fileID: 2902957441605840076}
-  currentStats: {fileID: 2902957441605840076}
+  playerStats: {fileID: 0}
   rigidBody: {fileID: 6985282805989476353}
   col: {fileID: 887794956}
   playerAnimatorController: {fileID: 3549133949129490232}
@@ -4852,20 +4853,17 @@ MonoBehaviour:
   _attack: {fileID: 11400000, guid: 8af698b8cc4dc6b4bb444c8dd4fa46ac, type: 2}
   particleSystem: {fileID: 428552485}
   smearSprite: {fileID: 2016716592553080973}
+  shell: {fileID: 0}
+  shellManager: {fileID: 7630611886344214103}
   health: 2
   armor: 0
   coins: 0
   speed: {x: 11, y: 5}
-  shell: {fileID: 0}
-  damagedShell: {fileID: 0}
   grounded: 0
   frontClear: 0
   inputLocked: 0
   hiding: 0
   nearCeiling: 0
-  snailShell: {fileID: 3537151017550152801, guid: 2d624e681e75bc341ba671881655c407, type: 3}
-  spikyShell: {fileID: 3391332105126726130, guid: 154cc52a83849d2449a7ed2add4067e6, type: 3}
-  conchShell: {fileID: 8426349346880946997, guid: 7a8bd38bd3813fc459446413ec94af3a, type: 3}
 --- !u!114 &5916625166058093823
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4938,8 +4936,23 @@ MonoBehaviour:
   armor: 0
   attackConfig: {fileID: 11400000, guid: 8af698b8cc4dc6b4bb444c8dd4fa46ac, type: 2}
   shellSprite: {fileID: 0}
-  damagedShell: {fileID: 0}
+  damagedShellSprite: {fileID: 0}
   shell: 0
+--- !u!114 &7630611886344214103
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5309410706653045697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5757d565dc2abe1409c29e2a9040d925, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  snailShell: {fileID: 3537151017550152801, guid: 2d624e681e75bc341ba671881655c407, type: 3}
+  spikyShell: {fileID: 3391332105126726130, guid: 154cc52a83849d2449a7ed2add4067e6, type: 3}
+  conchShell: {fileID: 8426349346880946997, guid: 7a8bd38bd3813fc459446413ec94af3a, type: 3}
 --- !u!61 &6447664322975341343
 BoxCollider2D:
   m_ObjectHideFlags: 0

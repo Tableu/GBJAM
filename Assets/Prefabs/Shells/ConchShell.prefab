@@ -131,7 +131,7 @@ MonoBehaviour:
   attackConfig: {fileID: 11400000, guid: 56d59aad6f75efd4d8129e1cd87c44ba, type: 2}
   shellSprite: {fileID: 21300000, guid: e9b81bffd7290964d81c1880300df4fd, type: 3}
   damagedShellSprite: {fileID: 21300000, guid: fe2a09c4335b9f44bb2989c8635771cc, type: 3}
-  shell: 3
+  shell: ConchShell
 --- !u!50 &6421798506455789929
 Rigidbody2D:
   serializedVersion: 4

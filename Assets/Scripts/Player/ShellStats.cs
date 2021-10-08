@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ShellStats : MonoBehaviour
@@ -10,7 +7,7 @@ public class ShellStats : MonoBehaviour
     [SerializeField] public AttackScriptableObject attackConfig;
     [SerializeField] public Sprite shellSprite;
     [SerializeField] public Sprite damagedShellSprite;
-    [SerializeField] public int shell;
+    [SerializeField] public string shell;
 
     public void Equipped(Transform player)
     {

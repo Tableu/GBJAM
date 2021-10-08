@@ -3,6 +3,7 @@ using Attacks;
 using UnityEngine.InputSystem;
 using UnityEngine;
 using Cinemachine;
+using UnityEngine.PlayerLoop;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -25,6 +26,7 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] private ParticleSystem particleSystem;
     [SerializeField] private SpriteRenderer smearSprite;
     [SerializeField] private ShellStats shell;
+    [SerializeField] private ShellManager shellManager;
 
     [SerializeField] private int health;
     [SerializeField] private int armor;
@@ -37,18 +39,12 @@ public class PlayerController : MonoBehaviour, IDamageable
     [SerializeField] private bool hiding;
     [SerializeField] private bool nearCeiling;
     private bool finish;
-    [Header("Shell Prefabs")]
-    [SerializeField] private GameObject snailShell;
-    [SerializeField] private GameObject spikyShell;
-    [SerializeField] private GameObject conchShell;
-    private GameObject[] shells;
-    private int nextShell;
     private float hideStartTime;
     
-    private const int NO_SHELL = 0;
-    private const int SNAIL_SHELL = 1;
-    private const int SPIKY_SHELL = 2;
-    private const int CONCH_SHELL = 3;
+    public const string NO_SHELL = "NoShell";
+    public const string SNAIL_SHELL = "SnailShell";
+    public const string SPIKY_SHELL = "SpikyShell";
+    public const string CONCH_SHELL = "ConchShell";
 
     public const string ARMOR = "Armor";
     public const string COINS = "Coins";
@@ -102,7 +98,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         };
         _playerInputActions.Player.Jump.canceled += context =>
         {
-            rigidBody.gravityScale = 4f;
+            rigidBody.gravityScale = shell.speed.y * 0.8f;
         };
         _playerInputActions.Player.Move.canceled += Idle;
         _playerInputActions.Player.PickUpShell.started += SwitchShells;
@@ -116,46 +112,35 @@ public class PlayerController : MonoBehaviour, IDamageable
             layerMask = LayerMask.GetMask("Enemy"),
             useLayerMask = true
         };
-        int savedShell = PlayerPrefs.GetInt(SHELL, NO_SHELL);
-        switch (savedShell)
+        finish = false;
+        
+        GameObject savedShell = shellManager.GetShell(PlayerPrefs.GetString(SHELL, NO_SHELL));
+
+        if (savedShell == null)
         {
-            case NO_SHELL:
-                SetStats(gameObject.GetComponent<ShellStats>());
-                break;
-            case SNAIL_SHELL: 
-                shell = Instantiate(snailShell, transform.position, Quaternion.identity).GetComponent<ShellStats>();
-                EquipShell();
-                SetStats(shell);
-                break;
-            case SPIKY_SHELL: 
-                shell = Instantiate(spikyShell, transform.position, Quaternion.identity).GetComponent<ShellStats>();
-                EquipShell();
-                SetStats(shell);
-                break;
-            case CONCH_SHELL: 
-                shell = Instantiate(conchShell, transform.position, Quaternion.identity).GetComponent<ShellStats>();
-                EquipShell();
-                SetStats(shell);
-                break;
+            SetStats(gameObject.GetComponent<ShellStats>());
+        }
+        else
+        {
+            shell = Instantiate(savedShell, transform.position, Quaternion.identity).GetComponent<ShellStats>();
+            EquipShell();
+            SetStats(shell);
         }
         armor = PlayerPrefs.GetInt(ARMOR, 0);
         coins = PlayerPrefs.GetInt(COINS, 0);
         health = PlayerPrefs.GetInt(HEALTH, 2);
-        if (armor == 1)
+        if (armor == 1 && shell != null)
         {
             playerShellSpriteRenderer.sprite = shell.SwitchSprite(playerShellSpriteRenderer);
         }
         HUDManager.Instance.UpdateCoins(coins);
         HUDManager.Instance.UpdateArmor(armor);
+        HUDManager.Instance.UpdateHealth(health);
         CinemachineVirtualCamera virtualCamera = FindObjectOfType<CinemachineVirtualCamera>();
         if (virtualCamera)
         {
             virtualCamera.Follow = transform;
         }
-
-        nextShell = 0;
-        shells = new[] {snailShell, conchShell, spikyShell};
-        finish = false;
     }
 
     // Update is called once per frame
@@ -416,29 +401,35 @@ public class PlayerController : MonoBehaviour, IDamageable
     {
         health -= dmg.RawDamage;
         HUDManager.Instance.UpdateHealth(Mathf.Max(0, health));
-        if (health <= 0)
+        if (health == 0)
         {
-            StartCoroutine(Death());
+            Death();
         }
         Debug.Log("Lose Health");
     }
 
-    private IEnumerator Death()
+    private void Death()
     {
         pSoundManager.PlaySound(pSoundManager.Sound.pDie);
+        gameObject.layer = LayerMask.NameToLayer("Invulnerable");
         playerAnimatorController.TriggerDeath();
         _playerInputActions.Disable();
-        gameObject.layer = LayerMask.NameToLayer("Invulnerable");
-        yield return new WaitForSeconds(1);
+        if (shell == null)
+        {
+            PlayerPrefs.SetString(SHELL, NO_SHELL);
+        }
+        else
+        {
+            PlayerPrefs.SetString(SHELL, shell.shell);
+        }
+        PlayerPrefs.SetInt(ARMOR, 0);
         //Tell MapManager the player died, it handles respawn and such.
         if (MapManager.Instance)
         {
             MapManager.Instance.PlayerDied();
         }
-        PlayerPrefs.SetInt(SHELL, NO_SHELL);
-        PlayerPrefs.SetInt(ARMOR, 0);
-        //Perform other death tasks
-        Destroy(gameObject);
+        
+        Destroy(gameObject, 1f);
     }
 
     private void BreakShell()
@@ -459,16 +450,10 @@ public class PlayerController : MonoBehaviour, IDamageable
         {
             if (_attack.GetType() == typeof(Attacks.MeleeAttack))
             {
-                shell = Instantiate(shells[nextShell], transform.position, Quaternion.identity).GetComponent<ShellStats>();
-                shell.armor = 1;
+                shell = shellManager.RedeemShell(gameObject);
                 EquipShell();
                 SetStats(shell);
                 playerShellSpriteRenderer.sprite = shell.SwitchSprite(playerShellSpriteRenderer);
-                nextShell++;
-                if (nextShell > 2)
-                {
-                    nextShell = 0;
-                }
                 coins = 0;
                 pSoundManager.PlaySound((pSoundManager.Sound.shellRedeem));
             }else if(health < PlayerPrefs.GetInt(HEALTH))
@@ -482,7 +467,7 @@ public class PlayerController : MonoBehaviour, IDamageable
             {
                 armor++;
                 HUDManager.Instance.UpdateArmor(Mathf.Max(0, armor));
-                if (armor > 1)
+                if (armor == 2)
                 {
                     playerShellSpriteRenderer.sprite = shell.SwitchSprite(playerShellSpriteRenderer);
                 }
@@ -550,7 +535,7 @@ public class PlayerController : MonoBehaviour, IDamageable
         if (other.CompareTag("Finish") && _playerInputActions.Player.PickUpShell.phase == InputActionPhase.Started)
         {
             other.gameObject.GetComponent<LevelEndTrigger>().OpenChest();
-            PlayerPrefs.SetInt(SHELL, shell.shell);
+            PlayerPrefs.SetString(SHELL, shell.shell);
             PlayerPrefs.SetInt(HEALTH, health);
             PlayerPrefs.SetInt(ARMOR, armor);
             PlayerPrefs.SetInt(COINS, coins);
