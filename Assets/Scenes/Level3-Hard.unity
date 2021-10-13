@@ -80299,7 +80299,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5665755988982373622, guid: 8c1a26422d014fe448c23287430cf3c8, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5665755988982373624, guid: 8c1a26422d014fe448c23287430cf3c8, type: 3}
       propertyPath: Enemies
@@ -80347,6 +80347,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5665755988982373625, guid: 8c1a26422d014fe448c23287430cf3c8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5665755988982373627, guid: 8c1a26422d014fe448c23287430cf3c8, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

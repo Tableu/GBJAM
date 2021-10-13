@@ -9,6 +9,6 @@ public class BossActivateEnd : MonoBehaviour
 
     private void OnDestroy()
     {
-        LevelEnd.SetActive(true);
+        LevelEnd.GetComponent<BoxCollider2D>().enabled = true;
     }
 }
